@@ -1,0 +1,18 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in('src')
+    ->in('tests');
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2'                  => true,
+        '@Symfony'               => true,
+        'binary_operator_spaces' => [
+            'align_equals'       => true,
+            'align_double_arrow' => true,
+        ],
+        'concat_space' => ['spacing' => 'one'],
+        'no_superfluous_phpdoc_tags' => true,
+    ])
+    ->setFinder($finder);

@@ -7,7 +7,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">./lib/Transmission/</directory>
+            <directory suffix=".php">./src/Transmission/</directory>
         </whitelist>
     </filter>
 </phpunit>

@@ -1,8 +1,6 @@
 # PHP Transmission API
 
-[![Build Status](https://travis-ci.org/kleiram/transmission-php.png)](https://travis-ci.org/kleiram/transmission-php)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kleiram/transmission-php/badges/quality-score.png?s=21ff8ce00b8b381734360405aeaf2b48875a8137)](https://scrutinizer-ci.com/g/kleiram/transmission-php/)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/4df441fd-864e-4491-a226-b35b79911af8/mini.png)](https://insight.sensiolabs.com/projects/4df441fd-864e-4491-a226-b35b79911af8)
+[![Build Status](https://travis-ci.org/transmission-php/transmission-php.png)](https://travis-ci.org/transmission-php/transmission-php)
 
 This library provides an interface to the [Transmission](http://transmissionbt.com)
 bit-torrent downloader. It provides means to get and remove torrents from
@@ -10,14 +8,10 @@ the downloader as well as adding new torrents to the download queue.
 
 ## Installation
 
-Installation is easy using [Composer](https://getcomposer.org):
+Installation with [Composer](https://getcomposer.org):
 
-```json
-{
-    "require": {
-        "kleiram/transmission-php": "dev-master"
-    }
-}
+```
+composer require transmission-php/transmission-php
 ```
 
 ## Usage
@@ -77,7 +71,7 @@ $transmission->reannounce($torrent);
 ```
 
 To find out which information is contained by the torrent, check
-[`Transmission\Model\Torrent`](https://github.com/kleiram/transmission-php/tree/master/lib/Transmission/Model/Torrent.php).
+[`Transmission\Model\Torrent`](https://github.com/transmission-php/transmission-php/tree/master/lib/Transmission/Model/Torrent.php).
 
 By default, the library will try to connect to `localhost:9091`. If you want to
 connect to another host or post you can pass those to the constructor of the
@@ -142,45 +136,12 @@ test the application, you have to install the dependencies using Composer before
 running the tests:
 
 ```bash
-$ curl -s https://getcomposer.org/installer | php
-$ php composer.phar install
-$ phpunit --coverage-text
+$ composer phpunit
 ```
 
-## Integration into frameworks
+## Original author
 
-Currently, there's a [Symfony](https://github.com/chellem/TransmissionBundle)
-bundle in development which allows you to easily use this library within Symfony.
-
-## Changelog
-
-    Version     Changes
-
-    0.1.0       - Initial release
-
-    0.2.0       - Rewrote the entire public API
-
-    0.3.0       - Added support for authentication
-
-    0.4.0       - The library now requires at least PHP 5.3.2
-                - Added support for getting files downloaded by torrent
-                - Added support for getting trackers used by a torrent
-                - Added support for getting peers connected to
-                - The torrent now contains:
-                    * Whether it is finished
-                    * The up- and download rate (in bytes/s)
-                    * The size of the download (when completed)
-                    * The ETA of the download
-                    * The percentage of the download completed
-                - Made the authentication more flexible
-                - The client now sends an User-Agent header with each request
-                - Added support for starting, stopping, veryfing and
-                  requesting a reannounce of torrents
-
-    0.5.0       - Fix a bug in the authentication/authorization mechanism
-                - A whole lot of other stuff including management of the
-                  Transmission session (setting global download speed limit
-                  and toggling the speed limit among others).
+This projet is a fork from https://github.com/kleiram/transmission-php/
 
 ## License
 

@@ -1,40 +1,33 @@
 <?php
+
 namespace Transmission\Tests\Util;
 
 use Transmission\Util\PropertyMapper;
 
-class PropertyMapperTest extends \PHPUnit_Framework_TestCase
+class PropertyMapperTest extends \PHPUnit\Framework\TestCase
 {
     protected $mapper;
 
-    /**
-     * @test
-     */
-    public function shouldMapSourcesToModelWithMethodCall()
-    {
-        $source = (object) array(
-            'foo' => 'this',
-            'bar' => 'that',
-            'ba' => 'thus',
-            'unused' => false
-        );
-
-        $model = new \Transmission\Mock\Model();
-
-        $this->getMapper()->map($model, $source);
-
-        $this->assertEquals('this', $model->getFo());
-        $this->assertEquals('that', $model->getBar());
-        $this->assertNull($model->getUnused());
-    }
-
-    public function setup()
+    public function setup(): void
     {
         $this->mapper = new PropertyMapper();
     }
 
-    private function getMapper()
+    public function testShouldMapSourcesToModelWithMethodCall()
     {
-        return $this->mapper;
+        $source = (object) [
+            'foo'    => 'this',
+            'bar'    => 'that',
+            'ba'     => 'thus',
+            'unused' => false,
+        ];
+
+        $model = new \Transmission\Mock\Model();
+
+        $this->mapper->map($model, $source);
+
+        $this->assertEquals('this', $model->getFo());
+        $this->assertEquals('that', $model->getBar());
+        $this->assertNull($model->getUnused());
     }
 }

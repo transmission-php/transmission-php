@@ -1,14 +1,12 @@
 <?php
+
 namespace Transmission\Tests\Model;
 
 use Transmission\Model\Status;
 
-class StatusTest extends \PHPUnit_Framework_TestCase
+class StatusTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldConstructUsingStatusInstance()
+    public function testShouldConstructUsingStatusInstance()
     {
         $state  = new Status(Status::STATUS_STOPPED);
         $status = new Status($state);

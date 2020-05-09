@@ -1,212 +1,159 @@
 <?php
+
 namespace Transmission\Tests;
 
+use Buzz\Exception\NetworkException;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Transmission\Client;
+use Transmission\Exception\ClientException;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var Transmission\Client
+     */
     protected $client;
 
-    /**
-     * @test
-     */
-    public function shouldHaveDefaultHost()
-    {
-        $this->assertEquals('localhost', $this->getClient()->getHost());
-    }
+    protected $curlMock;
 
-    /**
-     * @test
-     */
-    public function shouldHaveDefaultPort()
-    {
-        $this->assertEquals(9091, $this->getClient()->getPort());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHaveNoTokenOnInstantiation()
-    {
-        $this->assertEmpty($this->getClient()->getToken());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHaveDefaultClient()
-    {
-        $this->assertInstanceOf('Buzz\Client\Curl', $this->getClient()->getClient());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldGenerateDefaultUrl()
-    {
-        $this->assertEquals('http://localhost:9091', $this->getClient()->getUrl());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldMakeApiCall()
-    {
-        $test   = $this;
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->once())
-            ->method('send')
-            ->with(
-                $this->isInstanceOf('Buzz\Message\Request'),
-                $this->isInstanceOf('Buzz\Message\Response')
-            )
-            ->will($this->returnCallback(function ($request, $response) use ($test) {
-                $test->assertEquals('POST', $request->getMethod());
-                $test->assertEquals('/transmission/rpc', $request->getResource());
-                $test->assertEquals('http://localhost:9091', $request->getHost());
-                $test->assertEmpty($request->getHeader('X-Transmission-Session-Id'));
-                $test->assertEquals('{"method":"foo","arguments":{"bar":"baz"}}', $request->getContent());
-
-                $response->addHeader('HTTP/1.1 200 OK');
-                $response->addHeader('Content-Type: application/json');
-                $response->addHeader('X-Transmission-Session-Id: foo');
-                $response->setContent('{"foo":"bar"}');
-            }));
-
-        $this->getClient()->setClient($client);
-        $response = $this->getClient()->call('foo', array('bar' => 'baz'));
-
-        $this->assertInstanceOf('stdClass', $response);
-        $this->assertObjectHasAttribute('foo', $response);
-        $this->assertEquals('bar', $response->foo);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldAuthenticate()
-    {
-        $test   = $this;
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->once())
-            ->method('send')
-            ->with(
-                $this->isInstanceOf('Buzz\Message\Request'),
-                $this->isInstanceOf('Buzz\Message\Response')
-            )
-            ->will($this->returnCallback(function ($request, $response) use ($test) {
-                $test->assertEquals('POST', $request->getMethod());
-                $test->assertEquals('/transmission/rpc', $request->getResource());
-                $test->assertEquals('http://localhost:9091', $request->getHost());
-                $test->assertEmpty($request->getHeader('X-Transmission-Session-Id'));
-                $test->assertEquals('Basic '. base64_encode('foo:bar'), $request->getHeader('Authorization'));
-                $test->assertEquals('{"method":"foo","arguments":{"bar":"baz"}}', $request->getContent());
-
-                $response->addHeader('HTTP/1.1 200 OK');
-                $response->addHeader('Content-Type: application/json');
-                $response->addHeader('X-Transmission-Session-Id: foo');
-                $response->setContent('{"foo":"bar"}');
-            }));
-
-        $this->getClient()->authenticate('foo', 'bar');
-        $this->getClient()->setClient($client);
-        $response = $this->getClient()->call('foo', array('bar' => 'baz'));
-
-        $this->assertInstanceOf('stdClass', $response);
-        $this->assertObjectHasAttribute('foo', $response);
-        $this->assertEquals('bar', $response->foo);
-    }
-
-    /**
-     * @test
-     * @expectedException RuntimeException
-     */
-    public function shouldThrowExceptionOnExceptionDuringApiCall()
-    {
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->once())
-            ->method('send')
-            ->will($this->throwException(new \Exception()));
-
-        $this->getClient()->setClient($client);
-        $this->getClient()->call('foo', array());
-    }
-
-    /**
-     * @test
-     * @expectedException RuntimeException
-     */
-    public function shouldThrowExceptionOnUnexpectedStatusCode()
-    {
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->once())
-            ->method('send')
-            ->will($this->returnCallback(function ($request, $response) {
-                $response->addHeader('HTTP/1.1 500 Internal Server Error');
-            }));
-
-        $this->getClient()->setClient($client);
-        $this->getClient()->call('foo', array());
-    }
-
-    /**
-     * @test
-     * @expectedException RuntimeException
-     */
-    public function shouldThrowExceptionOnAccessDenied()
-    {
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->once())
-            ->method('send')
-            ->will($this->returnCallback(function ($request, $response) {
-                $response->addHeader('HTTP/1.1 401 Access Denied');
-            }));
-
-        $this->getClient()->setClient($client);
-        $this->getClient()->call('foo', array());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHandle409ResponseWhenMakingAnApiCall()
-    {
-        $test   = $this;
-        $client = $this->getMock('Buzz\Client\Curl');
-        $client->expects($this->at(0))
-            ->method('send')
-            ->will($this->returnCallback(function ($request, $response) use ($test) {
-                $test->assertEmpty($request->getHeader('X-Transmission-Session-Id'));
-
-                $response->addHeader('HTTP/1.1 409 Conflict');
-                $response->addHeader('X-Transmission-Session-Id: foo');
-            }));
-
-        $client->expects($this->at(1))
-            ->method('send')
-            ->will($this->returnCallback(function ($request, $response) {
-                $response->addHeader('HTTP/1.1 200 OK');
-                $response->addHeader('Content-Type: application/json');
-                $response->addHeader('X-Transmission-Session-Id: foo');
-                $response->setContent('{"foo":"bar"}');
-            }));
-
-        $this->getClient()->setClient($client);
-        $response = $this->getClient()->call('foo', array());
-
-        $this->assertEquals('foo', $this->getClient()->getToken());
-        $this->assertInstanceOf('stdClass', $response);
-        $this->assertObjectHasAttribute('foo', $response);
-        $this->assertEquals('bar', $response->foo);
-    }
-
-    public function setup()
+    protected function setUp(): void
     {
         $this->client = new Client();
+
+        $this->curlMock = $this->getMockBuilder("Buzz\Client\Curl")
+            ->setConstructorArgs([new Psr17Factory()])
+            ->getMock();
+        $this->client->setClient($this->curlMock);
     }
 
-    private function getClient()
+    public function testShouldHaveDefaultHost()
     {
-        return $this->client;
+        $this->assertEquals('localhost', $this->client->getHost());
+    }
+
+    public function testSetHost()
+    {
+        $expected = 'domain.com';
+
+        $this->client->setHost($expected);
+        $this->assertEquals($expected, $this->client->getHost());
+    }
+
+    public function testShouldHaveDefaultPort()
+    {
+        $this->assertEquals(9091, $this->client->getPort());
+    }
+
+    public function testSetPort()
+    {
+        $expected = 80;
+
+        $this->client->setPort($expected);
+        $this->assertEquals($expected, $this->client->getPort());
+    }
+
+    public function testSetPath()
+    {
+        $expected = '/foo/bar';
+
+        $this->client->setPath($expected);
+        $this->assertEquals($expected, $this->client->getPath());
+    }
+
+    public function testShouldHaveNoTokenOnInstantiation()
+    {
+        $this->assertEmpty($this->client->getToken());
+    }
+
+    public function testShouldHaveDefaultClient()
+    {
+        $this->assertInstanceOf('Buzz\Client\Curl', $this->client->getClient());
+    }
+
+    public function testShouldGenerateDefaultUrl()
+    {
+        $this->assertEquals('http://localhost:9091', $this->client->getUrl());
+    }
+
+    public function testShouldMakeApiCall()
+    {
+        $this->curlMock->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
+            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+
+        $response = $this->client->call('foo', ['bar' => 'baz']);
+
+        $this->assertInstanceOf('stdClass', $response);
+    }
+
+    public function testShouldAuthenticate()
+    {
+        $this->curlMock->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
+            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+
+        $this->client->authenticate('foo', 'bar');
+        $response = $this->client->call('foo', ['bar' => 'baz']);
+
+        $this->assertInstanceOf('stdClass', $response);
+    }
+
+    public function testShouldThrowExceptionOnExceptionDuringApiCall()
+    {
+        $this->curlMock->method('sendRequest')
+            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
+            ->will($this->throwException(
+                new NetworkException(
+                    new \Nyholm\Psr7\Request('GET', ''),
+                    'Could not connect to Transmission'
+                )
+            ));
+
+        $this->expectException(NetworkException::class);
+        $this->expectExceptionMessage('Could not connect to Transmission');
+        $this->expectExceptionCode(0);
+
+        $this->client->call('foo', []);
+    }
+
+    public function testShouldThrowExceptionOnUnexpectedStatusCode()
+    {
+        $this->curlMock->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(new \Nyholm\Psr7\Response(500));
+
+        $this->expectException(ClientException::class);
+        $this->expectExceptionMessage('Unexpected response received from Transmission');
+        $this->expectExceptionCode(500);
+
+        $this->client->call('foo', []);
+    }
+
+    public function testShouldThrowExceptionOnAccessDenied()
+    {
+        $this->curlMock->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(new \Nyholm\Psr7\Response(401));
+
+        $this->expectException(ClientException::class);
+        $this->expectExceptionMessage('Access to Transmission requires authentication');
+        $this->expectExceptionCode(401);
+
+        $this->client->call('foo', []);
+    }
+
+    public function testShouldHandle409ResponseWhenMakingAnApiCall()
+    {
+        $this->curlMock->expects($this->at(0))
+            ->method('sendRequest')
+            ->willReturn(new \Nyholm\Psr7\Response(409, ['X-Transmission-Session-Id' => 'foo']));
+
+        $this->curlMock->expects($this->at(1))
+            ->method('sendRequest')
+            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+
+        $this->client->call('foo', []);
     }
 }

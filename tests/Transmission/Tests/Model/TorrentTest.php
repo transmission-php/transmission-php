@@ -1,148 +1,134 @@
 <?php
+
 namespace Transmission\Tests\Model;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Transmission\Model\Torrent;
 use Transmission\Util\PropertyMapper;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class TorrentTest extends \PHPUnit_Framework_TestCase
+class TorrentTest extends \PHPUnit\Framework\TestCase
 {
     protected $torrent;
 
-    /**
-     * @test
-     */
-    public function shouldImplementModelInterface()
+    public function setUp(): void
     {
-        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->getTorrent());
+        $this->torrent = new Torrent();
     }
 
-    /**
-     * @test
-     */
-    public function shouldHaveNonEmptyMapping()
+    public function testShouldImplementModelInterface()
     {
-        $this->assertNotEmpty($this->getTorrent()->getMapping());
+        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldBeCreatedFromMapping()
+    public function testShouldHaveNonEmptyMapping()
     {
-        $source = (object) array(
-            'id' => 1,
-            'eta' => 10,
-            'sizeWhenDone' => 10000,
-            'name' => 'foo',
-            'hashString' => 'bar',
-            'status' => 0,
-            'isFinished' => false,
-            'rateUpload' => 10,
-            'rateDownload' => 100,
-            'downloadDir' => '/home/foo',
+        $this->assertNotEmpty($this->torrent->getMapping());
+    }
+
+    public function testShouldBeCreatedFromMapping()
+    {
+        $source = (object) [
+            'id'             => 1,
+            'comment'        => 'a comment',
+            'doneDate'       => 1589234242,
+            'eta'            => 10,
+            'sizeWhenDone'   => 10000,
+            'name'           => 'foo',
+            'hashString'     => 'bar',
+            'status'         => 0,
+            'isFinished'     => false,
+            'isPrivate'      => false,
+            'rateUpload'     => 10,
+            'rateDownload'   => 100,
+            'downloadDir'    => '/home/foo',
             'downloadedEver' => 1024000000,
-            'uploadedEver' => 1024000000000, // 1 Tb
-            'files' => array(
-                (object) array()
-            ),
-            'peers' => array(
-                (object) array(),
-                (object) array()
-            ),
+            'uploadedEver'   => 1024000000000, // 1 Tb
+            'files'          => [
+                (object) [],
+            ],
+            'peers' => [
+                (object) [],
+                (object) [],
+            ],
             'peersConnected' => 10,
-            'startDate' => 1427583510,
-            'trackers' => array(
-                (object) array(),
-                (object) array(),
-                (object) array()
-            ),
-            'trackerStats' => array(
-                (object) array(),
-                (object) array(),
-                (object) array()
-            )
-        );
+            'startDate'      => 1427583510,
+            'trackers'       => [
+                (object) [],
+                (object) [],
+                (object) [],
+            ],
+            'trackerStats' => [
+                (object) [],
+                (object) [],
+                (object) [],
+            ],
+        ];
 
-        PropertyMapper::map($this->getTorrent(), $source);
+        PropertyMapper::map($this->torrent, $source);
 
-        $this->assertEquals(1, $this->getTorrent()->getId());
-        $this->assertEquals(10, $this->getTorrent()->getEta());
-        $this->assertEquals(10000, $this->getTorrent()->getSize());
-        $this->assertEquals('foo', $this->getTorrent()->getName());
-        $this->assertEquals('bar', $this->getTorrent()->getHash());
-        $this->assertEquals(0, $this->getTorrent()->getStatus());
-        $this->assertFalse($this->getTorrent()->isFinished());
-        $this->assertEquals(10, $this->getTorrent()->getUploadRate());
-        $this->assertEquals(100, $this->getTorrent()->getDownloadRate());
-        $this->assertEquals('/home/foo', $this->getTorrent()->getDownloadDir());
-        $this->assertEquals(1024000000, $this->getTorrent()->getDownloadedEver());
-        $this->assertEquals(1024000000000, $this->getTorrent()->getUploadedEver());
-        $this->assertCount(1, $this->getTorrent()->getFiles());
-        $this->assertCount(2, $this->getTorrent()->getPeers());
-        $this->assertCount(3, $this->getTorrent()->getTrackers());
+        $this->assertEquals(1, $this->torrent->getId());
+        $this->assertEquals('a comment', $this->torrent->getComment());
+        $this->assertEquals(1589234242, $this->torrent->getDoneDate());
+        $this->assertEquals(10, $this->torrent->getEta());
+        $this->assertEquals(10000, $this->torrent->getSize());
+        $this->assertEquals('foo', $this->torrent->getName());
+        $this->assertEquals('bar', $this->torrent->getHash());
+        $this->assertEquals(0, $this->torrent->getStatus());
+        $this->assertFalse($this->torrent->isFinished());
+        $this->assertFalse($this->torrent->isPrivate());
+        $this->assertEquals(10, $this->torrent->getUploadRate());
+        $this->assertEquals(100, $this->torrent->getDownloadRate());
+        $this->assertEquals('/home/foo', $this->torrent->getDownloadDir());
+        $this->assertEquals(1024000000, $this->torrent->getDownloadedEver());
+        $this->assertEquals(1024000000000, $this->torrent->getUploadedEver());
+        $this->assertCount(1, $this->torrent->getFiles());
+        $this->assertCount(2, $this->torrent->getPeers());
+        $this->assertCount(3, $this->torrent->getTrackers());
     }
 
-    /**
-     * @test
-     */
-    public function shouldBeDoneWhenFinishedFlagIsSet()
+    public function testShouldBeDoneWhenFinishedFlagIsSet()
     {
-        $this->getTorrent()->setFinished(true);
+        $this->torrent->setFinished(true);
 
-        $this->assertTrue($this->getTorrent()->isFinished());
+        $this->assertTrue($this->torrent->isFinished());
     }
 
-    /**
-     * @test
-     */
-    public function shouldBeDoneWhenPercentDoneIs100Percent()
+    public function testShouldBeDoneWhenPercentDoneIs100Percent()
     {
-        $this->getTorrent()->setPercentDone(1);
+        $this->torrent->setPercentDone(1);
 
-        $this->assertTrue($this->getTorrent()->isFinished());
+        $this->assertTrue($this->torrent->isFinished());
+    }
+
+    public function statusProvider()
+    {
+        return [
+            [0, 'stopped'],
+            [1, 'checking'],
+            [2, 'checking'],
+            [3, 'downloading'],
+            [4, 'downloading'],
+            [5, 'seeding'],
+            [6, 'seeding'],
+        ];
     }
 
     /**
-     * @test
      * @dataProvider statusProvider
      */
-    public function shouldHaveConvenienceMethods($status, $method)
+    public function testShouldHaveConvenienceMethods($status, $method)
     {
-        $methods = array('stopped', 'checking', 'downloading', 'seeding');
+        $methods  = ['stopped', 'checking', 'downloading', 'seeding'];
         $accessor = PropertyAccess::createPropertyAccessor();
-        $this->getTorrent()->setStatus($status);
+        $this->torrent->setStatus($status);
 
         $methods = array_filter($methods, function ($value) use ($method) {
             return $method !== $value;
         });
 
-        $this->assertTrue($accessor->getValue($this->getTorrent(), $method));
+        $this->assertTrue($accessor->getValue($this->torrent, $method));
         foreach ($methods as $m) {
-            $this->assertFalse($accessor->getValue($this->getTorrent(), $m), $m);
+            $this->assertFalse($accessor->getValue($this->torrent, $m), $m);
         }
-    }
-
-    public function statusProvider()
-    {
-        return array(
-            array(0, 'stopped'),
-            array(1, 'checking'),
-            array(2, 'checking'),
-            array(3, 'downloading'),
-            array(4, 'downloading'),
-            array(5, 'seeding'),
-            array(6, 'seeding')
-        );
-    }
-
-    public function setup()
-    {
-        $this->torrent = new Torrent();
-    }
-
-    public function getTorrent()
-    {
-        return $this->torrent;
     }
 }
