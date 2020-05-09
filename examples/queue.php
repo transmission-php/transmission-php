@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__.'/../vendor/autoload.php';
+
+require dirname(__DIR__) .  '/vendor/autoload.php';
 
 $transmission = new Transmission\Transmission();
 $queue = $transmission->all();
@@ -14,7 +15,7 @@ foreach ($queue as $torrent) {
     } else {
         if ($torrent->isDownloading()) {
             echo ": {$torrent->getPercentDone()}% ";
-            echo "(eta: ". gmdate("H:i:s", $torrent->getEta()) .")\n";
+            echo "(eta: " . gmdate("H:i:s", $torrent->getEta()) . ")\n";
         } else {
             echo ": paused\n";
         }

@@ -1,464 +1,433 @@
 <?php
+
 namespace Transmission\Tests;
 
-use Transmission\Transmission;
+use Transmission\Exception\ClientException;
 use Transmission\Model\Torrent;
+use Transmission\Transmission;
 
-class TransmissionTest extends \PHPUnit_Framework_TestCase
+class TransmissionTest extends \PHPUnit\Framework\TestCase
 {
     protected $transmission;
 
-    /**
-     * @test
-     */
-    public function shouldHaveDefaultHost()
+    public function setUp(): void
     {
-        $this->assertEquals('localhost', $this->getTransmission()->getClient()->getHost());
+        $this->transmission = new Transmission();
+        $this->mockSession  = $this->getMockBuilder('Transmission\Model\Session')
+            ->getMock();
+        $this->mockClient = $this->getMockBuilder('Transmission\Client')
+            ->getMock();
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetAllTorrentsInDownloadQueue()
+    public function testShouldHaveDefaultHost()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->assertEquals('localhost', $this->transmission->getClient()->getHost());
+    }
+
+    public function testShouldGetAllTorrentsInDownloadQueue()
+    {
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
             ->will($this->returnCallback(function ($method, $arguments) {
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array(
-                        'torrents' => array(
-                            (object) array(),
-                            (object) array(),
-                            (object) array(),
-                        )
-                    )
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [
+                        'torrents' => [
+                            (object) [],
+                            (object) [],
+                            (object) [],
+                        ],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
+        $this->transmission->setClient($this->mockClient);
 
-        $torrents = $this->getTransmission()->all();
+        $torrents = $this->transmission->all();
 
         $this->assertCount(3, $torrents);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetTorrentById()
+    public function testShouldGetTorrentById()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEquals(1, $arguments['ids'][0]);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array(
-                        'torrents' => array(
-                            (object) array()
-                        )
-                    )
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [
+                        'torrents' => [
+                            (object) [],
+                        ],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
+        $this->transmission->setClient($this->mockClient);
 
-        $torrent = $this->getTransmission()->get(1);
+        $torrent = $this->transmission->get(1);
 
         $this->assertInstanceOf('Transmission\Model\Torrent', $torrent);
     }
 
-    /**
-     * @test
-     * @expectedException RuntimeException
-     */
-    public function shouldThrowExceptionWhenTorrentIsNotFound()
+    public function testShouldThrowExceptionWhenTorrentIsNotFound()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
             ->will($this->returnCallback(function ($method, $arguments) {
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array(
-                        'torrents' => array()
-                    )
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [
+                        'torrents' => [],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
-        $this->getTransmission()->get(1);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Torrent with ID 1 not found');
+
+        $this->transmission->setClient($this->mockClient);
+        $this->transmission->get(1);
     }
 
-    /**
-     * @test
-     */
-    public function shouldAddTorrentByFilename()
+    public function testShouldAddTorrentByFilename()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('filename', $arguments);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array(
-                        'torrent-added' => (object) array()
-                    )
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [
+                        'torrent-added' => (object) [true],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
+        $this->transmission->setClient($this->mockClient);
 
-        $torrent = $this->getTransmission()->add('foo');
+        $torrent = $this->transmission->add('foo');
         $this->assertInstanceOf('Transmission\Model\Torrent', $torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldAddTorrentByMetainfo()
+    public function testShouldAddTorrentByMetainfo()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('metainfo', $arguments);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array(
-                        'torrent-added' => (object) array()
-                    )
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [
+                        'torrent-added' => (object) [true],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
+        $this->transmission->setClient($this->mockClient);
 
-        $torrent = $this->getTransmission()->add('foo', true);
+        $torrent = $this->transmission->add('foo', true);
         $this->assertInstanceOf('Transmission\Model\Torrent', $torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldHandleDuplicateTorrent()
+    public function testShouldHandleDuplicateTorrent()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('metainfo', $arguments);
 
-                return (object) array(
-                    'result' => 'duplicate torrent',
-                    'arguments' => (object) array(
-                        'torrent-duplicate' => (object) array()
-                    )
-                );
+                return (object) [
+                    'result'    => 'duplicate torrent',
+                    'arguments' => (object) [
+                        'torrent-duplicate' => (object) [true],
+                    ],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
+        $this->transmission->setClient($this->mockClient);
 
-        $torrent = $this->getTransmission()->add('foo', true);
+        $torrent = $this->transmission->add('foo', true);
         $this->assertInstanceOf('Transmission\Model\Torrent', $torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetSession()
+    public function testShouldGetSession()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('session-get')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEmpty($arguments);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array()
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [true],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
-        $session = $this->getTransmission()->getSession();
+        $this->transmission->setClient($this->mockClient);
+        $session = $this->transmission->getSession();
 
         $this->assertInstanceOf('Transmission\Model\Session', $session);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetSessionStats()
+    public function testShouldGetSessionStats()
     {
         $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('session-stats')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEmpty($arguments);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array()
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [true],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
-        $stats = $this->getTransmission()->getSessionStats();
+        $this->transmission->setClient($this->mockClient);
+        $stats = $this->transmission->getSessionStats();
 
         $this->assertInstanceOf('Transmission\Model\Stats\Session', $stats);
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetFreeSpace()
+    public function testShouldGetFreeSpace()
     {
-        $that   = $this;
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $that = $this;
+
+        $this->mockClient->expects($this->once())
             ->method('call')
             ->with('free-space')
             ->will($this->returnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('path', $arguments);
 
-                return (object) array(
-                    'result' => 'success',
-                    'arguments' => (object) array()
-                );
+                return (object) [
+                    'result'    => 'success',
+                    'arguments' => (object) [true],
+                ];
             }));
 
-        $this->getTransmission()->setClient($client);
-        $freeSpace = $this->getTransmission()->getFreeSpace('/');
+        $this->transmission->setClient($this->mockClient);
+        $freeSpace = $this->transmission->getFreeSpace('/');
         $this->assertInstanceOf('Transmission\Model\FreeSpace', $freeSpace);
     }
 
-    /**
-     * @test
-     */
-    public function shouldStartDownload()
+    public function testShouldStartDownload()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-start', array('ids' => array(1)))
+            ->with('torrent-start', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->start($torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldStartDownloadImmediately()
+    public function testShouldStartDownloadImmediately()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-start-now', array('ids' => array(1)))
+            ->with('torrent-start-now', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->start($torrent, true);
     }
 
-    /**
-     * @test
-     */
-    public function shouldStopDownload()
+    public function testShouldStopDownload()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-stop', array('ids' => array(1)))
+            ->with('torrent-stop', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->stop($torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldVerifyDownload()
+    public function testShouldVerifyDownload()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-verify', array('ids' => array(1)))
+            ->with('torrent-verify', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->verify($torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldReannounceDownload()
+    public function testShouldReannounceDownload()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-reannounce', array('ids' => array(1)))
+            ->with('torrent-reannounce', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->reannounce($torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRemoveDownloadWithoutRemovingLocalData()
+    public function testShouldRemoveDownloadWithoutRemovingLocalData()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-remove', array('ids' => array(1)))
+            ->with('torrent-remove', ['ids' => [1]])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->remove($torrent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRemoveDownloadWithRemovingLocalData()
+    public function testShouldRemoveDownloadWithRemovingLocalData()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('call')
-            ->with('torrent-remove', array('ids' => array(1), 'delete-local-data' => true))
+            ->with('torrent-remove', ['ids' => [1], 'delete-local-data' => true])
             ->will($this->returnCallback(function () {
-                return (object) array(
-                    'result' => 'success'
-                );
+                return (object) [
+                    'result' => 'success',
+                ];
             }));
 
         $torrent = new Torrent();
         $torrent->setId(1);
 
         $transmission = new Transmission();
-        $transmission->setClient($client);
+        $transmission->setClient($this->mockClient);
         $transmission->remove($torrent, true);
     }
 
-    /**
-     * @test
-     */
-    public function shouldHaveDefaultPort()
+    public function testShouldTellIfTransmissionRpcIsAvailable()
     {
-        $this->assertEquals(9091, $this->getTransmission()->getClient()->getPort());
+        $this->mockClient->expects($this->once())
+            ->method('call')
+            ->with('', [])
+            ->will($this->returnCallback(function () {
+                return new \stdClass();
+            }));
+
+        $transmission = new Transmission();
+        $transmission->setClient($this->mockClient);
+
+        $this->assertTrue($transmission->isAvailable());
     }
 
-    /**
-     * @test
-     */
-    public function shouldProvideFacadeForClient()
+    public function testShouldTellIfTransmissionRpcIsUnavailable()
     {
-        $client = $this->getMock('Transmission\Client');
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
+            ->method('call')
+            ->with('', [])
+            ->will($this->returnCallback(function () {
+                throw new ClientException('connection error', 0);
+            }));
+
+        $this->expectException(ClientException::class);
+        $this->expectExceptionMessage('connection error');
+        $this->expectExceptionCode(0);
+
+        $transmission = new Transmission();
+        $transmission->setClient($this->mockClient);
+        $transmission->isAvailable();
+    }
+
+    public function testShouldHaveDefaultPort()
+    {
+        $this->assertEquals(9091, $this->transmission->getClient()->getPort());
+    }
+
+    public function testShouldProvideFacadeForClient()
+    {
+        $this->mockClient->expects($this->once())
             ->method('setHost')
             ->with('example.org');
 
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('getHost')
             ->will($this->returnValue('example.org'));
 
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('setPort')
             ->with(80);
 
-        $client->expects($this->once())
+        $this->mockClient->expects($this->once())
             ->method('getPort')
             ->will($this->returnValue(80));
 
-        $this->getTransmission()->setClient($client);
-        $this->getTransmission()->setHost('example.org');
-        $this->getTransmission()->setPort(80);
+        $this->transmission->setClient($this->mockClient);
+        $this->transmission->setHost('example.org');
+        $this->transmission->setPort(80);
 
-        $this->assertEquals('example.org', $this->getTransmission()->getHost());
-        $this->assertEquals(80, $this->getTransmission()->getPort());
-    }
-
-    public function setup()
-    {
-        $this->transmission = new Transmission();
-    }
-
-    private function getTransmission()
-    {
-        return $this->transmission;
+        $this->assertEquals('example.org', $this->transmission->getHost());
+        $this->assertEquals(80, $this->transmission->getPort());
     }
 }

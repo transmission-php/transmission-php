@@ -1,58 +1,45 @@
 <?php
+
 namespace Transmission\Tests\Model;
 
 use Transmission\Model\TrackerStats;
 use Transmission\Util\PropertyMapper;
 
-class TrackerStatsTest extends \PHPUnit_Framework_TestCase
+class TrackerStatsTest extends \PHPUnit\Framework\TestCase
 {
     protected $trackerStats;
 
-    /**
-     * @test
-     */
-    public function shouldImplementModelInterface()
-    {
-        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->getTrackerStats());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHaveNonEmptyMapping()
-    {
-        $this->assertNotEmpty($this->getTrackerStats()->getMapping());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBeCreatedFromMapping()
-    {
-        $source = (object) array(
-            'host' => 'test',
-            'leecherCount' => 1,
-            'seederCount' => 2,
-            'lastScrapeResult' => 'foo',
-            'lastAnnounceResult' => 'bar'
-        );
-
-        PropertyMapper::map($this->getTrackerStats(), $source);
-
-        $this->assertEquals('test', $this->getTrackerStats()->getHost());
-        $this->assertEquals(1, $this->getTrackerStats()->getLeecherCount());
-        $this->assertEquals(2, $this->getTrackerStats()->getSeederCount());
-        $this->assertEquals('foo', $this->getTrackerStats()->getLastScrapeResult());
-        $this->assertEquals('bar', $this->getTrackerStats()->getLastAnnounceResult());
-    }
-
-    public function setup()
+    public function setUp(): void
     {
         $this->trackerStats = new TrackerStats();
     }
 
-    private function getTrackerStats()
+    public function testShouldImplementModelInterface()
     {
-        return $this->trackerStats;
+        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->trackerStats);
+    }
+
+    public function testShouldHaveNonEmptyMapping()
+    {
+        $this->assertNotEmpty($this->trackerStats->getMapping());
+    }
+
+    public function testShouldBeCreatedFromMapping()
+    {
+        $source = (object) [
+            'host'               => 'test',
+            'leecherCount'       => 1,
+            'seederCount'        => 2,
+            'lastScrapeResult'   => 'foo',
+            'lastAnnounceResult' => 'bar',
+        ];
+
+        PropertyMapper::map($this->trackerStats, $source);
+
+        $this->assertEquals('test', $this->trackerStats->getHost());
+        $this->assertEquals(1, $this->trackerStats->getLeecherCount());
+        $this->assertEquals(2, $this->trackerStats->getSeederCount());
+        $this->assertEquals('foo', $this->trackerStats->getLastScrapeResult());
+        $this->assertEquals('bar', $this->trackerStats->getLastAnnounceResult());
     }
 }

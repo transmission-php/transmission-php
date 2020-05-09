@@ -1,68 +1,50 @@
 <?php
+
 namespace Transmission\Tests\Model;
 
 use Transmission\Model\File;
 use Transmission\Util\PropertyMapper;
 
-
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends \PHPUnit\Framework\TestCase
 {
     protected $file;
 
-    /**
-     * @test
-     */
-    public function shouldImplementModelInterface()
-    {
-        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->getFile());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHaveNonEmptyMapping()
-    {
-        $this->assertNotEmpty($this->getFile()->getMapping());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBeCreatedFromMapping()
-    {
-        $source = (object) array(
-            'name' => 'foo',
-            'length' => 100,
-            'bytesCompleted' => 10
-        );
-
-        PropertyMapper::map($this->getFile(), $source);
-
-        $this->assertEquals('foo', $this->getFile()->getName());
-        $this->assertEquals(100, $this->getFile()->getSize());
-        $this->assertEquals(10, $this->getFile()->getCompleted());
-        $this->assertFalse($this->getFile()->isDone());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldConvertToString()
-    {
-        $this->getFile()->setName('foo');
-
-        $this->assertInternalType('string', (string) $this->getFile());
-        $this->assertEquals('foo', (string) $this->getFile());
-    }
-
-    public function setup()
+    public function setUp(): void
     {
         $this->file = new File();
     }
 
-    private function getFile()
+    public function testShouldImplementModelInterface()
     {
-        return $this->file;
+        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->file);
+    }
+
+    public function testShouldHaveNonEmptyMapping()
+    {
+        $this->assertNotEmpty($this->file->getMapping());
+    }
+
+    public function testShouldBeCreatedFromMapping()
+    {
+        $source = (object) [
+            'name'           => 'foo',
+            'length'         => 100,
+            'bytesCompleted' => 10,
+        ];
+
+        PropertyMapper::map($this->file, $source);
+
+        $this->assertEquals('foo', $this->file->getName());
+        $this->assertEquals(100, $this->file->getSize());
+        $this->assertEquals(10, $this->file->getCompleted());
+        $this->assertFalse($this->file->isDone());
+    }
+
+    public function testShouldConvertToString()
+    {
+        $this->file->setName('foo');
+
+        $this->assertIsString((string) $this->file);
+        $this->assertEquals('foo', $this->file);
     }
 }
-

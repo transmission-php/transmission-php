@@ -1,4 +1,3 @@
-vendor/
-composer.lock
-composer.phar
-phpunit.xml
+.php_cs.cache
+coverage
+vendor

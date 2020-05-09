@@ -1,4 +1,5 @@
 <?php
+
 namespace Transmission\Mock;
 
 use Transmission\Model\ModelInterface;
@@ -39,12 +40,12 @@ class Model implements ModelInterface
         return $this->unused;
     }
 
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'foo' => 'fo',
-            'bar' => 'bar',
-            'unused' => null
-        );
+        return [
+            'foo'    => 'fo',
+            'bar'    => 'bar',
+            'unused' => null,
+        ];
     }
 }

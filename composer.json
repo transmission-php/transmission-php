@@ -1,22 +1,30 @@
 {
-    "name": "kleiram/transmission-php",
+    "name": "transmission-php/transmission-php",
     "description": "PHP Transmission client",
-    "keywords": ["transmission", "torrent", "download"],
+    "keywords": [
+        "transmission",
+        "torrent",
+        "download",
+        "rpc",
+        "json"
+    ],
     "type": "library",
     "license": "BSD-2-Clause",
-    "authors": [
-        {
-            "name": "Ramon Kleiss",
-            "email": "ramon@cubilon.nl"
-        }
-    ],
     "require": {
-        "kriswallsmith/buzz": ">=0.9",
-        "symfony/property-access": ">=2.2.1"
+        "php": ">=7.4",
+        "kriswallsmith/buzz": "~1.1.0",
+        "symfony/property-access": "~5.0",
+        "nyholm/psr7": "^1.2"
     },
     "autoload": {
-        "psr-0": {
-            "Transmission": "lib/"
+        "psr-4": {
+            "": "src/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "scripts": {
+        "phpunit": "vendor/bin/phpunit"
     }
 }

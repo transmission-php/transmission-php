@@ -1,56 +1,43 @@
 <?php
+
 namespace Transmission\Tests\Model;
 
 use Transmission\Model\Tracker;
 use Transmission\Util\PropertyMapper;
 
-class TrackerTest extends \PHPUnit_Framework_TestCase
+class TrackerTest extends \PHPUnit\Framework\TestCase
 {
     protected $tracker;
 
-    /**
-     * @test
-     */
-    public function shouldImplementModelInterface()
-    {
-        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->getTracker());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldHaveNonEmptyMapping()
-    {
-        $this->assertNotEmpty($this->getTracker()->getMapping());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldBeCreatedFromMapping()
-    {
-        $source = (object) array(
-            'id' => 1,
-            'tier' => 1,
-            'scrape' => 'foo',
-            'announce' => 'bar'
-        );
-
-        PropertyMapper::map($this->getTracker(), $source);
-
-        $this->assertEquals(1, $this->getTracker()->getId());
-        $this->assertEquals(1, $this->getTracker()->getTier());
-        $this->assertEquals('foo', $this->getTracker()->getScrape());
-        $this->assertEquals('bar', $this->getTracker()->getAnnounce());
-    }
-
-    public function setup()
+    public function setUp(): void
     {
         $this->tracker = new Tracker();
     }
 
-    private function getTracker()
+    public function testShouldImplementModelInterface()
     {
-        return $this->tracker;
+        $this->assertInstanceOf('Transmission\Model\ModelInterface', $this->tracker);
+    }
+
+    public function testShouldHaveNonEmptyMapping()
+    {
+        $this->assertNotEmpty($this->tracker->getMapping());
+    }
+
+    public function testShouldBeCreatedFromMapping()
+    {
+        $source = (object) [
+            'id'       => 1,
+            'tier'     => 1,
+            'scrape'   => 'foo',
+            'announce' => 'bar',
+        ];
+
+        PropertyMapper::map($this->tracker, $source);
+
+        $this->assertEquals(1, $this->tracker->getId());
+        $this->assertEquals(1, $this->tracker->getTier());
+        $this->assertEquals('foo', $this->tracker->getScrape());
+        $this->assertEquals('bar', $this->tracker->getAnnounce());
     }
 }
