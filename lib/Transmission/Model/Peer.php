@@ -1,9 +1,7 @@
 <?php
+
 namespace Transmission\Model;
 
-/**
- * @author Ramon Kleiss <ramon@cubilon.nl>
- */
 class Peer extends AbstractModel
 {
     /**
@@ -12,7 +10,7 @@ class Peer extends AbstractModel
     protected $address;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $port;
 
@@ -22,62 +20,62 @@ class Peer extends AbstractModel
     protected $clientName;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $clientChoked;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $clientInterested;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $downloading;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $encrypted;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $incoming;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $uploading;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $utp;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $peerChoked;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $peerInterested;
 
     /**
-     * @var double
+     * @var float
      */
     protected $progress;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $uploadRate;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $downloadRate;
 
@@ -98,15 +96,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param integer $port
+     * @param int $port
      */
     public function setPort($port)
     {
-        $this->port = (integer) $port;
+        $this->port = (int) $port;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getPort()
     {
@@ -130,15 +128,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $choked
+     * @param bool $choked
      */
     public function setClientChoked($choked)
     {
-        $this->clientChoked = (boolean) $choked;
+        $this->clientChoked = (bool) $choked;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isClientChoked()
     {
@@ -146,15 +144,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $interested
+     * @param bool $interested
      */
     public function setClientInterested($interested)
     {
-        $this->clientInterested = (boolean) $interested;
+        $this->clientInterested = (bool) $interested;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isClientInterested()
     {
@@ -162,15 +160,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $downloading
+     * @param bool $downloading
      */
     public function setDownloading($downloading)
     {
-        $this->downloading = (boolean) $downloading;
+        $this->downloading = (bool) $downloading;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDownloading()
     {
@@ -178,15 +176,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $encrypted
+     * @param bool $encrypted
      */
     public function setEncrypted($encrypted)
     {
-        $this->encrypted = (boolean) $encrypted;
+        $this->encrypted = (bool) $encrypted;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEncrypted()
     {
@@ -194,15 +192,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $incoming
+     * @param bool $incoming
      */
     public function setIncoming($incoming)
     {
-        $this->incoming = (boolean) $incoming;
+        $this->incoming = (bool) $incoming;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isIncoming()
     {
@@ -210,15 +208,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $uploading
+     * @param bool $uploading
      */
     public function setUploading($uploading)
     {
-        $this->uploading = (boolean) $uploading;
+        $this->uploading = (bool) $uploading;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUploading()
     {
@@ -226,15 +224,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $utp
+     * @param bool $utp
      */
     public function setUtp($utp)
     {
-        $this->utp = (boolean) $utp;
+        $this->utp = (bool) $utp;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isUtp()
     {
@@ -242,15 +240,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $choked
+     * @param bool $choked
      */
     public function setPeerChoked($choked)
     {
-        $this->peerChoked = (boolean) $choked;
+        $this->peerChoked = (bool) $choked;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPeerChoked()
     {
@@ -258,15 +256,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param boolean $interested
+     * @param bool $interested
      */
     public function setPeerInterested($interested)
     {
-        $this->peerInterested = (boolean) $interested;
+        $this->peerInterested = (bool) $interested;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPeerInterested()
     {
@@ -274,15 +272,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param double $progress
+     * @param float $progress
      */
     public function setProgress($progress)
     {
-        $this->progress = (double) $progress;
+        $this->progress = (float) $progress;
     }
 
     /**
-     * @return double
+     * @return float
      */
     public function getProgress()
     {
@@ -290,15 +288,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param integer $rate
+     * @param int $rate
      */
     public function setUploadRate($rate)
     {
-        $this->uploadRate = (integer) $rate;
+        $this->uploadRate = (int) $rate;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getUploadRate()
     {
@@ -306,15 +304,15 @@ class Peer extends AbstractModel
     }
 
     /**
-     * @param integer $rate
+     * @param int $rate
      */
     public function setDownloadRate($rate)
     {
-        $this->downloadRate = (integer) $rate;
+        $this->downloadRate = (int) $rate;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getDownloadRate()
     {
@@ -322,26 +320,26 @@ class Peer extends AbstractModel
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'address' => 'address',
-            'port' => 'port',
-            'clientName' => 'clientName',
-            'clientIsChoked' => 'clientChoked',
+        return [
+            'address'            => 'address',
+            'port'               => 'port',
+            'clientName'         => 'clientName',
+            'clientIsChoked'     => 'clientChoked',
             'clientIsInterested' => 'clientInterested',
-            'isDownloadingFrom' => 'downloading',
-            'isEncrypted' => 'encrypted',
-            'isIncoming' => 'incoming',
-            'isUploadingTo' => 'uploading',
-            'isUTP' => 'utp',
-            'peerIsChoked' => 'peerChoked',
-            'peerIsInterested' => 'peerInterested',
-            'progress' => 'progress',
-            'rateToClient' => 'uploadRate',
-            'rateFromClient' => 'downloadRate'
-        );
+            'isDownloadingFrom'  => 'downloading',
+            'isEncrypted'        => 'encrypted',
+            'isIncoming'         => 'incoming',
+            'isUploadingTo'      => 'uploading',
+            'isUTP'              => 'utp',
+            'peerIsChoked'       => 'peerChoked',
+            'peerIsInterested'   => 'peerInterested',
+            'progress'           => 'progress',
+            'rateToClient'       => 'uploadRate',
+            'rateFromClient'     => 'downloadRate',
+        ];
     }
 }

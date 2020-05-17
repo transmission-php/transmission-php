@@ -1,13 +1,12 @@
 <?php
+
 namespace Transmission\Model;
 
 use Transmission\Client;
 use Transmission\Util\ResponseValidator;
 
 /**
- * Base class for Transmission models
- *
- * @author Ramon Kleiss <ramon@cubilon.nl>
+ * Base class for Transmission models.
  */
 abstract class AbstractModel implements ModelInterface
 {
@@ -17,44 +16,29 @@ abstract class AbstractModel implements ModelInterface
     protected $client;
 
     /**
-     * Constructor
-     *
-     * @param Client $client
+     * Constructor.
      */
     public function __construct(Client $client = null)
     {
         $this->client = $client;
     }
 
-    /**
-     * @param Client $client
-     */
     public function setClient(Client $client)
     {
         $this->client = $client;
     }
 
-    /**
-     * @return Client
-     */
-    public function getClient()
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array();
+        return [];
     }
 
-    /**
-     * @param string $method
-     * @param array  $arguments
-     */
-    protected function call($method, $arguments)
+    protected function call(string $method, array $arguments)
     {
         if ($this->client) {
             ResponseValidator::validate(

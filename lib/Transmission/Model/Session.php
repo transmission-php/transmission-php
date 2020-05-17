@@ -1,21 +1,18 @@
 <?php
+
 namespace Transmission\Model;
 
 use Transmission\Util\ResponseValidator;
 
-/**
- * @author Joysen Chellem
- * @author Ramon Kleiss <ramon@cubilon.nl>
- */
 class Session extends AbstractModel
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $altSpeedDown;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $altSpeedEnabled;
 
@@ -25,12 +22,12 @@ class Session extends AbstractModel
     protected $downloadDir;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $downloadQueueEnabled;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $downloadQueueSize;
 
@@ -40,7 +37,7 @@ class Session extends AbstractModel
     protected $incompleteDir;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $incompleteDirEnabled;
 
@@ -50,351 +47,249 @@ class Session extends AbstractModel
     protected $torrentDoneScript;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $torrentDoneScriptEnabled;
 
     /**
-     * @var double
+     * @var float
      */
     protected $seedRatioLimit;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $seedRatioLimited;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $seedQueueSize;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $seedQueueEnabled;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $downloadSpeedLimit;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $downloadSpeedLimitEnabled;
-    
+
     /**
-     * @var integer
+     * @var int
      */
     protected $uploadSpeedLimit;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $uploadSpeedLimitEnabled;
 
-    /**
-     * @param integer $speed
-     */
-    public function setAltSpeedDown($speed)
+    public function setAltSpeedDown(int $speed)
     {
-        $this->altSpeedDown = (integer) $speed;
+        $this->altSpeedDown = $speed;
     }
 
-    /**
-     * @return integer
-     */
-    public function getAltSpeedDown()
+    public function getAltSpeedDown(): int
     {
         return $this->altSpeedDown;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setAltSpeedEnabled($enabled)
+    public function setAltSpeedEnabled(bool $enabled)
     {
-        $this->altSpeedEnabled = (boolean) $enabled;
+        $this->altSpeedEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isAltSpeedEnabled()
+    public function isAltSpeedEnabled(): bool
     {
         return $this->altSpeedEnabled;
     }
 
-    /**
-     * @param string $downloadDir
-     */
-    public function setDownloadDir($downloadDir)
+    public function setDownloadDir(string $downloadDir)
     {
-        $this->downloadDir = (string) $downloadDir;
+        $this->downloadDir = $downloadDir;
     }
 
-    /**
-     * @return string
-     */
-    public function getDownloadDir()
+    public function getDownloadDir(): string
     {
         return $this->downloadDir;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setDownloadQueueEnabled($enabled)
+    public function setDownloadQueueEnabled(bool $enabled)
     {
-        $this->downloadQueueEnabled = (boolean) $enabled;
+        $this->downloadQueueEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isDownloadQueueEnabled()
+    public function isDownloadQueueEnabled(): bool
     {
         return $this->downloadQueueEnabled;
     }
 
-    /**
-     * @param integer $size
-     */
-    public function setDownloadQueueSize($size)
+    public function setDownloadQueueSize(int $size)
     {
-        $this->downloadQueueSize = (integer) $size;
+        $this->downloadQueueSize = $size;
     }
 
-    /**
-     * @return integer
-     */
-    public function getDownloadQueueSize()
+    public function getDownloadQueueSize(): int
     {
         return $this->downloadQueueSize;
     }
 
-    /**
-     * @param string $directory
-     */
-    public function setIncompleteDir($directory)
+    public function setIncompleteDir(string $directory)
     {
-        $this->incompleteDir = (string) $directory;
+        $this->incompleteDir = $directory;
     }
 
-    /**
-     * @return string
-     */
-    public function getIncompleteDir()
+    public function getIncompleteDir(): string
     {
         return $this->incompleteDir;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setIncompleteDirEnabled($enabled)
+    public function setIncompleteDirEnabled(bool $enabled)
     {
-        $this->incompleteDirEnabled = (boolean) $enabled;
+        $this->incompleteDirEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isIncompleteDirEnabled()
+    public function isIncompleteDirEnabled(): bool
     {
         return $this->incompleteDirEnabled;
     }
 
-    /**
-     * @param string $filename
-     */
-    public function setTorrentDoneScript($filename)
+    public function setTorrentDoneScript(string $filename)
     {
-        $this->torrentDoneScript = (string) $filename;
+        $this->torrentDoneScript = $filename;
     }
 
-    /**
-     * @return string
-     */
-    public function getTorrentDoneScript()
+    public function getTorrentDoneScript(): string
     {
         return $this->torrentDoneScript;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setTorrentDoneScriptEnabled($enabled)
+    public function setTorrentDoneScriptEnabled(bool $enabled)
     {
-        $this->torrentDoneScriptEnabled = (boolean) $enabled;
+        $this->torrentDoneScriptEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isTorrentDoneScriptEnabled()
+    public function isTorrentDoneScriptEnabled(): bool
     {
         return $this->torrentDoneScriptEnabled;
     }
 
-    /**
-     * @param double $limit
-     */
-    public function setSeedRatioLimit($limit)
+    public function setSeedRatioLimit(float $limit)
     {
-        $this->seedRatioLimit = (double) $limit;
+        $this->seedRatioLimit = $limit;
     }
 
-    /**
-     * @return double
-     */
-    public function getSeedRatioLimit()
+    public function getSeedRatioLimit(): float
     {
         return $this->seedRatioLimit;
     }
 
-    /**
-     * @param boolean $limited
-     */
-    public function setSeedRatioLimited($limited)
+    public function setSeedRatioLimited(bool $limited)
     {
-        $this->seedRatioLimited = (boolean) $limited;
+        $this->seedRatioLimited = $limited;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSeedRatioLimited()
+    public function isSeedRatioLimited(): bool
     {
         return $this->seedRatioLimited;
     }
 
-    /**
-     * @param integer $size
-     */
-    public function setSeedQueueSize($size)
+    public function setSeedQueueSize(int $size)
     {
-        $this->seedQueueSize = (integer) $size;
+        $this->seedQueueSize = $size;
     }
 
-    /**
-     * @return integer
-     */
-    public function getSeedQueueSize()
+    public function getSeedQueueSize(): int
     {
         return $this->seedQueueSize;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setSeedQueueEnabled($enabled)
+    public function setSeedQueueEnabled(bool $enabled)
     {
-        $this->seedQueueEnabled = (boolean) $enabled;
+        $this->seedQueueEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSeedQueueEnabled()
+    public function isSeedQueueEnabled(): bool
     {
         return $this->seedQueueEnabled;
     }
 
-    /**
-     * @param integer $limit
-     */
-    public function setDownloadSpeedLimit($limit)
+    public function setDownloadSpeedLimit(int $limit)
     {
-        $this->downloadSpeedLimit = (integer) $limit;
+        $this->downloadSpeedLimit = $limit;
     }
 
-    /**
-     * @return integer
-     */
-    public function getDownloadSpeedLimit()
+    public function getDownloadSpeedLimit(): int
     {
         return $this->downloadSpeedLimit;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setDownloadSpeedLimitEnabled($enabled)
+    public function setDownloadSpeedLimitEnabled(bool $enabled)
     {
-        $this->downloadSpeedLimitEnabled = (boolean) $enabled;
+        $this->downloadSpeedLimitEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isDownloadSpeedLimitEnabled()
+    public function isDownloadSpeedLimitEnabled(): bool
     {
         return $this->downloadSpeedLimitEnabled;
     }
 
-    /**
-     * @param integer $limit
-     */
-    public function setUploadSpeedLimit($limit)
+    public function setUploadSpeedLimit(int $limit)
     {
-        $this->uploadSpeedLimit = (integer) $limit;
+        $this->uploadSpeedLimit = $limit;
     }
 
-    /**
-     * @return integer
-     */
-    public function getUploadSpeedLimit()
+    public function getUploadSpeedLimit(): int
     {
         return $this->uploadSpeedLimit;
     }
 
-    /**
-     * @param boolean $enabled
-     */
-    public function setUploadSpeedLimitEnabled($enabled)
+    public function setUploadSpeedLimitEnabled(bool $enabled)
     {
-        $this->uploadSpeedLimitEnabled = (boolean) $enabled;
+        $this->uploadSpeedLimitEnabled = $enabled;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isUploadSpeedLimitEnabled()
+    public function isUploadSpeedLimitEnabled(): bool
     {
         return $this->uploadSpeedLimitEnabled;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'alt-speed-down' => 'altSpeedDown',
-            'alt-speed-enabled' => 'altSpeedEnabled',
-            'download-dir' => 'downloadDir',
-            'download-queue-enabled' => 'downloadQueueEnabled',
-            'download-queue-size' => 'downloadQueueSize',
-            'incomplete-dir' => 'incompleteDir',
-            'incomplete-dir-enabled' => 'incompleteDirEnabled',
+        return [
+            'alt-speed-down'               => 'altSpeedDown',
+            'alt-speed-enabled'            => 'altSpeedEnabled',
+            'download-dir'                 => 'downloadDir',
+            'download-queue-enabled'       => 'downloadQueueEnabled',
+            'download-queue-size'          => 'downloadQueueSize',
+            'incomplete-dir'               => 'incompleteDir',
+            'incomplete-dir-enabled'       => 'incompleteDirEnabled',
             'script-torrent-done-filename' => 'torrentDoneScript',
-            'script-torrent-done-enabled' => 'torrentDoneScriptEnabled',
-            'seedRatioLimit' => 'seedRatioLimit',
-            'seedRatioLimited' => 'seedRatioLimited',
-            'seed-queue-size' => 'seedQueueSize',
-            'seed-queue-enabled' => 'seedQueueEnabled',
-            'speed-limit-down' => 'downloadSpeedLimit',
-            'speed-limit-down-enabled' => 'downloadSpeedLimitEnabled',
-            'speed-limit-up' => 'uploadSpeedLimit',
-            'speed-limit-up-enabled' => 'uploadSpeedLimitEnabled',
-        );
+            'script-torrent-done-enabled'  => 'torrentDoneScriptEnabled',
+            'seedRatioLimit'               => 'seedRatioLimit',
+            'seedRatioLimited'             => 'seedRatioLimited',
+            'seed-queue-size'              => 'seedQueueSize',
+            'seed-queue-enabled'           => 'seedQueueEnabled',
+            'speed-limit-down'             => 'downloadSpeedLimit',
+            'speed-limit-down-enabled'     => 'downloadSpeedLimitEnabled',
+            'speed-limit-up'               => 'uploadSpeedLimit',
+            'speed-limit-up-enabled'       => 'uploadSpeedLimitEnabled',
+        ];
     }
 
-    public function save()
+    public function save(): void
     {
-        $arguments = array();
+        $arguments = [];
 
         foreach ($this->getMapping() as $key => $value) {
             $arguments[$key] = $this->{$value};

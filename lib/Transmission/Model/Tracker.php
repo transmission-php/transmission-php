@@ -1,18 +1,16 @@
 <?php
+
 namespace Transmission\Model;
 
-/**
- * @author Ramon Kleiss <ramon@cubilon.nl>
- */
 class Tracker extends AbstractModel
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $tier;
 
@@ -27,15 +25,15 @@ class Tracker extends AbstractModel
     protected $announce;
 
     /**
-     * @param integer $id
+     * @param int $id
      */
     public function setId($id)
     {
-        $this->id = (integer) $id;
+        $this->id = (int) $id;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -43,15 +41,15 @@ class Tracker extends AbstractModel
     }
 
     /**
-     * @param integer $tier
+     * @param int $tier
      */
     public function setTier($tier)
     {
-        $this->tier = (integer) $tier;
+        $this->tier = (int) $tier;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getTier()
     {
@@ -91,15 +89,15 @@ class Tracker extends AbstractModel
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'id' => 'id',
-            'tier' => 'tier',
-            'scrape' => 'scrape',
-            'announce' => 'announce'
-        );
+        return [
+            'id'       => 'id',
+            'tier'     => 'tier',
+            'scrape'   => 'scrape',
+            'announce' => 'announce',
+        ];
     }
 }

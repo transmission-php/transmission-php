@@ -1,16 +1,14 @@
 <?php
+
 namespace Transmission;
 
-use Transmission\Model\Torrent;
-use Transmission\Model\Session;
 use Transmission\Model\FreeSpace;
+use Transmission\Model\Session;
 use Transmission\Model\Stats\Session as SessionStats;
+use Transmission\Model\Torrent;
 use Transmission\Util\PropertyMapper;
 use Transmission\Util\ResponseValidator;
 
-/**
- * @author Ramon Kleiss <ramon@cubilon.nl>
- */
 class Transmission
 {
     /**
@@ -28,14 +26,7 @@ class Transmission
      */
     protected $mapper;
 
-    /**
-     * Constructor
-     *
-     * @param string  $host
-     * @param integer $port
-     * @param string  $path
-     */
-    public function __construct($host = null, $port = null, $path = null)
+    public function __construct(string $host = null, int $port = null, string $path = null)
     {
         $this->setClient(new Client($host, $port, $path));
         $this->setMapper(new PropertyMapper());
@@ -43,17 +34,17 @@ class Transmission
     }
 
     /**
-     * Get all the torrents in the download queue
+     * Get all the torrents in the download queue.
      *
      * @return Torrent[]
      */
-    public function all()
+    public function all(): array
     {
         $client   = $this->getClient();
         $mapper   = $this->getMapper();
         $response = $this->getClient()->call(
             'torrent-get',
-            array('fields' => array_keys(Torrent::getMapping()))
+            ['fields' => array_keys(Torrent::getMapping())]
         );
 
         $torrents = array_map(function ($data) use ($mapper, $client) {
@@ -67,45 +58,39 @@ class Transmission
     }
 
     /**
-     * Get a specific torrent from the download queue
+     * Get a specific torrent from the download queue.
      *
-     * @param  integer                    $id
-     * @return Torrent
      * @throws \RuntimeException
      */
-    public function get($id)
+    public function get(int $id): Torrent
     {
         $client   = $this->getClient();
         $mapper   = $this->getMapper();
-        $response = $this->getClient()->call('torrent-get', array(
+        $response = $this->getClient()->call('torrent-get', [
             'fields' => array_keys(Torrent::getMapping()),
-            'ids'    => array($id)
-        ));
+            'ids'    => [$id],
+        ]);
 
         $torrent = array_reduce(
             $this->getValidator()->validate('torrent-get', $response),
             function ($torrent, $data) use ($mapper, $client) {
                 return $torrent ? $torrent : $mapper->map(new Torrent($client), $data);
-            });
+            }
+        );
 
         if (!$torrent instanceof Torrent) {
-            throw new \RuntimeException(sprintf("Torrent with ID %s not found", $id));
+            throw new \RuntimeException(sprintf('Torrent with ID %s not found', $id));
         }
 
         return $torrent;
     }
 
     /**
-     * Get the Transmission session
-     *
-     * @return Session
+     * Get the Transmission session.
      */
-    public function getSession()
+    public function getSession(): Session
     {
-        $response = $this->getClient()->call(
-            'session-get',
-            array()
-        );
+        $response = $this->getClient()->call('session-get', []);
 
         return $this->getMapper()->map(
             new Session($this->getClient()),
@@ -113,15 +98,9 @@ class Transmission
         );
     }
 
-    /**
-     * @return SessionStats
-     */
-    public function getSessionStats()
+    public function getSessionStats(): SessionStats
     {
-        $response = $this->getClient()->call(
-            'session-stats',
-            array()
-        );
+        $response = $this->getClient()->call('session-stats', []);
 
         return $this->getMapper()->map(
             new SessionStats(),
@@ -130,18 +109,17 @@ class Transmission
     }
 
     /**
-     * Get Free space
-     * @param  string $path
-     * @return FreeSpace
+     * Get Free space.
      */
-    public function getFreeSpace($path=null)
+    public function getFreeSpace(string $path = null): FreeSpace
     {
         if (!$path) {
             $path = $this->getSession()->getDownloadDir();
+            var_dump($path);
         }
         $response = $this->getClient()->call(
             'free-space',
-            array('path'=>$path)
+            ['path' => $path]
         );
 
         return $this->getMapper()->map(
@@ -151,18 +129,13 @@ class Transmission
     }
 
     /**
-     * Add a torrent to the download queue
-     *
-     * @param  string   $torrent
-     * @param  boolean  $metainfo
-     * @param  string   $savepath
-     * @return Torrent
+     * Add a torrent to the download queue.
      */
-    public function add($torrent, $metainfo = false, $savepath = null)
+    public function add(string $torrent, bool $metainfo = false, string $savepath = null): Torrent
     {
-        $parameters = array($metainfo ? 'metainfo' : 'filename' => $torrent);
+        $parameters = [$metainfo ? 'metainfo' : 'filename' => $torrent];
 
-        if ($savepath !== null) {
+        if (null !== $savepath) {
             $parameters['download-dir'] = (string) $savepath;
         }
 
@@ -178,66 +151,55 @@ class Transmission
     }
 
     /**
-     * Start the download of a torrent
-     *
-     * @param Torrent $torrent
-     * @param bool    $now
+     * Start the download of a torrent.
      */
-    public function start(Torrent $torrent, $now = false)
+    public function start(Torrent $torrent, bool $now = false): void
     {
         $this->getClient()->call(
             $now ? 'torrent-start-now' : 'torrent-start',
-            array('ids' => array($torrent->getId()))
+            ['ids' => [$torrent->getId()]]
         );
     }
 
     /**
-     * Stop the download of a torrent
-     *
-     * @param Torrent $torrent
+     * Stop the download of a torrent.
      */
-    public function stop(Torrent $torrent)
+    public function stop(Torrent $torrent): void
     {
         $this->getClient()->call(
             'torrent-stop',
-            array('ids' => array($torrent->getId()))
+            ['ids' => [$torrent->getId()]]
         );
     }
 
     /**
-     * Verify the download of a torrent
-     *
-     * @param Torrent $torrent
+     * Verify the download of a torrent.
      */
-    public function verify(Torrent $torrent)
+    public function verify(Torrent $torrent): void
     {
         $this->getClient()->call(
             'torrent-verify',
-            array('ids' => array($torrent->getId()))
+            ['ids' => [$torrent->getId()]]
         );
     }
 
     /**
-     * Request a reannounce of a torrent
-     *
-     * @param Torrent $torrent
+     * Request a reannounce of a torrent.
      */
-    public function reannounce(Torrent $torrent)
+    public function reannounce(Torrent $torrent): void
     {
         $this->getClient()->call(
             'torrent-reannounce',
-            array('ids' => array($torrent->getId()))
+            ['ids' => [$torrent->getId()]]
         );
     }
 
     /**
-     * Remove a torrent from the download queue
-     *
-     * @param Torrent $torrent
+     * Remove a torrent from the download queue.
      */
-    public function remove(Torrent $torrent, $localData = false)
+    public function remove(Torrent $torrent, bool $localData = false): void
     {
-        $arguments = array('ids' => array($torrent->getId()));
+        $arguments = ['ids' => [$torrent->getId()]];
 
         if ($localData) {
             $arguments['delete-local-data'] = true;
@@ -247,101 +209,93 @@ class Transmission
     }
 
     /**
-     * Set the client used to connect to Transmission
+     * Checks whether or not Transmission is listening on configured port/host.
      *
-     * @param Client $client
+     * @throws ClientException
      */
-    public function setClient(Client $client)
+    public function isAvailable(): bool
+    {
+        $this->getClient()->call('', []);
+
+        return true;
+    }
+
+    /**
+     * Set the client used to connect to Transmission.
+     */
+    public function setClient(Client $client): void
     {
         $this->client = $client;
     }
 
     /**
-     * Get the client used to connect to Transmission
-     *
-     * @return Client
+     * Get the client used to connect to Transmission.
      */
-    public function getClient()
+    public function getClient(): Client
     {
         return $this->client;
     }
 
     /**
-     * Set the hostname of the Transmission server
-     *
-     * @param string $host
+     * Set the hostname of the Transmission server.
      */
-    public function setHost($host)
+    public function setHost(string $host): void
     {
         $this->getClient()->setHost($host);
     }
 
     /**
-     * Get the hostname of the Transmission server
-     *
-     * @return string
+     * Get the hostname of the Transmission server.
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->getClient()->getHost();
     }
 
     /**
-     * Set the port the Transmission server is listening on
-     *
-     * @param integer $port
+     * Set the port the Transmission server is listening on.
      */
-    public function setPort($port)
+    public function setPort(int $port): void
     {
         $this->getClient()->setPort($port);
     }
 
     /**
-     * Get the port the Transmission server is listening on
-     *
-     * @return integer
+     * Get the port the Transmission server is listening on.
      */
-    public function getPort()
+    public function getPort(): int
     {
         return $this->getClient()->getPort();
     }
 
     /**
-     * Set the mapper used to map responses from Transmission to models
-     *
-     * @param PropertyMapper $mapper
+     * Set the mapper used to map responses from Transmission to models.
      */
-    public function setMapper(PropertyMapper $mapper)
+    public function setMapper(PropertyMapper $mapper): void
     {
         $this->mapper = $mapper;
     }
 
     /**
-     * Get the mapper used to map responses from Transmission to models
-     *
-     * @return PropertyMapper
+     * Get the mapper used to map responses from Transmission to models.
      */
-    public function getMapper()
+    public function getMapper(): PropertyMapper
     {
         return $this->mapper;
     }
 
     /**
-     * Set the validator used to validate Transmission responses
-     *
-     * @param ResponseValidator $validator
+     * Set the validator used to validate Transmission responses.
      */
-    public function setValidator(ResponseValidator $validator)
+    public function setValidator(ResponseValidator $validator): void
     {
         $this->validator = $validator;
     }
 
     /**
-     * Get the validator used to validate Transmission responses
-     *
-     * @return ResponseValidator
+     * Get the validator used to validate Transmission responses.
      */
-    public function getValidator()
+    public function getValidator(): ResponseValidator
     {
         return $this->validator;
     }

@@ -1,65 +1,63 @@
 <?php
+
 namespace Transmission\Model;
 
-/**
- * @author Ramon Kleiss <ramonkleiss@gmail.com>
- */
 class Status extends AbstractModel
 {
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_STOPPED = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_CHECK_WAIT = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_CHECK = 2;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_DOWNLOAD_WAIT = 3;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_DOWNLOAD = 4;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_SEED_WAIT = 5;
 
     /**
-     * @var integer
+     * @var int
      */
     const STATUS_SEED = 6;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $status;
 
     /**
-     * @param integer|Status $status
+     * @param int|Status $status
      */
     public function __construct($status)
     {
         if ($status instanceof self) {
             $this->status = $status->getValue();
         } else {
-            $this->status = (integer) $status;
+            $this->status = (int) $status;
         }
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getValue()
     {
@@ -67,37 +65,37 @@ class Status extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isStopped()
     {
-        return $this->status == self::STATUS_STOPPED;
+        return self::STATUS_STOPPED == $this->status;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isChecking()
     {
-        return ($this->status == self::STATUS_CHECK ||
-                $this->status == self::STATUS_CHECK_WAIT);
+        return self::STATUS_CHECK == $this->status ||
+            self::STATUS_CHECK_WAIT == $this->status;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDownloading()
     {
-        return ($this->status == self::STATUS_DOWNLOAD ||
-                $this->status == self::STATUS_DOWNLOAD_WAIT);
+        return self::STATUS_DOWNLOAD == $this->status ||
+            self::STATUS_DOWNLOAD_WAIT == $this->status;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isSeeding()
     {
-        return ($this->status == self::STATUS_SEED ||
-                $this->status == self::STATUS_SEED_WAIT);
+        return self::STATUS_SEED == $this->status ||
+            self::STATUS_SEED_WAIT == $this->status;
     }
 }

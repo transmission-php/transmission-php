@@ -1,22 +1,16 @@
 <?php
+
 namespace Transmission\Util;
 
-use Transmission\Model\ModelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Transmission\Model\ModelInterface;
 
 /**
- * The PropertyMapper is used to map responses from Transmission to models
- *
- * @author Ramon Kleiss <ramon@cubilon.nl>
+ * The PropertyMapper is used to map responses from Transmission to models.
  */
 class PropertyMapper
 {
-    /**
-     * @param  ModelInterface $model
-     * @param  \stdClass                          $dto
-     * @return ModelInterface
-     */
-    public static function map(ModelInterface $model, $dto)
+    public static function map(ModelInterface $model, \stdClass $dto): ModelInterface
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
@@ -32,7 +26,6 @@ class PropertyMapper
                     $accessor->getValue($dto, $source)
                 );
             } catch (\Exception $e) {
-                continue;
             }
         }
 
