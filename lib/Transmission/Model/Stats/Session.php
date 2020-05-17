@@ -1,35 +1,33 @@
 <?php
+
 namespace Transmission\Model\Stats;
 
 use Transmission\Model\AbstractModel;
 
-/**
- * @author Joysen Chellem
- */
 class Session extends AbstractModel
 {
     /**
-     * @var integer
+     * @var int
      */
     private $activeTorrentCount;
 
     /**
-     * @var integer
+     * @var int
      */
     private $downloadSpeed;
 
     /**
-     * @var integer
+     * @var int
      */
     private $pausedTorrentCount;
 
     /**
-     * @var integer
+     * @var int
      */
     private $torrentCount;
 
     /**
-     * @var integer
+     * @var int
      */
     private $uploadSpeed;
 
@@ -45,10 +43,8 @@ class Session extends AbstractModel
 
     /**
      * Gets the value of activeTorrentCount.
-     *
-     * @return integer
      */
-    public function getActiveTorrentCount()
+    public function getActiveTorrentCount(): int
     {
         return $this->activeTorrentCount;
     }
@@ -56,19 +52,17 @@ class Session extends AbstractModel
     /**
      * Sets the value of activeTorrentCount.
      *
-     * @param integer $activeTorrentCount the active torrent count
+     * @param int $activeTorrentCount the active torrent count
      */
-    public function setActiveTorrentCount($activeTorrentCount)
+    public function setActiveTorrentCount(int $activeTorrentCount)
     {
         $this->activeTorrentCount = $activeTorrentCount;
     }
 
     /**
      * Gets the value of downloadSpeed.
-     *
-     * @return integer
      */
-    public function getDownloadSpeed()
+    public function getDownloadSpeed(): int
     {
         return $this->downloadSpeed;
     }
@@ -76,39 +70,33 @@ class Session extends AbstractModel
     /**
      * Sets the value of downloadSpeed.
      *
-     * @param integer $downloadSpeed the download speed
+     * @param int $downloadSpeed the download speed
      */
-    public function setDownloadSpeed($downloadSpeed)
+    public function setDownloadSpeed(int $downloadSpeed)
     {
         $this->downloadSpeed = $downloadSpeed;
     }
 
     /**
      * Gets the value of pausedTorrentCount.
-     *
-     * @return integer
      */
-    public function getPausedTorrentCount()
+    public function getPausedTorrentCount(): int
     {
         return $this->pausedTorrentCount;
     }
 
     /**
      * Sets the value of pausedTorrentCount.
-     *
-     * @param integer $pausedTorrentCount the paused torrent count
      */
-    public function setPausedTorrentCount($pausedTorrentCount)
+    public function setPausedTorrentCount(int $pausedTorrentCount)
     {
         $this->pausedTorrentCount = $pausedTorrentCount;
     }
 
     /**
      * Gets the value of torrentCount.
-     *
-     * @return integer
      */
-    public function getTorrentCount()
+    public function getTorrentCount(): int
     {
         return $this->torrentCount;
     }
@@ -116,7 +104,7 @@ class Session extends AbstractModel
     /**
      * Sets the value of torrentCount.
      *
-     * @param integer $torrentCount the torrent count
+     * @param int $torrentCount the torrent count
      */
     public function setTorrentCount($torrentCount)
     {
@@ -125,30 +113,24 @@ class Session extends AbstractModel
 
     /**
      * Gets the value of uploadSpeed.
-     *
-     * @return integer
      */
-    public function getUploadSpeed()
+    public function getUploadSpeed(): int
     {
         return $this->uploadSpeed;
     }
 
     /**
      * Sets the value of uploadSpeed.
-     *
-     * @param integer $uploadSpeed the upload speed
      */
-    public function setUploadSpeed($uploadSpeed)
+    public function setUploadSpeed(int $uploadSpeed)
     {
         $this->uploadSpeed = $uploadSpeed;
     }
 
     /**
      * Gets the value of cumulative.
-     *
-     * @return Stats
      */
-    public function getCumulative()
+    public function getCumulative(): Stats
     {
         return $this->cumulative;
     }
@@ -165,10 +147,8 @@ class Session extends AbstractModel
 
     /**
      * Gets the value of current.
-     *
-     * @return Stats
      */
-    public function getCurrent()
+    public function getCurrent(): Stats
     {
         return $this->current;
     }
@@ -184,18 +164,18 @@ class Session extends AbstractModel
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
+        return [
             'activeTorrentCount' => 'activeTorrentCount',
-            'downloadSpeed' => 'downloadSpeed',
+            'downloadSpeed'      => 'downloadSpeed',
             'pausedTorrentCount' => 'pausedTorrentCount',
-            'torrentCount' => 'torrentCount',
-            'uploadSpeed' => 'uploadSpeed',
-            'cumulative-stats'=>'cumulative',
-            'current-stats' => 'current',
-        );
+            'torrentCount'       => 'torrentCount',
+            'uploadSpeed'        => 'uploadSpeed',
+            'cumulative-stats'   => 'cumulative',
+            'current-stats'      => 'current',
+        ];
     }
 }

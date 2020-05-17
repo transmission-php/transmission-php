@@ -1,9 +1,7 @@
 <?php
+
 namespace Transmission\Model;
 
-/**
- * @author Ramon Kleiss <ramon@cubilon.nl>
- */
 class File extends AbstractModel
 {
     /**
@@ -12,12 +10,12 @@ class File extends AbstractModel
     protected $name;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $size;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $completed;
 
@@ -38,31 +36,28 @@ class File extends AbstractModel
     }
 
     /**
-     * @param integer $size
+     * @param int $size
      */
     public function setSize($size)
     {
-        $this->size = (integer) $size;
+        $this->size = (int) $size;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getSize()
     {
         return $this->size;
     }
 
-    /**
-     * @param integer $size
-     */
     public function setCompleted($completed)
     {
-        $this->completed = (integer) $completed;
+        $this->completed = (int) $completed;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getCompleted()
     {
@@ -70,7 +65,7 @@ class File extends AbstractModel
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDone()
     {
@@ -78,15 +73,15 @@ class File extends AbstractModel
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'name' => 'name',
-            'length' => 'size',
-            'bytesCompleted' => 'completed'
-        );
+        return [
+            'name'           => 'name',
+            'length'         => 'size',
+            'bytesCompleted' => 'completed',
+        ];
     }
 
     public function __toString()

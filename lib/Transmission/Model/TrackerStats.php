@@ -1,9 +1,7 @@
 <?php
+
 namespace Transmission\Model;
 
-/**
- * @author Bilal Ghouri <bilalghouri@live.com>
- */
 class TrackerStats extends AbstractModel
 {
     /**
@@ -12,12 +10,12 @@ class TrackerStats extends AbstractModel
     protected $host;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $leecherCount;
-	
-	/**
-     * @var integer
+
+    /**
+     * @var int
      */
     protected $seederCount;
 
@@ -46,7 +44,7 @@ class TrackerStats extends AbstractModel
     {
         return $this->host;
     }
-	
+
     /**
      * @param string $lastAnnounceResult
      */
@@ -62,8 +60,8 @@ class TrackerStats extends AbstractModel
     {
         return $this->lastAnnounceResult;
     }
-	
-	/**
+
+    /**
      * @param string $lastScrapeResult
      */
     public function setLastScrapeResult($lastScrapeResult)
@@ -80,15 +78,15 @@ class TrackerStats extends AbstractModel
     }
 
     /**
-     * @param integer $seederCount
+     * @param int $seederCount
      */
     public function setSeederCount($seederCount)
     {
-        $this->seederCount = (integer) $seederCount;
+        $this->seederCount = (int) $seederCount;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getSeederCount()
     {
@@ -96,15 +94,15 @@ class TrackerStats extends AbstractModel
     }
 
     /**
-     * @param integer $leecherCount
+     * @param int $leecherCount
      */
     public function setLeecherCount($leecherCount)
     {
-        $this->leecherCount = (integer) $leecherCount;
+        $this->leecherCount = (int) $leecherCount;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLeecherCount()
     {
@@ -112,16 +110,16 @@ class TrackerStats extends AbstractModel
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
-            'host' => 'host',
-            'leecherCount' => 'leecherCount',
-            'seederCount' => 'seederCount',
-            'lastScrapeResult' => 'lastScrapeResult',
-            'lastAnnounceResult' => 'lastAnnounceResult'
-        );
+        return [
+            'host'               => 'host',
+            'leecherCount'       => 'leecherCount',
+            'seederCount'        => 'seederCount',
+            'lastScrapeResult'   => 'lastScrapeResult',
+            'lastAnnounceResult' => 'lastAnnounceResult',
+        ];
     }
 }

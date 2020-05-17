@@ -4,40 +4,37 @@ namespace Transmission\Model\Stats;
 
 use Transmission\Model\ModelInterface;
 
-/**
- * @author Joysen Chellem
- */
 class Stats implements ModelInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $downloadedBytes;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $filesAdded;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $secondsActive;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $sessionCount;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $uploadedBytes;
 
     /**
      * Gets the value of downloadedBytes.
      *
-     * @return integer
+     * @return int
      */
     public function getDownloadedBytes()
     {
@@ -47,7 +44,7 @@ class Stats implements ModelInterface
     /**
      * Sets the value of downloadedBytes.
      *
-     * @param integer $downloadedBytes the downloaded bytes
+     * @param int $downloadedBytes the downloaded bytes
      */
     public function setDownloadedBytes($downloadedBytes)
     {
@@ -57,7 +54,7 @@ class Stats implements ModelInterface
     /**
      * Gets the value of filesAdded.
      *
-     * @return integer
+     * @return int
      */
     public function getFilesAdded()
     {
@@ -67,7 +64,7 @@ class Stats implements ModelInterface
     /**
      * Sets the value of filesAdded.
      *
-     * @param integer $filesAdded the files added
+     * @param int $filesAdded the files added
      */
     public function setFilesAdded($filesAdded)
     {
@@ -77,7 +74,7 @@ class Stats implements ModelInterface
     /**
      * Gets the value of secondsActive.
      *
-     * @return integer
+     * @return int
      */
     public function getSecondsActive()
     {
@@ -87,7 +84,7 @@ class Stats implements ModelInterface
     /**
      * Sets the value of secondsActive.
      *
-     * @param integer $secondsActive the seconds active
+     * @param int $secondsActive the seconds active
      */
     public function setSecondsActive($secondsActive)
     {
@@ -97,7 +94,7 @@ class Stats implements ModelInterface
     /**
      * Gets the value of sessionCount.
      *
-     * @return integer
+     * @return int
      */
     public function getSessionCount()
     {
@@ -107,7 +104,7 @@ class Stats implements ModelInterface
     /**
      * Sets the value of sessionCount.
      *
-     * @param integer $sessionCount the session count
+     * @param int $sessionCount the session count
      */
     public function setSessionCount($sessionCount)
     {
@@ -117,7 +114,7 @@ class Stats implements ModelInterface
     /**
      * Gets the value of uploadedBytes.
      *
-     * @return integer
+     * @return int
      */
     public function getUploadedBytes()
     {
@@ -127,7 +124,7 @@ class Stats implements ModelInterface
     /**
      * Sets the value of uploadedBytes.
      *
-     * @param integer $uploadedBytes the uploaded bytes
+     * @param int $uploadedBytes the uploaded bytes
      */
     public function setUploadedBytes($uploadedBytes)
     {
@@ -135,16 +132,16 @@ class Stats implements ModelInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public static function getMapping()
+    public static function getMapping(): array
     {
-        return array(
+        return [
             'downloadedBytes' => 'downloadedBytes',
-            'filesAdded' => 'filesAdded',
-            'secondsActive' => 'secondsActive',
-            'sessionCount' => 'sessionCount',
-            'uploadedBytes' => 'uploadedBytes'
-        );
+            'filesAdded'      => 'filesAdded',
+            'secondsActive'   => 'secondsActive',
+            'sessionCount'    => 'sessionCount',
+            'uploadedBytes'   => 'uploadedBytes',
+        ];
     }
 }
