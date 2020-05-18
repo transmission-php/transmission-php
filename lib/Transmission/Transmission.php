@@ -211,7 +211,7 @@ class Transmission
     /**
      * Checks whether or not Transmission is listening on configured port/host.
      *
-     * @throws ClientException
+     * @throws \Buzz\Exception\NetworkException
      */
     public function isAvailable(): bool
     {

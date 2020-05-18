@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in('src')
+    ->in('lib')
     ->in('tests');
 
 return PhpCsFixer\Config::create()
