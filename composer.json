@@ -22,9 +22,13 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.1|^9.1"
+        "phpunit/phpunit": "^8.1|^9.1",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.25"
     },
     "scripts": {
-        "phpunit": "vendor/bin/phpunit"
+        "phpunit": "vendor/bin/phpunit",
+        "php-cs-fixer": "vendor/bin/php-cs-fixer fix",
+        "phpstan": "vendor/bin/phpstan analyse lib --level 5"
     }
 }

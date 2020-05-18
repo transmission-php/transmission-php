@@ -378,6 +378,7 @@ class Torrent extends AbstractModel
     {
         $this->doneDate = $doneDate;
     }
+
     /**
      * {@inheritdoc}
      */
