@@ -430,4 +430,25 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('example.org', $this->transmission->getHost());
         $this->assertEquals(80, $this->transmission->getPort());
     }
+
+    public function testShouldSetLocation()
+    {
+        $location = '/test/location';
+
+        $this->mockClient->expects($this->once())
+            ->method('call')
+            ->with('torrent-set-location', ['ids' => [1], 'location' => $location, 'move' => false])
+            ->will($this->returnCallback(function () {
+                return (object) [
+                    'result' => 'success',
+                ];
+            }));
+
+        $torrent = new Torrent();
+        $torrent->setId(1);
+
+        $transmission = new Transmission();
+        $transmission->setClient($this->mockClient);
+        $transmission->setLocation($torrent, $location);
+    }
 }

@@ -299,4 +299,23 @@ class Transmission
     {
         return $this->validator;
     }
+
+    /**
+     * Move the Torrent.
+     *
+     * @param Torrent $torrent  torrent object
+     * @param string  $location the new torrent location
+     * @param bool    $move     if true, move from previous location. otherwise, search "location" for files
+     */
+    public function setLocation(Torrent $torrent, string $location, bool $move = false): void
+    {
+        $this->getClient()->call(
+            'torrent-set-location',
+            [
+                'ids'      => [$torrent->getId()],
+                'location' => $location,
+                'move'     => $move,
+            ]
+        );
+    }
 }
