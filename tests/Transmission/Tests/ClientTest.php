@@ -146,13 +146,12 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldHandle409ResponseWhenMakingAnApiCall()
     {
-        $this->curlMock->expects($this->at(0))
+        $this->curlMock->expects($this->exactly(2))
             ->method('sendRequest')
-            ->willReturn(new \Nyholm\Psr7\Response(409, ['X-Transmission-Session-Id' => 'foo']));
-
-        $this->curlMock->expects($this->at(1))
-            ->method('sendRequest')
-            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+            ->willReturnOnConsecutiveCalls(
+                new \Nyholm\Psr7\Response(409, ['X-Transmission-Session-Id' => 'foo']),
+                new \Nyholm\Psr7\Response(200, [], '{}'),
+            );
 
         $this->client->call('foo', []);
     }
