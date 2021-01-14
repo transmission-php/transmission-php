@@ -18,6 +18,11 @@ class Client
     /**
      * @var string
      */
+    const DEFAULT_SCHEME = 'http';
+
+    /**
+     * @var string
+     */
     const DEFAULT_HOST = 'localhost';
 
     /**
@@ -34,6 +39,11 @@ class Client
      * @var string
      */
     const TOKEN_HEADER = 'X-Transmission-Session-Id';
+
+    /**
+     * @var string
+     */
+    protected $scheme = self::DEFAULT_SCHEME;
 
     /**
      * @var string
@@ -65,10 +75,13 @@ class Client
      */
     protected $auth;
 
-    public function __construct(?string $host = null, ?int $port = null, ?string $path = null)
+    public function __construct(?string $host = null, ?int $port = null, ?string $path = null, ?string $scheme = null)
     {
         $this->client = new Curl(new Psr17Factory());
 
+        if ($scheme) {
+            $this->setScheme($scheme);
+        }
         if ($host) {
             $this->setHost($host);
         }
@@ -112,10 +125,27 @@ class Client
     public function getUrl(): string
     {
         return sprintf(
-            'http://%s:%d',
+            '%s://%s:%d',
+            $this->getScheme(),
             $this->getHost(),
             $this->getPort()
         );
+    }
+
+    /**
+     * Set the scheme of the Transmission server.
+     */
+    public function setScheme(string $scheme): void
+    {
+        $this->scheme = $scheme;
+    }
+
+    /**
+     * Get the scheme of the Transmission server.
+     */
+    public function getScheme(): string
+    {
+        return $this->scheme;
     }
 
     /**
