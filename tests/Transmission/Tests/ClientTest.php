@@ -26,6 +26,19 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $this->client->setClient($this->curlMock);
     }
 
+    public function testShouldHaveDefaultScheme()
+    {
+        $this->assertEquals('http', $this->client->getScheme());
+    }
+
+    public function testSetScheme()
+    {
+        $expected = 'https';
+
+        $this->client->setScheme($expected);
+        $this->assertEquals($expected, $this->client->getScheme());
+    }
+
     public function testShouldHaveDefaultHost()
     {
         $this->assertEquals('localhost', $this->client->getHost());
