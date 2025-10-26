@@ -18,7 +18,7 @@ abstract class AbstractModel implements ModelInterface
     /**
      * Constructor.
      */
-    public function __construct(Client $client = null)
+    public function __construct(?Client $client = null)
     {
         $this->client = $client;
     }

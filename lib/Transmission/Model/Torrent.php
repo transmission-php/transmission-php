@@ -7,7 +7,7 @@ use Transmission\Util\PropertyMapper;
 class Torrent extends AbstractModel
 {
     /**
-     * @var int
+     * @var string
      */
     protected $id;
 

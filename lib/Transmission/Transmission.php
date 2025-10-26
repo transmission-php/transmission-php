@@ -26,7 +26,7 @@ class Transmission
      */
     protected $mapper;
 
-    public function __construct(string $host = null, int $port = null, string $path = null)
+    public function __construct(?string $host = null, ?int $port = null, ?string $path = null)
     {
         $this->setClient(new Client($host, $port, $path));
         $this->setMapper(new PropertyMapper());
@@ -62,7 +62,7 @@ class Transmission
      *
      * @throws \RuntimeException
      */
-    public function get(int $id): Torrent
+    public function get(string $id): Torrent
     {
         $client   = $this->getClient();
         $mapper   = $this->getMapper();
@@ -111,11 +111,10 @@ class Transmission
     /**
      * Get Free space.
      */
-    public function getFreeSpace(string $path = null): FreeSpace
+    public function getFreeSpace(?string $path = null): FreeSpace
     {
         if (!$path) {
             $path = $this->getSession()->getDownloadDir();
-            var_dump($path);
         }
         $response = $this->getClient()->call(
             'free-space',
@@ -131,7 +130,7 @@ class Transmission
     /**
      * Add a torrent to the download queue.
      */
-    public function add(string $torrent, bool $metainfo = false, string $savepath = null): Torrent
+    public function add(string $torrent, bool $metainfo = false, ?string $savepath = null): Torrent
     {
         $parameters = [$metainfo ? 'metainfo' : 'filename' => $torrent];
 

@@ -8,6 +8,7 @@ use Transmission\Util\PropertyMapper;
 class SessionTest extends \PHPUnit\Framework\TestCase
 {
     protected $session;
+    protected $mockClient;
 
     public function setUp(): void
     {
@@ -96,11 +97,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('session-set', $expected)
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $this->session->setClient($this->mockClient);
         $this->session->save();

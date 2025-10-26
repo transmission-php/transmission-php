@@ -100,7 +100,7 @@ class TorrentTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->torrent->isFinished());
     }
 
-    public function statusProvider()
+    public static function statusProvider()
     {
         return [
             [0, 'stopped'],
@@ -113,9 +113,7 @@ class TorrentTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider statusProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('statusProvider')]
     public function testShouldHaveConvenienceMethods($status, $method)
     {
         $methods  = ['stopped', 'checking', 'downloading', 'seeding'];
