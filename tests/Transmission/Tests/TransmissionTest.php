@@ -53,7 +53,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetTorrentById()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
@@ -101,7 +101,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAddTorrentByFilename()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
@@ -125,7 +125,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAddTorrentByMetainfo()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
@@ -149,7 +149,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldHandleDuplicateTorrent()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
@@ -173,7 +173,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetSession()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
@@ -195,7 +195,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetSessionStats()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')

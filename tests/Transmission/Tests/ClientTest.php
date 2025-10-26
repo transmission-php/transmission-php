@@ -90,7 +90,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     public function testShouldMakeApiCall()
     {
         // Create a mock response for the Symfony HTTP client
-        $mockResponse = new MockResponse('{}', ['http_code' => 200]);
+        $mockResponse         = new MockResponse('{}', ['http_code' => 200]);
         $this->mockHttpClient = new MockHttpClient($mockResponse);
         $this->client->setClient($this->mockHttpClient);
 
@@ -101,7 +101,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAuthenticate()
     {
-        $mockResponse = new MockResponse('{}', ['http_code' => 200]);
+        $mockResponse         = new MockResponse('{}', ['http_code' => 200]);
         $this->mockHttpClient = new MockHttpClient($mockResponse);
         $this->client->setClient($this->mockHttpClient);
 
@@ -114,12 +114,12 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     public function testShouldThrowExceptionOnExceptionDuringApiCall()
     {
         // Create a mock HTTP client that will throw a transport exception
-        $mockHttpClient = new MockHttpClient(function() {
+        $mockHttpClient = new MockHttpClient(function () {
             throw new \Symfony\Component\HttpClient\Exception\TransportException('Could not connect to Transmission');
         });
         $this->client->setClient($mockHttpClient);
 
-        $this->expectException(\Transmission\Exception\ClientException::class);
+        $this->expectException(ClientException::class);
         $this->expectExceptionMessage('Network error: Could not connect to Transmission');
 
         $this->client->call('foo', []);
@@ -128,7 +128,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     public function testShouldThrowExceptionOnUnexpectedStatusCode()
     {
         // Create a mock response with 500 status code
-        $mockResponse = new MockResponse('Internal Server Error', ['http_code' => 500]);
+        $mockResponse   = new MockResponse('Internal Server Error', ['http_code' => 500]);
         $mockHttpClient = new MockHttpClient($mockResponse);
         $this->client->setClient($mockHttpClient);
 
@@ -141,7 +141,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
     public function testShouldThrowExceptionOnAccessDenied()
     {
         // Create a mock response with 401 status code
-        $mockResponse = new MockResponse('Unauthorized', ['http_code' => 401]);
+        $mockResponse   = new MockResponse('Unauthorized', ['http_code' => 401]);
         $mockHttpClient = new MockHttpClient($mockResponse);
         $this->client->setClient($mockHttpClient);
 
@@ -156,10 +156,10 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         // Create mock responses: first 409 with session ID, then 200 success
         $mockResponses = [
             new MockResponse('', [
-                'http_code' => 409,
-                'response_headers' => ['x-transmission-session-id' => 'foo']
+                'http_code'        => 409,
+                'response_headers' => ['x-transmission-session-id' => 'foo'],
             ]),
-            new MockResponse('{}', ['http_code' => 200])
+            new MockResponse('{}', ['http_code' => 200]),
         ];
         $mockHttpClient = new MockHttpClient($mockResponses);
         $this->client->setClient($mockHttpClient);

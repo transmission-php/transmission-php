@@ -131,9 +131,6 @@ class Stats implements ModelInterface
         $this->uploadedBytes = $uploadedBytes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

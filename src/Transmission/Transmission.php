@@ -211,7 +211,7 @@ class Transmission
     /**
      * Checks whether or not Transmission is listening on configured port/host.
      *
-     * @throws \Transmission\Exception\ClientException
+     * @throws Exception\ClientException
      */
     public function isAvailable(): bool
     {
@@ -369,7 +369,7 @@ class Transmission
         }
 
         $response = $this->getClient()->call('torrent-get', $arguments);
-        $result = $this->getValidator()->validate('torrent-get', $response);
+        $result   = $this->getValidator()->validate('torrent-get', $response);
 
         if ($format === 'table') {
             return $result; // Return raw table format
@@ -455,7 +455,7 @@ class Transmission
     public function updateBlocklist(): int
     {
         $response = $this->getClient()->call('blocklist-update', []);
-        $result = $this->getValidator()->validate('blocklist-update', $response);
+        $result   = $this->getValidator()->validate('blocklist-update', $response);
 
         return $result['blocklist-size'];
     }
@@ -471,6 +471,7 @@ class Transmission
         }
 
         $response = $this->getClient()->call('port-test', $arguments);
+
         return $this->getValidator()->validate('port-test', $response);
     }
 
@@ -493,9 +494,9 @@ class Transmission
         }
 
         $response = $this->getClient()->call('group-get', $arguments);
-        $result = $this->getValidator()->validate('group-get', $response);
+        $result   = $this->getValidator()->validate('group-get', $response);
 
-        $mapper = $this->getMapper();
+        $mapper          = $this->getMapper();
         $bandwidthGroups = array_map(function ($data) use ($mapper) {
             return $mapper->map(new BandwidthGroup($this->getClient()), $data);
         }, $result['group']);
@@ -517,7 +518,7 @@ class Transmission
      */
     public function setTorrent($torrents, array $settings): void
     {
-        $ids = $this->extractIds($torrents);
+        $ids       = $this->extractIds($torrents);
         $arguments = array_merge(['ids' => $ids], $settings);
         $this->getClient()->call('torrent-set', $arguments);
     }

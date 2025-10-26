@@ -103,9 +103,6 @@ class Tracker extends AbstractModel
         $this->sitename = $sitename;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

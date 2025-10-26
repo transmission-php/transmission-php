@@ -131,18 +131,15 @@ class BandwidthGroup extends AbstractModel
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [
-            'name'                       => 'name',
-            'honorsSessionLimits'        => 'honorsSessionLimits',
-            'speed-limit-down-enabled'   => 'speedLimitDownEnabled',
-            'speed-limit-down'           => 'speedLimitDown',
-            'speed-limit-up-enabled'     => 'speedLimitUpEnabled',
-            'speed-limit-up'             => 'speedLimitUp',
+            'name'                     => 'name',
+            'honorsSessionLimits'      => 'honorsSessionLimits',
+            'speed-limit-down-enabled' => 'speedLimitDownEnabled',
+            'speed-limit-down'         => 'speedLimitDown',
+            'speed-limit-up-enabled'   => 'speedLimitUpEnabled',
+            'speed-limit-up'           => 'speedLimitUp',
         ];
     }
 }

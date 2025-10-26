@@ -31,7 +31,7 @@ class ResponseValidator
             case 'free-space':
                 return self::validateFreeSpaceGetResponse($response);
             default:
-                return isset($response->arguments) ? (array)$response->arguments : (array)$response;
+                return isset($response->arguments) ? (array) $response->arguments : (array) $response;
         }
     }
 
@@ -41,8 +41,8 @@ class ResponseValidator
     public static function validateGetResponse(\stdClass $response): array
     {
         if (
-            !isset($response->arguments) ||
-            !isset($response->arguments->torrents)
+            !isset($response->arguments)
+            || !isset($response->arguments->torrents)
         ) {
             throw new \RuntimeException('Invalid response received from Transmission');
         }
@@ -59,9 +59,9 @@ class ResponseValidator
 
         foreach ($fields as $field) {
             if (
-                isset($response->arguments) &&
-                isset($response->arguments->$field) &&
-                count((array) $response->arguments->$field)
+                isset($response->arguments)
+                && isset($response->arguments->$field)
+                && count((array) $response->arguments->$field)
             ) {
                 return $response->arguments->$field;
             }

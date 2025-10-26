@@ -3,10 +3,10 @@
 namespace Transmission;
 
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Transmission\Exception\ClientException;
 
 /**
@@ -17,27 +17,27 @@ class Client
     /**
      * @var string
      */
-    const DEFAULT_SCHEME = 'http';
+    public const DEFAULT_SCHEME = 'http';
 
     /**
      * @var string
      */
-    const DEFAULT_HOST = 'localhost';
+    public const DEFAULT_HOST = 'localhost';
 
     /**
      * @var int
      */
-    const DEFAULT_PORT = 9091;
+    public const DEFAULT_PORT = 9091;
 
     /**
      * @var string
      */
-    const DEFAULT_PATH = '/transmission/rpc';
+    public const DEFAULT_PATH = '/transmission/rpc';
 
     /**
      * @var string
      */
-    const TOKEN_HEADER = 'X-Transmission-Session-Id';
+    public const TOKEN_HEADER = 'X-Transmission-Session-Id';
 
     /**
      * @var string
@@ -109,7 +109,7 @@ class Client
     {
         $this->username = $username;
         $this->password = $password;
-        $this->auth = base64_encode($username . ':' . $password);
+        $this->auth     = base64_encode($username . ':' . $password);
     }
 
     /**
@@ -121,14 +121,14 @@ class Client
      */
     public function call(string $method, array $arguments): \stdClass
     {
-        $url = $this->buildUrl();
+        $url     = $this->buildUrl();
         $headers = $this->buildHeaders();
-        $body = $this->buildRequestBody($method, $arguments);
+        $body    = $this->buildRequestBody($method, $arguments);
 
         try {
             $response = $this->client->request('POST', $url, [
-                'headers' => $headers,
-                'body' => $body,
+                'headers'    => $headers,
+                'body'       => $body,
                 'auth_basic' => $this->username && $this->password ? [$this->username, $this->password] : null,
             ]);
 
@@ -136,17 +136,18 @@ class Client
 
             // Handle CSRF token requirement (409 Conflict) - check before getting content
             if (409 === $statusCode) {
-                $headers = $response->getHeaders(false);
+                $headers         = $response->getHeaders(false);
                 $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
                 if ($sessionIdHeader && count($sessionIdHeader) > 0) {
                     $this->token = $sessionIdHeader[0];
+
                     return $this->call($method, $arguments);
                 }
             }
 
             $content = $response->getContent();
-            return json_decode($content);
 
+            return json_decode($content);
         } catch (TransportExceptionInterface $e) {
             throw new ClientException('Network error: ' . $e->getMessage(), 0, $e);
         } catch (ClientExceptionInterface $e) {
@@ -154,10 +155,11 @@ class Client
 
             // Handle CSRF token requirement (409 Conflict) for client exceptions
             if (409 === $statusCode) {
-                $headers = $e->getResponse()->getHeaders(false);
+                $headers         = $e->getResponse()->getHeaders(false);
                 $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
                 if ($sessionIdHeader && count($sessionIdHeader) > 0) {
                     $this->token = $sessionIdHeader[0];
+
                     return $this->call($method, $arguments);
                 }
             }
@@ -166,7 +168,7 @@ class Client
             throw new ClientException(sprintf('HTTP %d: %s', $statusCode, $content), $statusCode, $e);
         } catch (ServerExceptionInterface $e) {
             $statusCode = $e->getResponse()->getStatusCode();
-            $content = $e->getResponse()->getContent(false);
+            $content    = $e->getResponse()->getContent(false);
             throw new ClientException(sprintf('HTTP %d: %s', $statusCode, $content), $statusCode, $e);
         }
     }
@@ -192,7 +194,7 @@ class Client
     {
         $headers = [
             'Content-Type' => 'application/json',
-            'User-Agent' => 'transmission-php/3.0',
+            'User-Agent'   => 'transmission-php/3.0',
         ];
 
         if ($this->token) {
@@ -208,7 +210,7 @@ class Client
     private function buildRequestBody(string $method, array $arguments): string
     {
         $data = [
-            'method' => $method,
+            'method'    => $method,
             'arguments' => $arguments,
         ];
 

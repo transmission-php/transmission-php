@@ -319,9 +319,6 @@ class Peer extends AbstractModel
         return $this->downloadRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

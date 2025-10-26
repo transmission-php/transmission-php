@@ -34,7 +34,7 @@ class TrackerStats extends AbstractModel
      */
     public function setHost($host)
     {
-        $this->host =  (string) $host;
+        $this->host = (string) $host;
     }
 
     /**
@@ -50,7 +50,7 @@ class TrackerStats extends AbstractModel
      */
     public function setLastAnnounceResult($lastAnnounceResult)
     {
-        $this->lastAnnounceResult =  (string) $lastAnnounceResult;
+        $this->lastAnnounceResult = (string) $lastAnnounceResult;
     }
 
     /**
@@ -66,7 +66,7 @@ class TrackerStats extends AbstractModel
      */
     public function setLastScrapeResult($lastScrapeResult)
     {
-        $this->lastScrapeResult =  (string) $lastScrapeResult;
+        $this->lastScrapeResult = (string) $lastScrapeResult;
     }
 
     /**
@@ -109,9 +109,6 @@ class TrackerStats extends AbstractModel
         return $this->leecherCount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

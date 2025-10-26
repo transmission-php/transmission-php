@@ -102,9 +102,6 @@ class File extends AbstractModel
         $this->endPiece = $endPiece;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

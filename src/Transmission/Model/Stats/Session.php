@@ -163,9 +163,6 @@ class Session extends AbstractModel
         $this->current = $current;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

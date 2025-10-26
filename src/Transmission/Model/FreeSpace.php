@@ -79,9 +79,6 @@ class FreeSpace extends AbstractModel
         $this->totalSize = $totalSize;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [

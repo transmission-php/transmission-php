@@ -7,37 +7,37 @@ class Status extends AbstractModel
     /**
      * @var int
      */
-    const STATUS_STOPPED = 0;
+    public const STATUS_STOPPED = 0;
 
     /**
      * @var int
      */
-    const STATUS_CHECK_WAIT = 1;
+    public const STATUS_CHECK_WAIT = 1;
 
     /**
      * @var int
      */
-    const STATUS_CHECK = 2;
+    public const STATUS_CHECK = 2;
 
     /**
      * @var int
      */
-    const STATUS_DOWNLOAD_WAIT = 3;
+    public const STATUS_DOWNLOAD_WAIT = 3;
 
     /**
      * @var int
      */
-    const STATUS_DOWNLOAD = 4;
+    public const STATUS_DOWNLOAD = 4;
 
     /**
      * @var int
      */
-    const STATUS_SEED_WAIT = 5;
+    public const STATUS_SEED_WAIT = 5;
 
     /**
      * @var int
      */
-    const STATUS_SEED = 6;
+    public const STATUS_SEED = 6;
 
     /**
      * @var int
@@ -77,8 +77,8 @@ class Status extends AbstractModel
      */
     public function isChecking()
     {
-        return self::STATUS_CHECK == $this->status ||
-            self::STATUS_CHECK_WAIT == $this->status;
+        return self::STATUS_CHECK      == $this->status
+            || self::STATUS_CHECK_WAIT == $this->status;
     }
 
     /**
@@ -86,8 +86,8 @@ class Status extends AbstractModel
      */
     public function isDownloading()
     {
-        return self::STATUS_DOWNLOAD == $this->status ||
-            self::STATUS_DOWNLOAD_WAIT == $this->status;
+        return self::STATUS_DOWNLOAD      == $this->status
+            || self::STATUS_DOWNLOAD_WAIT == $this->status;
     }
 
     /**
@@ -95,7 +95,7 @@ class Status extends AbstractModel
      */
     public function isSeeding()
     {
-        return self::STATUS_SEED == $this->status ||
-            self::STATUS_SEED_WAIT == $this->status;
+        return self::STATUS_SEED      == $this->status
+            || self::STATUS_SEED_WAIT == $this->status;
     }
 }

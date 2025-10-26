@@ -516,9 +516,6 @@ class Session extends AbstractModel
         $this->blocklistUrl = $blocklistUrl;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getMapping(): array
     {
         return [
@@ -542,23 +539,23 @@ class Session extends AbstractModel
             'speed-limit-up-enabled'       => 'uploadSpeedLimitEnabled',
 
             // New RPC v17-18 fields
-            'sequential_download'          => 'sequentialDownload',
-            'default-trackers'             => 'defaultTrackers',
-            'version'                      => 'version',
-            'rpc-version'                  => 'rpcVersion',
-            'rpc-version-semver'           => 'rpcVersionSemver',
-            'session-id'                   => 'sessionId',
-            'dht-enabled'                  => 'dhtEnabled',
-            'pex-enabled'                  => 'pexEnabled',
-            'lpd-enabled'                  => 'lpdEnabled',
-            'utp-enabled'                  => 'utpEnabled',
-            'port-forwarding-enabled'      => 'portForwardingEnabled',
-            'peer-port'                    => 'peerPort',
-            'peer-port-random-on-start'    => 'peerPortRandomOnStart',
-            'encryption'                   => 'encryption',
-            'blocklist-enabled'            => 'blocklistEnabled',
-            'blocklist-size'               => 'blocklistSize',
-            'blocklist-url'                => 'blocklistUrl',
+            'sequential_download'       => 'sequentialDownload',
+            'default-trackers'          => 'defaultTrackers',
+            'version'                   => 'version',
+            'rpc-version'               => 'rpcVersion',
+            'rpc-version-semver'        => 'rpcVersionSemver',
+            'session-id'                => 'sessionId',
+            'dht-enabled'               => 'dhtEnabled',
+            'pex-enabled'               => 'pexEnabled',
+            'lpd-enabled'               => 'lpdEnabled',
+            'utp-enabled'               => 'utpEnabled',
+            'port-forwarding-enabled'   => 'portForwardingEnabled',
+            'peer-port'                 => 'peerPort',
+            'peer-port-random-on-start' => 'peerPortRandomOnStart',
+            'encryption'                => 'encryption',
+            'blocklist-enabled'         => 'blocklistEnabled',
+            'blocklist-size'            => 'blocklistSize',
+            'blocklist-url'             => 'blocklistUrl',
         ];
     }
 

@@ -14,7 +14,7 @@ class PropertyMapper
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        $mapping  = array_filter($model->getMapping(), function ($value) {
+        $mapping = array_filter($model->getMapping(), function ($value) {
             return !is_null($value);
         });
 
