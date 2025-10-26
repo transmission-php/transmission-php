@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This release represents a complete overhaul of the library with full support for modern Transmission features and PHP 8.4 compatibility.
 
 ### ⚡ Breaking Changes
-- **Minimum PHP Version**: Now requires PHP 8.0+ (was PHP 7.4)
+- **Minimum PHP Version**: Now requires PHP 8.3+ (was PHP 7.4)
 - **Directory Structure**: Moved source code from `lib/` to `src/` (API unchanged)
 - **PHPUnit**: Now requires PHPUnit 12+ for development
 
