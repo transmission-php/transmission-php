@@ -2,12 +2,11 @@
 
 namespace Transmission;
 
-use Buzz\Client\BuzzClientInterface;
-use Buzz\Client\Curl;
-use Buzz\Exception\NetworkException;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7\Request;
-use Nyholm\Psr7\Response;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Transmission\Exception\ClientException;
 
 /**
@@ -66,7 +65,7 @@ class Client
     protected $token = '';
 
     /**
-     * @var BuzzClientInterface
+     * @var HttpClientInterface
      */
     protected $client;
 
@@ -75,9 +74,19 @@ class Client
      */
     protected $auth;
 
+    /**
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * @var string
+     */
+    protected $password;
+
     public function __construct(?string $host = null, ?int $port = null, ?string $path = null, ?string $scheme = null)
     {
-        $this->client = new Curl(new Psr17Factory());
+        $this->client = HttpClient::create();
 
         if ($scheme) {
             $this->setScheme($scheme);
@@ -98,25 +107,112 @@ class Client
      */
     public function authenticate(string $username, string $password): void
     {
+        $this->username = $username;
+        $this->password = $password;
         $this->auth = base64_encode($username . ':' . $password);
     }
 
     /**
      * Make an API call.
      *
-     * @throws NetworkException
+     * @throws TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws ServerExceptionInterface
      */
     public function call(string $method, array $arguments): \stdClass
     {
-        $request = $this->compose($method, $arguments);
+        $url = $this->buildUrl();
+        $headers = $this->buildHeaders();
+        $body = $this->buildRequestBody($method, $arguments);
 
         try {
-            $response = $this->getClient()->sendRequest($request);
-        } catch (NetworkException $e) {
-            throw $e;
+            $response = $this->client->request('POST', $url, [
+                'headers' => $headers,
+                'body' => $body,
+                'auth_basic' => $this->username && $this->password ? [$this->username, $this->password] : null,
+            ]);
+
+            $statusCode = $response->getStatusCode();
+
+            // Handle CSRF token requirement (409 Conflict) - check before getting content
+            if (409 === $statusCode) {
+                $headers = $response->getHeaders(false);
+                $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
+                if ($sessionIdHeader && count($sessionIdHeader) > 0) {
+                    $this->token = $sessionIdHeader[0];
+                    return $this->call($method, $arguments);
+                }
+            }
+
+            $content = $response->getContent();
+            return json_decode($content);
+
+        } catch (TransportExceptionInterface $e) {
+            throw new ClientException('Network error: ' . $e->getMessage(), 0, $e);
+        } catch (ClientExceptionInterface $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            // Handle CSRF token requirement (409 Conflict) for client exceptions
+            if (409 === $statusCode) {
+                $headers = $e->getResponse()->getHeaders(false);
+                $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
+                if ($sessionIdHeader && count($sessionIdHeader) > 0) {
+                    $this->token = $sessionIdHeader[0];
+                    return $this->call($method, $arguments);
+                }
+            }
+
+            $content = $e->getResponse()->getContent(false);
+            throw new ClientException(sprintf('HTTP %d: %s', $statusCode, $content), $statusCode, $e);
+        } catch (ServerExceptionInterface $e) {
+            $statusCode = $e->getResponse()->getStatusCode();
+            $content = $e->getResponse()->getContent(false);
+            throw new ClientException(sprintf('HTTP %d: %s', $statusCode, $content), $statusCode, $e);
+        }
+    }
+
+    /**
+     * Build the full URL for the Transmission RPC endpoint.
+     */
+    private function buildUrl(): string
+    {
+        return sprintf(
+            '%s://%s:%d%s',
+            $this->getScheme(),
+            $this->getHost(),
+            $this->getPort(),
+            $this->getPath()
+        );
+    }
+
+    /**
+     * Build headers for the HTTP request.
+     */
+    private function buildHeaders(): array
+    {
+        $headers = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'transmission-php/3.0',
+        ];
+
+        if ($this->token) {
+            $headers[self::TOKEN_HEADER] = $this->token;
         }
 
-        return $this->validateResponse($response, $method, $arguments);
+        return $headers;
+    }
+
+    /**
+     * Build the JSON request body.
+     */
+    private function buildRequestBody(string $method, array $arguments): string
+    {
+        $data = [
+            'method' => $method,
+            'arguments' => $arguments,
+        ];
+
+        return json_encode($data);
     }
 
     /**
@@ -213,51 +309,18 @@ class Client
     }
 
     /**
-     * Set the Buzz client used to connect to Transmission.
+     * Set the HTTP client used to connect to Transmission.
      */
-    public function setClient(BuzzClientInterface $client)
+    public function setClient(HttpClientInterface $client): void
     {
         $this->client = $client;
     }
 
     /**
-     * Get the Buzz client used to connect to Transmission.
+     * Get the underlying HTTP client.
      */
-    public function getClient(): BuzzClientInterface
+    public function getClient(): HttpClientInterface
     {
         return $this->client;
-    }
-
-    protected function compose(string $method, array $arguments): Request
-    {
-        $headers[self::TOKEN_HEADER] = $this->getToken();
-        if (is_string($this->auth)) {
-            $headers['Authorization'] = sprintf('Basic %s', $this->auth);
-        }
-        $body = ['method' => $method, 'arguments' => $arguments];
-
-        return new Request('POST', $this->getUrl() . $this->getPath(), $headers, json_encode($body));
-    }
-
-    /**
-     * @throws ClientException
-     */
-    protected function validateResponse(Response $response, string $method, array $arguments): \stdClass
-    {
-        if (!in_array($response->getStatusCode(), [200, 401, 409])) {
-            throw new ClientException('Unexpected response received from Transmission', $response->getStatusCode());
-        }
-
-        if (401 == $response->getStatusCode()) {
-            throw new ClientException('Access to Transmission requires authentication', 401);
-        }
-
-        if (409 == $response->getStatusCode()) {
-            $this->setToken($response->getHeader(self::TOKEN_HEADER)[0]);
-
-            return $this->call($method, $arguments);
-        }
-
-        return json_decode($response->getBody()->__toString());
     }
 }

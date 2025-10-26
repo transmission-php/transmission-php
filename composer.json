@@ -12,7 +12,7 @@
     "license": "BSD-2-Clause",
     "require": {
         "php": "^8.3",
-        "kriswallsmith/buzz": "~1.0",
+        "symfony/http-client": "^7.0",
         "symfony/property-access": "~7.0",
         "nyholm/psr7": "^1.3"
     },

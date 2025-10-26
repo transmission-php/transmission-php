@@ -2,8 +2,8 @@
 
 namespace Transmission\Tests;
 
-use Buzz\Exception\NetworkException;
-use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 use Transmission\Client;
 use Transmission\Exception\ClientException;
 
@@ -14,16 +14,15 @@ class ClientTest extends \PHPUnit\Framework\TestCase
      */
     protected $client;
 
-    protected $curlMock;
+    protected $mockHttpClient;
 
     protected function setUp(): void
     {
-        $this->client = new Client();
+        // Create a mock HTTP client for testing
+        $this->mockHttpClient = new MockHttpClient();
 
-        $this->curlMock = $this->getMockBuilder("Buzz\Client\Curl")
-            ->setConstructorArgs([new Psr17Factory()])
-            ->getMock();
-        $this->client->setClient($this->curlMock);
+        $this->client = new Client();
+        $this->client->setClient($this->mockHttpClient);
     }
 
     public function testShouldHaveDefaultScheme()
@@ -80,7 +79,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldHaveDefaultClient()
     {
-        $this->assertInstanceOf('Buzz\Client\Curl', $this->client->getClient());
+        $this->assertInstanceOf('Symfony\Contracts\HttpClient\HttpClientInterface', $this->client->getClient());
     }
 
     public function testShouldGenerateDefaultUrl()
@@ -90,10 +89,10 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldMakeApiCall()
     {
-        $this->curlMock->expects($this->once())
-            ->method('sendRequest')
-            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
-            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+        // Create a mock response for the Symfony HTTP client
+        $mockResponse = new MockResponse('{}', ['http_code' => 200]);
+        $this->mockHttpClient = new MockHttpClient($mockResponse);
+        $this->client->setClient($this->mockHttpClient);
 
         $response = $this->client->call('foo', ['bar' => 'baz']);
 
@@ -102,10 +101,9 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAuthenticate()
     {
-        $this->curlMock->expects($this->once())
-            ->method('sendRequest')
-            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
-            ->willReturn(new \Nyholm\Psr7\Response(200, [], '{}'));
+        $mockResponse = new MockResponse('{}', ['http_code' => 200]);
+        $this->mockHttpClient = new MockHttpClient($mockResponse);
+        $this->client->setClient($this->mockHttpClient);
 
         $this->client->authenticate('foo', 'bar');
         $response = $this->client->call('foo', ['bar' => 'baz']);
@@ -115,57 +113,58 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldThrowExceptionOnExceptionDuringApiCall()
     {
-        $this->curlMock->method('sendRequest')
-            ->with($this->isInstanceOf('Nyholm\Psr7\Request'))
-            ->will($this->throwException(
-                new NetworkException(
-                    new \Nyholm\Psr7\Request('GET', ''),
-                    'Could not connect to Transmission'
-                )
-            ));
+        // Create a mock HTTP client that will throw a transport exception
+        $mockHttpClient = new MockHttpClient(function() {
+            throw new \Symfony\Component\HttpClient\Exception\TransportException('Could not connect to Transmission');
+        });
+        $this->client->setClient($mockHttpClient);
 
-        $this->expectException(NetworkException::class);
-        $this->expectExceptionMessage('Could not connect to Transmission');
-        $this->expectExceptionCode(0);
+        $this->expectException(\Transmission\Exception\ClientException::class);
+        $this->expectExceptionMessage('Network error: Could not connect to Transmission');
 
         $this->client->call('foo', []);
     }
 
     public function testShouldThrowExceptionOnUnexpectedStatusCode()
     {
-        $this->curlMock->expects($this->once())
-            ->method('sendRequest')
-            ->willReturn(new \Nyholm\Psr7\Response(500));
+        // Create a mock response with 500 status code
+        $mockResponse = new MockResponse('Internal Server Error', ['http_code' => 500]);
+        $mockHttpClient = new MockHttpClient($mockResponse);
+        $this->client->setClient($mockHttpClient);
 
         $this->expectException(ClientException::class);
-        $this->expectExceptionMessage('Unexpected response received from Transmission');
-        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('HTTP 500: Internal Server Error');
 
         $this->client->call('foo', []);
     }
 
     public function testShouldThrowExceptionOnAccessDenied()
     {
-        $this->curlMock->expects($this->once())
-            ->method('sendRequest')
-            ->willReturn(new \Nyholm\Psr7\Response(401));
+        // Create a mock response with 401 status code
+        $mockResponse = new MockResponse('Unauthorized', ['http_code' => 401]);
+        $mockHttpClient = new MockHttpClient($mockResponse);
+        $this->client->setClient($mockHttpClient);
 
         $this->expectException(ClientException::class);
-        $this->expectExceptionMessage('Access to Transmission requires authentication');
-        $this->expectExceptionCode(401);
+        $this->expectExceptionMessage('HTTP 401: Unauthorized');
 
         $this->client->call('foo', []);
     }
 
     public function testShouldHandle409ResponseWhenMakingAnApiCall()
     {
-        $this->curlMock->expects($this->exactly(2))
-            ->method('sendRequest')
-            ->willReturnOnConsecutiveCalls(
-                new \Nyholm\Psr7\Response(409, ['X-Transmission-Session-Id' => 'foo']),
-                new \Nyholm\Psr7\Response(200, [], '{}'),
-            );
+        // Create mock responses: first 409 with session ID, then 200 success
+        $mockResponses = [
+            new MockResponse('', [
+                'http_code' => 409,
+                'response_headers' => ['x-transmission-session-id' => 'foo']
+            ]),
+            new MockResponse('{}', ['http_code' => 200])
+        ];
+        $mockHttpClient = new MockHttpClient($mockResponses);
+        $this->client->setClient($mockHttpClient);
 
-        $this->client->call('foo', []);
+        $response = $this->client->call('foo', []);
+        $this->assertInstanceOf('stdClass', $response);
     }
 }
