@@ -154,6 +154,7 @@ class ResponseValidatorTest extends \PHPUnit\Framework\TestCase
         $response = (object) ['result' => 'success'];
 
         $container = $this->validator->validate('torrent-remove', $response);
-        $this->assertNull($container);
+        $this->assertIsArray($container);
+        $this->assertEquals(['result' => 'success'], $container);
     }
 }

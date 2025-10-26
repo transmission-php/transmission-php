@@ -15,6 +15,11 @@ class FreeSpace extends AbstractModel
     private $size;
 
     /**
+     * @var int
+     */
+    private $totalSize;
+
+    /**
      * Gets the value of path.
      *
      * @return string
@@ -55,6 +60,26 @@ class FreeSpace extends AbstractModel
     }
 
     /**
+     * Gets the value of totalSize.
+     *
+     * @return int
+     */
+    public function getTotalSize()
+    {
+        return $this->totalSize;
+    }
+
+    /**
+     * Sets the value of totalSize.
+     *
+     * @param int $totalSize the total size
+     */
+    public function setTotalSize($totalSize)
+    {
+        $this->totalSize = $totalSize;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getMapping(): array
@@ -62,6 +87,7 @@ class FreeSpace extends AbstractModel
         return [
             'path'       => 'path',
             'size-bytes' => 'size',
+            'total_size' => 'totalSize',
         ];
     }
 }

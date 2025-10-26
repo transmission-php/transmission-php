@@ -1,6 +1,6 @@
 {
     "name": "transmission-php/transmission-php",
-    "description": "PHP Transmission client",
+    "description": "Modern PHP client for Transmission BitTorrent daemon with 100% RPC v18 compatibility",
     "keywords": [
         "transmission",
         "torrent",
@@ -11,14 +11,14 @@
     "type": "library",
     "license": "BSD-2-Clause",
     "require": {
-        "php": "^8.0",
+        "php": "^8.3",
         "kriswallsmith/buzz": "~1.0",
         "symfony/property-access": "~7.0",
         "nyholm/psr7": "^1.3"
     },
     "autoload": {
         "psr-4": {
-            "": "lib/"
+            "Transmission\\": "src/Transmission/"
         }
     },
     "require-dev": {
@@ -29,6 +29,6 @@
     "scripts": {
         "phpunit": "vendor/bin/phpunit",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix",
-        "phpstan": "vendor/bin/phpstan analyse lib --level 5"
+        "phpstan": "vendor/bin/phpstan analyse src --level 5"
     }
 }

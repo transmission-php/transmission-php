@@ -25,6 +25,11 @@ class Tracker extends AbstractModel
     protected $announce;
 
     /**
+     * @var string
+     */
+    protected $sitename;
+
+    /**
      * @param int $id
      */
     public function setId($id)
@@ -88,6 +93,16 @@ class Tracker extends AbstractModel
         return $this->announce;
     }
 
+    public function getSitename(): ?string
+    {
+        return $this->sitename;
+    }
+
+    public function setSitename(?string $sitename)
+    {
+        $this->sitename = $sitename;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -98,6 +113,7 @@ class Tracker extends AbstractModel
             'tier'     => 'tier',
             'scrape'   => 'scrape',
             'announce' => 'announce',
+            'sitename' => 'sitename',
         ];
     }
 }

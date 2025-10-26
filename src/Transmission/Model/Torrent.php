@@ -121,7 +121,97 @@ class Torrent extends AbstractModel
      */
     protected $uploadedEver;
 
-    public function setId(int $id)
+    /**
+     * @var array
+     */
+    protected $availability;
+
+    /**
+     * @var int
+     */
+    protected $fileCount;
+
+    /**
+     * @var string
+     */
+    protected $group;
+
+    /**
+     * @var array
+     */
+    protected $labels;
+
+    /**
+     * @var string
+     */
+    protected $magnetLink;
+
+    /**
+     * @var float
+     */
+    protected $metadataPercentComplete;
+
+    /**
+     * @var string
+     */
+    protected $primaryMimeType;
+
+    /**
+     * @var string
+     */
+    protected $trackerList;
+
+    /**
+     * @var int
+     */
+    protected $queuePosition;
+
+    /**
+     * @var float
+     */
+    protected $percentComplete;
+
+    /**
+     * @var int
+     */
+    protected $etaIdle;
+
+    /**
+     * @var int
+     */
+    protected $editDate;
+
+    /**
+     * @var int
+     */
+    protected $addedDate;
+
+    /**
+     * @var int
+     */
+    protected $activityDate;
+
+    /**
+     * @var bool
+     */
+    protected $isStalled;
+
+    /**
+     * @var int
+     */
+    protected $error;
+
+    /**
+     * @var string
+     */
+    protected $errorString;
+
+    /**
+     * @var bool
+     */
+    protected $sequentialDownload;
+
+    public function setId(string $id)
     {
         $this->id = $id;
     }
@@ -379,12 +469,193 @@ class Torrent extends AbstractModel
         $this->doneDate = $doneDate;
     }
 
+    public function getAvailability(): ?array
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(?array $availability)
+    {
+        $this->availability = $availability;
+    }
+
+    public function getFileCount(): ?int
+    {
+        return $this->fileCount;
+    }
+
+    public function setFileCount(?int $fileCount)
+    {
+        $this->fileCount = $fileCount;
+    }
+
+    public function getGroup(): ?string
+    {
+        return $this->group;
+    }
+
+    public function setGroup(?string $group)
+    {
+        $this->group = $group;
+    }
+
+    public function getLabels(): ?array
+    {
+        return $this->labels;
+    }
+
+    public function setLabels(?array $labels)
+    {
+        $this->labels = $labels;
+    }
+
+    public function getMagnetLink(): ?string
+    {
+        return $this->magnetLink;
+    }
+
+    public function setMagnetLink(?string $magnetLink)
+    {
+        $this->magnetLink = $magnetLink;
+    }
+
+    public function getMetadataPercentComplete(): ?float
+    {
+        return $this->metadataPercentComplete;
+    }
+
+    public function setMetadataPercentComplete(?float $metadataPercentComplete)
+    {
+        $this->metadataPercentComplete = $metadataPercentComplete;
+    }
+
+    public function getPrimaryMimeType(): ?string
+    {
+        return $this->primaryMimeType;
+    }
+
+    public function setPrimaryMimeType(?string $primaryMimeType)
+    {
+        $this->primaryMimeType = $primaryMimeType;
+    }
+
+    public function getTrackerList(): ?string
+    {
+        return $this->trackerList;
+    }
+
+    public function setTrackerList(?string $trackerList)
+    {
+        $this->trackerList = $trackerList;
+    }
+
+    public function getQueuePosition(): ?int
+    {
+        return $this->queuePosition;
+    }
+
+    public function setQueuePosition(?int $queuePosition)
+    {
+        $this->queuePosition = $queuePosition;
+    }
+
+    public function getPercentComplete(): ?float
+    {
+        return $this->percentComplete;
+    }
+
+    public function setPercentComplete(?float $percentComplete)
+    {
+        $this->percentComplete = $percentComplete;
+    }
+
+    public function getEtaIdle(): ?int
+    {
+        return $this->etaIdle;
+    }
+
+    public function setEtaIdle(?int $etaIdle)
+    {
+        $this->etaIdle = $etaIdle;
+    }
+
+    public function getEditDate(): ?int
+    {
+        return $this->editDate;
+    }
+
+    public function setEditDate(?int $editDate)
+    {
+        $this->editDate = $editDate;
+    }
+
+    public function getAddedDate(): ?int
+    {
+        return $this->addedDate;
+    }
+
+    public function setAddedDate(?int $addedDate)
+    {
+        $this->addedDate = $addedDate;
+    }
+
+    public function getActivityDate(): ?int
+    {
+        return $this->activityDate;
+    }
+
+    public function setActivityDate(?int $activityDate)
+    {
+        $this->activityDate = $activityDate;
+    }
+
+    public function isStalled(): ?bool
+    {
+        return $this->isStalled;
+    }
+
+    public function setIsStalled(?bool $isStalled)
+    {
+        $this->isStalled = $isStalled;
+    }
+
+    public function getError(): ?int
+    {
+        return $this->error;
+    }
+
+    public function setError(?int $error)
+    {
+        $this->error = $error;
+    }
+
+    public function getErrorString(): ?string
+    {
+        return $this->errorString;
+    }
+
+    public function setErrorString(?string $errorString)
+    {
+        $this->errorString = $errorString;
+    }
+
+    public function getSequentialDownload(): ?bool
+    {
+        return $this->sequentialDownload;
+    }
+
+    public function setSequentialDownload(?bool $sequentialDownload)
+    {
+        $this->sequentialDownload = $sequentialDownload;
+    }
+
     /**
      * {@inheritdoc}
      */
     public static function getMapping(): array
     {
         return [
+            // Existing fields
             'comment'        => 'comment',
             'doneDate'       => 'doneDate',
             'downloadDir'    => 'downloadDir',
@@ -408,6 +679,26 @@ class Torrent extends AbstractModel
             'trackerStats'   => 'trackerStats',
             'uploadedEver'   => 'uploadedEver',
             'uploadRatio'    => 'uploadRatio',
+
+            // New RPC v17-18 fields
+            'availability'           => 'availability',
+            'file-count'             => 'fileCount',
+            'group'                  => 'group',
+            'labels'                 => 'labels',
+            'magnetLink'             => 'magnetLink',
+            'metadataPercentComplete' => 'metadataPercentComplete',
+            'primary-mime-type'      => 'primaryMimeType',
+            'trackerList'            => 'trackerList',
+            'queuePosition'          => 'queuePosition',
+            'percentComplete'        => 'percentComplete',
+            'etaIdle'                => 'etaIdle',
+            'editDate'               => 'editDate',
+            'addedDate'              => 'addedDate',
+            'activityDate'           => 'activityDate',
+            'isStalled'              => 'isStalled',
+            'error'                  => 'error',
+            'errorString'            => 'errorString',
+            'sequential_download'    => 'sequentialDownload',
         ];
     }
 }

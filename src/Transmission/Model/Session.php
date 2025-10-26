@@ -91,6 +91,91 @@ class Session extends AbstractModel
      */
     protected $uploadSpeedLimitEnabled;
 
+    /**
+     * @var bool
+     */
+    protected $sequentialDownload;
+
+    /**
+     * @var string
+     */
+    protected $defaultTrackers;
+
+    /**
+     * @var string
+     */
+    protected $version;
+
+    /**
+     * @var int
+     */
+    protected $rpcVersion;
+
+    /**
+     * @var string
+     */
+    protected $rpcVersionSemver;
+
+    /**
+     * @var string
+     */
+    protected $sessionId;
+
+    /**
+     * @var bool
+     */
+    protected $dhtEnabled;
+
+    /**
+     * @var bool
+     */
+    protected $pexEnabled;
+
+    /**
+     * @var bool
+     */
+    protected $lpdEnabled;
+
+    /**
+     * @var bool
+     */
+    protected $utpEnabled;
+
+    /**
+     * @var bool
+     */
+    protected $portForwardingEnabled;
+
+    /**
+     * @var int
+     */
+    protected $peerPort;
+
+    /**
+     * @var bool
+     */
+    protected $peerPortRandomOnStart;
+
+    /**
+     * @var string
+     */
+    protected $encryption;
+
+    /**
+     * @var bool
+     */
+    protected $blocklistEnabled;
+
+    /**
+     * @var int
+     */
+    protected $blocklistSize;
+
+    /**
+     * @var string
+     */
+    protected $blocklistUrl;
+
     public function setAltSpeedDown(int $speed)
     {
         $this->altSpeedDown = $speed;
@@ -261,12 +346,183 @@ class Session extends AbstractModel
         return $this->uploadSpeedLimitEnabled;
     }
 
+    public function getSequentialDownload(): ?bool
+    {
+        return $this->sequentialDownload;
+    }
+
+    public function setSequentialDownload(?bool $sequentialDownload)
+    {
+        $this->sequentialDownload = $sequentialDownload;
+    }
+
+    public function getDefaultTrackers(): ?string
+    {
+        return $this->defaultTrackers;
+    }
+
+    public function setDefaultTrackers(?string $defaultTrackers)
+    {
+        $this->defaultTrackers = $defaultTrackers;
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->version;
+    }
+
+    public function setVersion(?string $version)
+    {
+        $this->version = $version;
+    }
+
+    public function getRpcVersion(): ?int
+    {
+        return $this->rpcVersion;
+    }
+
+    public function setRpcVersion(?int $rpcVersion)
+    {
+        $this->rpcVersion = $rpcVersion;
+    }
+
+    public function getRpcVersionSemver(): ?string
+    {
+        return $this->rpcVersionSemver;
+    }
+
+    public function setRpcVersionSemver(?string $rpcVersionSemver)
+    {
+        $this->rpcVersionSemver = $rpcVersionSemver;
+    }
+
+    public function getSessionId(): ?string
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(?string $sessionId)
+    {
+        $this->sessionId = $sessionId;
+    }
+
+    public function getDhtEnabled(): ?bool
+    {
+        return $this->dhtEnabled;
+    }
+
+    public function setDhtEnabled(?bool $dhtEnabled)
+    {
+        $this->dhtEnabled = $dhtEnabled;
+    }
+
+    public function getPexEnabled(): ?bool
+    {
+        return $this->pexEnabled;
+    }
+
+    public function setPexEnabled(?bool $pexEnabled)
+    {
+        $this->pexEnabled = $pexEnabled;
+    }
+
+    public function getLpdEnabled(): ?bool
+    {
+        return $this->lpdEnabled;
+    }
+
+    public function setLpdEnabled(?bool $lpdEnabled)
+    {
+        $this->lpdEnabled = $lpdEnabled;
+    }
+
+    public function getUtpEnabled(): ?bool
+    {
+        return $this->utpEnabled;
+    }
+
+    public function setUtpEnabled(?bool $utpEnabled)
+    {
+        $this->utpEnabled = $utpEnabled;
+    }
+
+    public function getPortForwardingEnabled(): ?bool
+    {
+        return $this->portForwardingEnabled;
+    }
+
+    public function setPortForwardingEnabled(?bool $portForwardingEnabled)
+    {
+        $this->portForwardingEnabled = $portForwardingEnabled;
+    }
+
+    public function getPeerPort(): ?int
+    {
+        return $this->peerPort;
+    }
+
+    public function setPeerPort(?int $peerPort)
+    {
+        $this->peerPort = $peerPort;
+    }
+
+    public function getPeerPortRandomOnStart(): ?bool
+    {
+        return $this->peerPortRandomOnStart;
+    }
+
+    public function setPeerPortRandomOnStart(?bool $peerPortRandomOnStart)
+    {
+        $this->peerPortRandomOnStart = $peerPortRandomOnStart;
+    }
+
+    public function getEncryption(): ?string
+    {
+        return $this->encryption;
+    }
+
+    public function setEncryption(?string $encryption)
+    {
+        $this->encryption = $encryption;
+    }
+
+    public function getBlocklistEnabled(): ?bool
+    {
+        return $this->blocklistEnabled;
+    }
+
+    public function setBlocklistEnabled(?bool $blocklistEnabled)
+    {
+        $this->blocklistEnabled = $blocklistEnabled;
+    }
+
+    public function getBlocklistSize(): ?int
+    {
+        return $this->blocklistSize;
+    }
+
+    public function setBlocklistSize(?int $blocklistSize)
+    {
+        $this->blocklistSize = $blocklistSize;
+    }
+
+    public function getBlocklistUrl(): ?string
+    {
+        return $this->blocklistUrl;
+    }
+
+    public function setBlocklistUrl(?string $blocklistUrl)
+    {
+        $this->blocklistUrl = $blocklistUrl;
+    }
+
     /**
      * {@inheritdoc}
      */
     public static function getMapping(): array
     {
         return [
+            // Existing fields
             'alt-speed-down'               => 'altSpeedDown',
             'alt-speed-enabled'            => 'altSpeedEnabled',
             'download-dir'                 => 'downloadDir',
@@ -284,6 +540,25 @@ class Session extends AbstractModel
             'speed-limit-down-enabled'     => 'downloadSpeedLimitEnabled',
             'speed-limit-up'               => 'uploadSpeedLimit',
             'speed-limit-up-enabled'       => 'uploadSpeedLimitEnabled',
+
+            // New RPC v17-18 fields
+            'sequential_download'          => 'sequentialDownload',
+            'default-trackers'             => 'defaultTrackers',
+            'version'                      => 'version',
+            'rpc-version'                  => 'rpcVersion',
+            'rpc-version-semver'           => 'rpcVersionSemver',
+            'session-id'                   => 'sessionId',
+            'dht-enabled'                  => 'dhtEnabled',
+            'pex-enabled'                  => 'pexEnabled',
+            'lpd-enabled'                  => 'lpdEnabled',
+            'utp-enabled'                  => 'utpEnabled',
+            'port-forwarding-enabled'      => 'portForwardingEnabled',
+            'peer-port'                    => 'peerPort',
+            'peer-port-random-on-start'    => 'peerPortRandomOnStart',
+            'encryption'                   => 'encryption',
+            'blocklist-enabled'            => 'blocklistEnabled',
+            'blocklist-size'               => 'blocklistSize',
+            'blocklist-url'                => 'blocklistUrl',
         ];
     }
 
@@ -292,7 +567,10 @@ class Session extends AbstractModel
         $arguments = [];
 
         foreach ($this->getMapping() as $key => $value) {
-            $arguments[$key] = $this->{$value};
+            // Only include fields that have been explicitly set (not null)
+            if ($this->{$value} !== null) {
+                $arguments[$key] = $this->{$value};
+            }
         }
 
         if (!empty($arguments) && $this->getClient()) {

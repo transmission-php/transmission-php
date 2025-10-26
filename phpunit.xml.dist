@@ -7,7 +7,7 @@
   </testsuites>
   <source>
     <include>
-      <directory suffix=".php">./lib/Transmission/</directory>
+      <directory suffix=".php">./src/Transmission/</directory>
     </include>
   </source>
 </phpunit>

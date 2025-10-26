@@ -20,6 +20,16 @@ class File extends AbstractModel
     protected $completed;
 
     /**
+     * @var int
+     */
+    protected $beginPiece;
+
+    /**
+     * @var int
+     */
+    protected $endPiece;
+
+    /**
      * @param string $name
      */
     public function setName($name)
@@ -72,6 +82,26 @@ class File extends AbstractModel
         return $this->getSize() == $this->getCompleted();
     }
 
+    public function getBeginPiece(): ?int
+    {
+        return $this->beginPiece;
+    }
+
+    public function setBeginPiece(?int $beginPiece)
+    {
+        $this->beginPiece = $beginPiece;
+    }
+
+    public function getEndPiece(): ?int
+    {
+        return $this->endPiece;
+    }
+
+    public function setEndPiece(?int $endPiece)
+    {
+        $this->endPiece = $endPiece;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -81,6 +111,8 @@ class File extends AbstractModel
             'name'           => 'name',
             'length'         => 'size',
             'bytesCompleted' => 'completed',
+            'begin_piece'    => 'beginPiece',
+            'end_piece'      => 'endPiece',
         ];
     }
 

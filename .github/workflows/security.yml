@@ -1,0 +1,103 @@
+name: Security & Dependencies
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'composer.json'
+      - 'composer.lock'
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    name: Security Audit
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP 8.4
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4
+        extensions: mbstring, curl, json, openssl
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run security audit
+      run: composer audit
+
+    - name: Check for outdated packages
+      run: composer outdated --direct --strict
+      continue-on-error: true
+
+  dependency-check:
+    runs-on: ubuntu-latest
+    name: Dependency Analysis
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP 8.4
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4
+        tools: composer:v2
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Check platform requirements
+      run: composer check-platform-reqs
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Check for unused dependencies
+      run: composer unused
+      continue-on-error: true
+
+  create-security-issue:
+    needs: [security, dependency-check]
+    runs-on: ubuntu-latest
+    name: Create Security Issue
+    if: failure()
+
+    steps:
+    - name: Create issue on security failure
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🔒 Security Alert: Dependency vulnerabilities detected',
+            body: `
+              ## Security Alert
+
+              The automated security scan has detected potential vulnerabilities in dependencies.
+
+              **Workflow:** ${{ github.workflow }}
+              **Run:** ${{ github.run_id }}
+              **Branch:** ${{ github.ref_name }}
+              **Commit:** ${{ github.sha }}
+
+              Please review the workflow logs and update vulnerable dependencies as soon as possible.
+
+              **Action Required:**
+              1. Check the workflow logs for details
+              2. Update vulnerable dependencies
+              3. Run tests to ensure compatibility
+              4. Close this issue once resolved
+
+              ---
+              *This issue was created automatically by GitHub Actions*
+            `,
+            labels: ['security', 'dependencies', 'bug']
+          })

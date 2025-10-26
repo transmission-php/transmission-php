@@ -30,6 +30,8 @@ class ResponseValidator
                 return self::validateSessionStatsGetResponse($response);
             case 'free-space':
                 return self::validateFreeSpaceGetResponse($response);
+            default:
+                return isset($response->arguments) ? (array)$response->arguments : (array)$response;
         }
     }
 
