@@ -216,7 +216,7 @@ class Torrent extends AbstractModel
         $this->id = $id;
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -655,50 +655,47 @@ class Torrent extends AbstractModel
     public static function getMapping(): array
     {
         return [
-            // Existing fields
+            'activityDate'           => 'activityDate',
+            'addedDate'              => 'addedDate',
+            'availability'           => 'availability',
             'comment'        => 'comment',
             'doneDate'       => 'doneDate',
             'downloadDir'    => 'downloadDir',
             'downloadedEver' => 'downloadedEver',
+            'editDate'               => 'editDate',
+            'error'                  => 'error',
+            'errorString'            => 'errorString',
             'eta'            => 'eta',
+            'etaIdle'                => 'etaIdle',
+            'file-count'             => 'fileCount',
             'files'          => 'files',
+            'group'                  => 'group',
             'hashString'     => 'hash',
             'id'             => 'id',
             'isFinished'     => 'finished',
             'isPrivate'      => 'private',
+            'isStalled'              => 'isStalled',
+            'labels'                 => 'labels',
+            'magnetLink'             => 'magnetLink',
+            'metadataPercentComplete' => 'metadataPercentComplete',
             'name'           => 'name',
             'peers'          => 'peers',
             'peersConnected' => 'peersConnected',
+            'percentComplete'        => 'percentComplete',
             'percentDone'    => 'percentDone',
+            'primary-mime-type'      => 'primaryMimeType',
+            'queuePosition'          => 'queuePosition',
             'rateDownload'   => 'downloadRate',
             'rateUpload'     => 'uploadRate',
+            'sequential_download'    => 'sequentialDownload',
             'sizeWhenDone'   => 'size',
             'startDate'      => 'startDate',
             'status'         => 'status',
+            'trackerList'            => 'trackerList',
             'trackers'       => 'trackers',
             'trackerStats'   => 'trackerStats',
             'uploadedEver'   => 'uploadedEver',
             'uploadRatio'    => 'uploadRatio',
-
-            // New RPC v17-18 fields
-            'availability'           => 'availability',
-            'file-count'             => 'fileCount',
-            'group'                  => 'group',
-            'labels'                 => 'labels',
-            'magnetLink'             => 'magnetLink',
-            'metadataPercentComplete' => 'metadataPercentComplete',
-            'primary-mime-type'      => 'primaryMimeType',
-            'trackerList'            => 'trackerList',
-            'queuePosition'          => 'queuePosition',
-            'percentComplete'        => 'percentComplete',
-            'etaIdle'                => 'etaIdle',
-            'editDate'               => 'editDate',
-            'addedDate'              => 'addedDate',
-            'activityDate'           => 'activityDate',
-            'isStalled'              => 'isStalled',
-            'error'                  => 'error',
-            'errorString'            => 'errorString',
-            'sequential_download'    => 'sequentialDownload',
         ];
     }
 }
