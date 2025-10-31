@@ -4,80 +4,47 @@ namespace Transmission\Model;
 
 class File extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
 
-    /**
-     * @var int
-     */
-    protected $size;
+    protected ?int $size = null;
 
-    /**
-     * @var int
-     */
-    protected $completed;
+    protected ?int $completed = null;
 
-    /**
-     * @var int
-     */
-    protected $beginPiece;
+    protected ?int $beginPiece = null;
 
-    /**
-     * @var int
-     */
-    protected $endPiece;
+    protected ?int $endPiece = null;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
-        $this->name = (string) $name;
+        $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param int $size
-     */
-    public function setSize($size)
+    public function setSize(int $size): void
     {
-        $this->size = (int) $size;
+        $this->size = $size;
     }
 
-    /**
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function setCompleted($completed)
+    public function setCompleted(int $completed): void
     {
-        $this->completed = (int) $completed;
+        $this->completed = $completed;
     }
 
-    /**
-     * @return int
-     */
-    public function getCompleted()
+    public function getCompleted(): ?int
     {
         return $this->completed;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDone()
+    public function isDone(): bool
     {
         return $this->getSize() == $this->getCompleted();
     }
@@ -87,7 +54,7 @@ class File extends AbstractModel
         return $this->beginPiece;
     }
 
-    public function setBeginPiece(?int $beginPiece)
+    public function setBeginPiece(?int $beginPiece): void
     {
         $this->beginPiece = $beginPiece;
     }
@@ -97,7 +64,7 @@ class File extends AbstractModel
         return $this->endPiece;
     }
 
-    public function setEndPiece(?int $endPiece)
+    public function setEndPiece(?int $endPiece): void
     {
         $this->endPiece = $endPiece;
     }
@@ -113,8 +80,8 @@ class File extends AbstractModel
         ];
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 }

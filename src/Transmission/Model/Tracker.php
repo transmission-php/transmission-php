@@ -4,91 +4,52 @@ namespace Transmission\Model;
 
 class Tracker extends AbstractModel
 {
-    /**
-     * @var int
-     */
-    protected $id;
+    protected ?int $id = null;
 
-    /**
-     * @var int
-     */
-    protected $tier;
+    protected ?int $tier = null;
 
-    /**
-     * @var string
-     */
-    protected $scrape;
+    protected ?string $scrape = null;
 
-    /**
-     * @var string
-     */
-    protected $announce;
+    protected ?string $announce = null;
 
-    /**
-     * @var string
-     */
-    protected $sitename;
+    protected ?string $sitename = null;
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
-        $this->id = (int) $id;
+        $this->id = $id;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $tier
-     */
-    public function setTier($tier)
+    public function setTier(int $tier): void
     {
-        $this->tier = (int) $tier;
+        $this->tier = $tier;
     }
 
-    /**
-     * @return int
-     */
-    public function getTier()
+    public function getTier(): ?int
     {
         return $this->tier;
     }
 
-    /**
-     * @param string $scrape
-     */
-    public function setScrape($scrape)
+    public function setScrape(string $scrape): void
     {
-        $this->scrape = (string) $scrape;
+        $this->scrape = $scrape;
     }
 
-    /**
-     * @return string
-     */
-    public function getScrape()
+    public function getScrape(): ?string
     {
         return $this->scrape;
     }
 
-    /**
-     * @param string $announce
-     */
-    public function setAnnounce($announce)
+    public function setAnnounce(string $announce): void
     {
-        $this->announce = (string) $announce;
+        $this->announce = $announce;
     }
 
-    /**
-     * @return string
-     */
-    public function getAnnounce()
+    public function getAnnounce(): ?string
     {
         return $this->announce;
     }
@@ -98,7 +59,7 @@ class Tracker extends AbstractModel
         return $this->sitename;
     }
 
-    public function setSitename(?string $sitename)
+    public function setSitename(?string $sitename): void
     {
         $this->sitename = $sitename;
     }

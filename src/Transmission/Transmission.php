@@ -12,20 +12,11 @@ use Transmission\Util\ResponseValidator;
 
 class Transmission
 {
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
-    /**
-     * @var ResponseValidator
-     */
-    protected $validator;
+    protected ResponseValidator $validator;
 
-    /**
-     * @var PropertyMapper
-     */
-    protected $mapper;
+    protected PropertyMapper $mapper;
 
     public function __construct(?string $host = null, ?int $port = null, ?string $path = null)
     {
@@ -348,7 +339,7 @@ class Transmission
     /**
      * Get torrents with support for recently-active filter and table format.
      */
-    public function getTorrents($ids = null, ?array $fields = null, string $format = 'objects'): array
+    public function getTorrents(string|array|null $ids = null, ?array $fields = null, string $format = 'objects'): array
     {
         $arguments = [];
 
@@ -399,7 +390,7 @@ class Transmission
     /**
      * Move torrent to top of queue.
      */
-    public function queueMoveTop($torrents): void
+    public function queueMoveTop(Torrent|array|string|int $torrents): void
     {
         $ids = $this->extractIds($torrents);
         $this->getClient()->call('queue-move-top', ['ids' => $ids]);
@@ -408,7 +399,7 @@ class Transmission
     /**
      * Move torrent up in queue.
      */
-    public function queueMoveUp($torrents): void
+    public function queueMoveUp(Torrent|array|string|int $torrents): void
     {
         $ids = $this->extractIds($torrents);
         $this->getClient()->call('queue-move-up', ['ids' => $ids]);
@@ -417,7 +408,7 @@ class Transmission
     /**
      * Move torrent down in queue.
      */
-    public function queueMoveDown($torrents): void
+    public function queueMoveDown(Torrent|array|string|int $torrents): void
     {
         $ids = $this->extractIds($torrents);
         $this->getClient()->call('queue-move-down', ['ids' => $ids]);
@@ -426,7 +417,7 @@ class Transmission
     /**
      * Move torrent to bottom of queue.
      */
-    public function queueMoveBottom($torrents): void
+    public function queueMoveBottom(Torrent|array|string|int $torrents): void
     {
         $ids = $this->extractIds($torrents);
         $this->getClient()->call('queue-move-bottom', ['ids' => $ids]);
@@ -486,7 +477,7 @@ class Transmission
     /**
      * Get bandwidth groups.
      */
-    public function getBandwidthGroups($groups = null): array
+    public function getBandwidthGroups(string|array|null $groups = null): array
     {
         $arguments = [];
         if ($groups !== null) {
@@ -516,7 +507,7 @@ class Transmission
     /**
      * Set torrent settings including new RPC v17+ features.
      */
-    public function setTorrent($torrents, array $settings): void
+    public function setTorrent(Torrent|array|string|int $torrents, array $settings): void
     {
         $ids       = $this->extractIds($torrents);
         $arguments = array_merge(['ids' => $ids], $settings);
@@ -526,7 +517,7 @@ class Transmission
     /**
      * Extract torrent IDs from various input formats.
      */
-    private function extractIds($torrents): array
+    private function extractIds(Torrent|array|string|int $torrents): array
     {
         if (is_array($torrents)) {
             return array_map(function ($torrent) {

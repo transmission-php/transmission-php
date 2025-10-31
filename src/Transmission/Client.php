@@ -14,75 +14,33 @@ use Transmission\Exception\ClientException;
  */
 class Client
 {
-    /**
-     * @var string
-     */
-    public const DEFAULT_SCHEME = 'http';
+    public const string DEFAULT_SCHEME = 'http';
 
-    /**
-     * @var string
-     */
-    public const DEFAULT_HOST = 'localhost';
+    public const string DEFAULT_HOST = 'localhost';
 
-    /**
-     * @var int
-     */
-    public const DEFAULT_PORT = 9091;
+    public const int DEFAULT_PORT = 9091;
 
-    /**
-     * @var string
-     */
-    public const DEFAULT_PATH = '/transmission/rpc';
+    public const string DEFAULT_PATH = '/transmission/rpc';
 
-    /**
-     * @var string
-     */
-    public const TOKEN_HEADER = 'X-Transmission-Session-Id';
+    public const string TOKEN_HEADER = 'X-Transmission-Session-Id';
 
-    /**
-     * @var string
-     */
-    protected $scheme = self::DEFAULT_SCHEME;
+    protected string $scheme = self::DEFAULT_SCHEME;
 
-    /**
-     * @var string
-     */
-    protected $host = self::DEFAULT_HOST;
+    protected string $host = self::DEFAULT_HOST;
 
-    /**
-     * @var int
-     */
-    protected $port = self::DEFAULT_PORT;
+    protected int $port = self::DEFAULT_PORT;
 
-    /**
-     * @var string
-     */
-    protected $path = self::DEFAULT_PATH;
+    protected string $path = self::DEFAULT_PATH;
 
-    /**
-     * @var string
-     */
-    protected $token = '';
+    protected string $token = '';
 
-    /**
-     * @var HttpClientInterface
-     */
-    protected $client;
+    protected HttpClientInterface $client;
 
-    /**
-     * @var string
-     */
-    protected $auth;
+    protected ?string $auth = null;
 
-    /**
-     * @var string
-     */
-    protected $username;
+    protected ?string $username = null;
 
-    /**
-     * @var string
-     */
-    protected $password;
+    protected ?string $password = null;
 
     public function __construct(?string $host = null, ?int $port = null, ?string $path = null, ?string $scheme = null)
     {

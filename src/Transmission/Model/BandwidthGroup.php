@@ -4,42 +4,24 @@ namespace Transmission\Model;
 
 class BandwidthGroup extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
 
-    /**
-     * @var bool
-     */
-    protected $honorsSessionLimits;
+    protected ?bool $honorsSessionLimits = null;
 
-    /**
-     * @var bool
-     */
-    protected $speedLimitDownEnabled;
+    protected ?bool $speedLimitDownEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $speedLimitDown;
+    protected ?int $speedLimitDown = null;
 
-    /**
-     * @var bool
-     */
-    protected $speedLimitUpEnabled;
+    protected ?bool $speedLimitUpEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $speedLimitUp;
+    protected ?int $speedLimitUp = null;
 
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -49,7 +31,7 @@ class BandwidthGroup extends AbstractModel
         return $this->honorsSessionLimits;
     }
 
-    public function setHonorsSessionLimits(?bool $honorsSessionLimits)
+    public function setHonorsSessionLimits(?bool $honorsSessionLimits): void
     {
         $this->honorsSessionLimits = $honorsSessionLimits;
     }
@@ -59,7 +41,7 @@ class BandwidthGroup extends AbstractModel
         return $this->speedLimitDownEnabled;
     }
 
-    public function setSpeedLimitDownEnabled(?bool $speedLimitDownEnabled)
+    public function setSpeedLimitDownEnabled(?bool $speedLimitDownEnabled): void
     {
         $this->speedLimitDownEnabled = $speedLimitDownEnabled;
     }
@@ -69,7 +51,7 @@ class BandwidthGroup extends AbstractModel
         return $this->speedLimitDown;
     }
 
-    public function setSpeedLimitDown(?int $speedLimitDown)
+    public function setSpeedLimitDown(?int $speedLimitDown): void
     {
         $this->speedLimitDown = $speedLimitDown;
     }
@@ -79,7 +61,7 @@ class BandwidthGroup extends AbstractModel
         return $this->speedLimitUpEnabled;
     }
 
-    public function setSpeedLimitUpEnabled(?bool $speedLimitUpEnabled)
+    public function setSpeedLimitUpEnabled(?bool $speedLimitUpEnabled): void
     {
         $this->speedLimitUpEnabled = $speedLimitUpEnabled;
     }
@@ -89,7 +71,7 @@ class BandwidthGroup extends AbstractModel
         return $this->speedLimitUp;
     }
 
-    public function setSpeedLimitUp(?int $speedLimitUp)
+    public function setSpeedLimitUp(?int $speedLimitUp): void
     {
         $this->speedLimitUp = $speedLimitUp;
     }

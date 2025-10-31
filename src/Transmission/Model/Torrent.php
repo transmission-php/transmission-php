@@ -6,262 +6,139 @@ use Transmission\Util\PropertyMapper;
 
 class Torrent extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    protected $id;
+    protected ?string $id = null;
 
-    /**
-     * @var string
-     */
-    protected $comment;
+    protected ?string $comment = null;
 
-    /**
-     * @var int
-     */
-    protected $doneDate;
+    protected ?int $doneDate = null;
 
-    /**
-     * @var int
-     */
-    protected $eta;
+    protected ?int $eta = null;
 
-    /**
-     * @var int
-     */
-    protected $size;
+    protected ?int $size = null;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected ?string $name = null;
 
-    /**
-     * @var string
-     */
-    protected $hash;
+    protected ?string $hash = null;
 
-    /**
-     * @var Status
-     */
-    protected $status;
+    protected ?Status $status = null;
 
-    /**
-     * @var bool
-     */
-    protected $finished;
+    protected ?bool $finished = null;
 
-    /**
-     * @var bool
-     */
-    protected $private;
+    protected ?bool $private = null;
 
-    /**
-     * @var int
-     */
-    protected $startDate;
+    protected ?int $startDate = null;
 
-    /**
-     * @var int
-     */
-    protected $uploadRate;
+    protected ?int $uploadRate = null;
 
-    /**
-     * @var int
-     */
-    protected $downloadRate;
+    protected ?int $downloadRate = null;
 
-    /**
-     * @var int
-     */
-    protected $peersConnected;
+    protected ?int $peersConnected = null;
 
-    /**
-     * @var float
-     */
-    protected $percentDone;
+    protected ?float $percentDone = null;
 
-    /**
-     * @var array
-     */
-    protected $files = [];
+    protected array $files = [];
 
-    /**
-     * @var array
-     */
-    protected $peers = [];
+    protected array $peers = [];
 
-    /**
-     * @var array
-     */
-    protected $trackers = [];
+    protected array $trackers = [];
 
-    /**
-     * @var array
-     */
-    protected $trackerStats = [];
+    protected array $trackerStats = [];
 
-    /**
-     * @var float
-     */
-    protected $uploadRatio;
+    protected ?float $uploadRatio = null;
 
-    /**
-     * @var string
-     */
-    protected $downloadDir;
+    protected ?string $downloadDir = null;
 
-    /**
-     * @var int
-     */
-    protected $downloadedEver;
+    protected ?int $downloadedEver = null;
 
-    /**
-     * @var int
-     */
-    protected $uploadedEver;
+    protected ?int $uploadedEver = null;
 
-    /**
-     * @var array
-     */
-    protected $availability;
+    protected ?array $availability = null;
 
-    /**
-     * @var int
-     */
-    protected $fileCount;
+    protected ?int $fileCount = null;
 
-    /**
-     * @var string
-     */
-    protected $group;
+    protected ?string $group = null;
 
-    /**
-     * @var array
-     */
-    protected $labels;
+    protected ?array $labels = null;
 
-    /**
-     * @var string
-     */
-    protected $magnetLink;
+    protected ?string $magnetLink = null;
 
-    /**
-     * @var float
-     */
-    protected $metadataPercentComplete;
+    protected ?float $metadataPercentComplete = null;
 
-    /**
-     * @var string
-     */
-    protected $primaryMimeType;
+    protected ?string $primaryMimeType = null;
 
-    /**
-     * @var string
-     */
-    protected $trackerList;
+    protected ?string $trackerList = null;
 
-    /**
-     * @var int
-     */
-    protected $queuePosition;
+    protected ?int $queuePosition = null;
 
-    /**
-     * @var float
-     */
-    protected $percentComplete;
+    protected ?float $percentComplete = null;
 
-    /**
-     * @var int
-     */
-    protected $etaIdle;
+    protected ?int $etaIdle = null;
 
-    /**
-     * @var int
-     */
-    protected $editDate;
+    protected ?int $editDate = null;
 
-    /**
-     * @var int
-     */
-    protected $addedDate;
+    protected ?int $addedDate = null;
 
-    /**
-     * @var int
-     */
-    protected $activityDate;
+    protected ?int $activityDate = null;
 
-    /**
-     * @var bool
-     */
-    protected $isStalled;
+    protected ?bool $isStalled = null;
 
-    /**
-     * @var int
-     */
-    protected $error;
+    protected ?int $error = null;
 
-    /**
-     * @var string
-     */
-    protected $errorString;
+    protected ?string $errorString = null;
 
-    /**
-     * @var bool
-     */
-    protected $sequentialDownload;
+    protected ?bool $sequentialDownload = null;
 
-    public function setId(string $id)
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
 
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function setEta(int $eta)
+    public function setEta(int $eta): void
     {
         $this->eta = $eta;
     }
 
-    public function getEta(): int
+    public function getEta(): ?int
     {
         return $this->eta;
     }
 
-    public function setSize(int $size)
+    public function setSize(int $size): void
     {
         $this->size = $size;
     }
 
-    public function getSize(): int
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setHash(string $hash)
+    public function setHash(string $hash): void
     {
         $this->hash = $hash;
     }
 
-    public function getHash(): string
+    public function getHash(): ?string
     {
         return $this->hash;
     }
 
-    public function setStatus(int $status)
+    public function setStatus(int $status): void
     {
         $this->status = new Status($status);
     }
@@ -271,7 +148,7 @@ class Torrent extends AbstractModel
         return $this->status->getValue();
     }
 
-    public function setFinished(bool $finished)
+    public function setFinished(bool $finished): void
     {
         $this->finished = $finished;
     }
@@ -281,7 +158,7 @@ class Torrent extends AbstractModel
         return $this->finished || 100 == $this->getPercentDone();
     }
 
-    public function setPrivate(bool $private)
+    public function setPrivate(bool $private): void
     {
         $this->private = $private;
     }
@@ -291,7 +168,7 @@ class Torrent extends AbstractModel
         return $this->private;
     }
 
-    public function setStartDate(int $startDate)
+    public function setStartDate(int $startDate): void
     {
         $this->startDate = $startDate;
     }
@@ -301,7 +178,7 @@ class Torrent extends AbstractModel
         return $this->startDate;
     }
 
-    public function setUploadRate(int $rate)
+    public function setUploadRate(int $rate): void
     {
         $this->uploadRate = $rate;
     }
@@ -311,12 +188,12 @@ class Torrent extends AbstractModel
         return $this->uploadRate;
     }
 
-    public function setDownloadRate(int $rate)
+    public function setDownloadRate(int $rate): void
     {
         $this->downloadRate = $rate;
     }
 
-    public function setPeersConnected(int $peersConnected)
+    public function setPeersConnected(int $peersConnected): void
     {
         $this->peersConnected = $peersConnected;
     }
@@ -331,7 +208,7 @@ class Torrent extends AbstractModel
         return $this->downloadRate;
     }
 
-    public function setPercentDone(float $done)
+    public function setPercentDone(float $done): void
     {
         $this->percentDone = $done;
     }
@@ -341,7 +218,7 @@ class Torrent extends AbstractModel
         return $this->percentDone * 100;
     }
 
-    public function setFiles(array $files)
+    public function setFiles(array $files): void
     {
         $this->files = array_map(function ($file) {
             return PropertyMapper::map(new File(), $file);
@@ -353,7 +230,7 @@ class Torrent extends AbstractModel
         return $this->files;
     }
 
-    public function setPeers(array $peers)
+    public function setPeers(array $peers): void
     {
         $this->peers = array_map(function ($peer) {
             return PropertyMapper::map(new Peer(), $peer);
@@ -365,7 +242,7 @@ class Torrent extends AbstractModel
         return $this->peers;
     }
 
-    public function setTrackerStats(array $trackerStats)
+    public function setTrackerStats(array $trackerStats): void
     {
         $this->trackerStats = array_map(function ($trackerStats) {
             return PropertyMapper::map(new TrackerStats(), $trackerStats);
@@ -377,7 +254,7 @@ class Torrent extends AbstractModel
         return $this->trackerStats;
     }
 
-    public function setTrackers(array $trackers)
+    public function setTrackers(array $trackers): void
     {
         $this->trackers = array_map(function ($tracker) {
             return PropertyMapper::map(new Tracker(), $tracker);
@@ -389,7 +266,7 @@ class Torrent extends AbstractModel
         return $this->trackers;
     }
 
-    public function setUploadRatio(float $ratio)
+    public function setUploadRatio(float $ratio): void
     {
         $this->uploadRatio = $ratio;
     }
@@ -424,7 +301,7 @@ class Torrent extends AbstractModel
         return $this->downloadDir;
     }
 
-    public function setDownloadDir(string $downloadDir)
+    public function setDownloadDir(string $downloadDir): void
     {
         $this->downloadDir = $downloadDir;
     }
@@ -434,7 +311,7 @@ class Torrent extends AbstractModel
         return $this->downloadedEver;
     }
 
-    public function setDownloadedEver(int $downloadedEver)
+    public function setDownloadedEver(int $downloadedEver): void
     {
         $this->downloadedEver = $downloadedEver;
     }
@@ -444,7 +321,7 @@ class Torrent extends AbstractModel
         return $this->uploadedEver;
     }
 
-    public function setUploadedEver(int $uploadedEver)
+    public function setUploadedEver(int $uploadedEver): void
     {
         $this->uploadedEver = $uploadedEver;
     }
@@ -454,7 +331,7 @@ class Torrent extends AbstractModel
         return $this->comment;
     }
 
-    public function setComment(string $comment)
+    public function setComment(string $comment): void
     {
         $this->comment = $comment;
     }
@@ -464,7 +341,7 @@ class Torrent extends AbstractModel
         return $this->doneDate;
     }
 
-    public function setDoneDate(int $doneDate)
+    public function setDoneDate(int $doneDate): void
     {
         $this->doneDate = $doneDate;
     }
@@ -474,7 +351,7 @@ class Torrent extends AbstractModel
         return $this->availability;
     }
 
-    public function setAvailability(?array $availability)
+    public function setAvailability(?array $availability): void
     {
         $this->availability = $availability;
     }
@@ -484,7 +361,7 @@ class Torrent extends AbstractModel
         return $this->fileCount;
     }
 
-    public function setFileCount(?int $fileCount)
+    public function setFileCount(?int $fileCount): void
     {
         $this->fileCount = $fileCount;
     }
@@ -494,7 +371,7 @@ class Torrent extends AbstractModel
         return $this->group;
     }
 
-    public function setGroup(?string $group)
+    public function setGroup(?string $group): void
     {
         $this->group = $group;
     }
@@ -504,7 +381,7 @@ class Torrent extends AbstractModel
         return $this->labels;
     }
 
-    public function setLabels(?array $labels)
+    public function setLabels(?array $labels): void
     {
         $this->labels = $labels;
     }
@@ -514,7 +391,7 @@ class Torrent extends AbstractModel
         return $this->magnetLink;
     }
 
-    public function setMagnetLink(?string $magnetLink)
+    public function setMagnetLink(?string $magnetLink): void
     {
         $this->magnetLink = $magnetLink;
     }
@@ -524,7 +401,7 @@ class Torrent extends AbstractModel
         return $this->metadataPercentComplete;
     }
 
-    public function setMetadataPercentComplete(?float $metadataPercentComplete)
+    public function setMetadataPercentComplete(?float $metadataPercentComplete): void
     {
         $this->metadataPercentComplete = $metadataPercentComplete;
     }
@@ -534,7 +411,7 @@ class Torrent extends AbstractModel
         return $this->primaryMimeType;
     }
 
-    public function setPrimaryMimeType(?string $primaryMimeType)
+    public function setPrimaryMimeType(?string $primaryMimeType): void
     {
         $this->primaryMimeType = $primaryMimeType;
     }
@@ -544,7 +421,7 @@ class Torrent extends AbstractModel
         return $this->trackerList;
     }
 
-    public function setTrackerList(?string $trackerList)
+    public function setTrackerList(?string $trackerList): void
     {
         $this->trackerList = $trackerList;
     }
@@ -554,7 +431,7 @@ class Torrent extends AbstractModel
         return $this->queuePosition;
     }
 
-    public function setQueuePosition(?int $queuePosition)
+    public function setQueuePosition(?int $queuePosition): void
     {
         $this->queuePosition = $queuePosition;
     }
@@ -564,7 +441,7 @@ class Torrent extends AbstractModel
         return $this->percentComplete;
     }
 
-    public function setPercentComplete(?float $percentComplete)
+    public function setPercentComplete(?float $percentComplete): void
     {
         $this->percentComplete = $percentComplete;
     }
@@ -574,7 +451,7 @@ class Torrent extends AbstractModel
         return $this->etaIdle;
     }
 
-    public function setEtaIdle(?int $etaIdle)
+    public function setEtaIdle(?int $etaIdle): void
     {
         $this->etaIdle = $etaIdle;
     }
@@ -584,7 +461,7 @@ class Torrent extends AbstractModel
         return $this->editDate;
     }
 
-    public function setEditDate(?int $editDate)
+    public function setEditDate(?int $editDate): void
     {
         $this->editDate = $editDate;
     }
@@ -594,7 +471,7 @@ class Torrent extends AbstractModel
         return $this->addedDate;
     }
 
-    public function setAddedDate(?int $addedDate)
+    public function setAddedDate(?int $addedDate): void
     {
         $this->addedDate = $addedDate;
     }
@@ -604,7 +481,7 @@ class Torrent extends AbstractModel
         return $this->activityDate;
     }
 
-    public function setActivityDate(?int $activityDate)
+    public function setActivityDate(?int $activityDate): void
     {
         $this->activityDate = $activityDate;
     }
@@ -614,7 +491,7 @@ class Torrent extends AbstractModel
         return $this->isStalled;
     }
 
-    public function setIsStalled(?bool $isStalled)
+    public function setIsStalled(?bool $isStalled): void
     {
         $this->isStalled = $isStalled;
     }
@@ -624,7 +501,7 @@ class Torrent extends AbstractModel
         return $this->error;
     }
 
-    public function setError(?int $error)
+    public function setError(?int $error): void
     {
         $this->error = $error;
     }
@@ -634,7 +511,7 @@ class Torrent extends AbstractModel
         return $this->errorString;
     }
 
-    public function setErrorString(?string $errorString)
+    public function setErrorString(?string $errorString): void
     {
         $this->errorString = $errorString;
     }
@@ -644,7 +521,7 @@ class Torrent extends AbstractModel
         return $this->sequentialDownload;
     }
 
-    public function setSequentialDownload(?bool $sequentialDownload)
+    public function setSequentialDownload(?bool $sequentialDownload): void
     {
         $this->sequentialDownload = $sequentialDownload;
     }

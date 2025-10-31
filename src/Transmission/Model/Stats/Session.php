@@ -6,40 +6,19 @@ use Transmission\Model\AbstractModel;
 
 class Session extends AbstractModel
 {
-    /**
-     * @var int
-     */
-    private $activeTorrentCount;
+    private ?int $activeTorrentCount = null;
 
-    /**
-     * @var int
-     */
-    private $downloadSpeed;
+    private ?int $downloadSpeed = null;
 
-    /**
-     * @var int
-     */
-    private $pausedTorrentCount;
+    private ?int $pausedTorrentCount = null;
 
-    /**
-     * @var int
-     */
-    private $torrentCount;
+    private ?int $torrentCount = null;
 
-    /**
-     * @var int
-     */
-    private $uploadSpeed;
+    private ?int $uploadSpeed = null;
 
-    /**
-     * @var Stats
-     */
-    private $cumulative;
+    private ?Stats $cumulative = null;
 
-    /**
-     * @var Stats
-     */
-    private $current;
+    private ?Stats $current = null;
 
     /**
      * Gets the value of activeTorrentCount.
@@ -49,12 +28,7 @@ class Session extends AbstractModel
         return $this->activeTorrentCount;
     }
 
-    /**
-     * Sets the value of activeTorrentCount.
-     *
-     * @param int $activeTorrentCount the active torrent count
-     */
-    public function setActiveTorrentCount(int $activeTorrentCount)
+    public function setActiveTorrentCount(int $activeTorrentCount): void
     {
         $this->activeTorrentCount = $activeTorrentCount;
     }
@@ -67,12 +41,7 @@ class Session extends AbstractModel
         return $this->downloadSpeed;
     }
 
-    /**
-     * Sets the value of downloadSpeed.
-     *
-     * @param int $downloadSpeed the download speed
-     */
-    public function setDownloadSpeed(int $downloadSpeed)
+    public function setDownloadSpeed(int $downloadSpeed): void
     {
         $this->downloadSpeed = $downloadSpeed;
     }
@@ -88,7 +57,7 @@ class Session extends AbstractModel
     /**
      * Sets the value of pausedTorrentCount.
      */
-    public function setPausedTorrentCount(int $pausedTorrentCount)
+    public function setPausedTorrentCount(int $pausedTorrentCount): void
     {
         $this->pausedTorrentCount = $pausedTorrentCount;
     }
@@ -101,12 +70,7 @@ class Session extends AbstractModel
         return $this->torrentCount;
     }
 
-    /**
-     * Sets the value of torrentCount.
-     *
-     * @param int $torrentCount the torrent count
-     */
-    public function setTorrentCount($torrentCount)
+    public function setTorrentCount(int $torrentCount): void
     {
         $this->torrentCount = $torrentCount;
     }
@@ -119,46 +83,27 @@ class Session extends AbstractModel
         return $this->uploadSpeed;
     }
 
-    /**
-     * Sets the value of uploadSpeed.
-     */
-    public function setUploadSpeed(int $uploadSpeed)
+    public function setUploadSpeed(int $uploadSpeed): void
     {
         $this->uploadSpeed = $uploadSpeed;
     }
 
-    /**
-     * Gets the value of cumulative.
-     */
-    public function getCumulative(): Stats
+    public function getCumulative(): ?Stats
     {
         return $this->cumulative;
     }
 
-    /**
-     * Sets the value of cumulative.
-     *
-     * @param Stats $cumulative the cumulative
-     */
-    public function setCumulative(Stats $cumulative)
+    public function setCumulative(Stats $cumulative): void
     {
         $this->cumulative = $cumulative;
     }
 
-    /**
-     * Gets the value of current.
-     */
-    public function getCurrent(): Stats
+    public function getCurrent(): ?Stats
     {
         return $this->current;
     }
 
-    /**
-     * Sets the value of current.
-     *
-     * @param Stats $current the current
-     */
-    public function setCurrent(Stats $current)
+    public function setCurrent(Stats $current): void
     {
         $this->current = $current;
     }

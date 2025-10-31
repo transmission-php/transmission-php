@@ -6,177 +6,75 @@ use Transmission\Util\ResponseValidator;
 
 class Session extends AbstractModel
 {
-    /**
-     * @var int
-     */
-    protected $altSpeedDown;
+    protected ?int $altSpeedDown = null;
 
-    /**
-     * @var bool
-     */
-    protected $altSpeedEnabled;
+    protected ?bool $altSpeedEnabled = null;
 
-    /**
-     * @var string
-     */
-    protected $downloadDir;
+    protected ?string $downloadDir = null;
 
-    /**
-     * @var bool
-     */
-    protected $downloadQueueEnabled;
+    protected ?bool $downloadQueueEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $downloadQueueSize;
+    protected ?int $downloadQueueSize = null;
 
-    /**
-     * @var string
-     */
-    protected $incompleteDir;
+    protected ?string $incompleteDir = null;
 
-    /**
-     * @var bool
-     */
-    protected $incompleteDirEnabled;
+    protected ?bool $incompleteDirEnabled = null;
 
-    /**
-     * @var string
-     */
-    protected $torrentDoneScript;
+    protected ?string $torrentDoneScript = null;
 
-    /**
-     * @var bool
-     */
-    protected $torrentDoneScriptEnabled;
+    protected ?bool $torrentDoneScriptEnabled = null;
 
-    /**
-     * @var float
-     */
-    protected $seedRatioLimit;
+    protected ?float $seedRatioLimit = null;
 
-    /**
-     * @var bool
-     */
-    protected $seedRatioLimited;
+    protected ?bool $seedRatioLimited = null;
 
-    /**
-     * @var int
-     */
-    protected $seedQueueSize;
+    protected ?int $seedQueueSize = null;
 
-    /**
-     * @var bool
-     */
-    protected $seedQueueEnabled;
+    protected ?bool $seedQueueEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $downloadSpeedLimit;
+    protected ?int $downloadSpeedLimit = null;
 
-    /**
-     * @var bool
-     */
-    protected $downloadSpeedLimitEnabled;
+    protected ?bool $downloadSpeedLimitEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $uploadSpeedLimit;
+    protected ?int $uploadSpeedLimit = null;
 
-    /**
-     * @var bool
-     */
-    protected $uploadSpeedLimitEnabled;
+    protected ?bool $uploadSpeedLimitEnabled = null;
 
-    /**
-     * @var bool
-     */
-    protected $sequentialDownload;
+    protected ?bool $sequentialDownload = null;
 
-    /**
-     * @var string
-     */
-    protected $defaultTrackers;
+    protected ?string $defaultTrackers = null;
 
-    /**
-     * @var string
-     */
-    protected $version;
+    protected ?string $version = null;
 
-    /**
-     * @var int
-     */
-    protected $rpcVersion;
+    protected ?int $rpcVersion = null;
 
-    /**
-     * @var string
-     */
-    protected $rpcVersionSemver;
+    protected ?string $rpcVersionSemver = null;
 
-    /**
-     * @var string
-     */
-    protected $sessionId;
+    protected ?string $sessionId = null;
 
-    /**
-     * @var bool
-     */
-    protected $dhtEnabled;
+    protected ?bool $dhtEnabled = null;
 
-    /**
-     * @var bool
-     */
-    protected $pexEnabled;
+    protected ?bool $pexEnabled = null;
 
-    /**
-     * @var bool
-     */
-    protected $lpdEnabled;
+    protected ?bool $lpdEnabled = null;
 
-    /**
-     * @var bool
-     */
-    protected $utpEnabled;
+    protected ?bool $utpEnabled = null;
 
-    /**
-     * @var bool
-     */
-    protected $portForwardingEnabled;
+    protected ?bool $portForwardingEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $peerPort;
+    protected ?int $peerPort = null;
 
-    /**
-     * @var bool
-     */
-    protected $peerPortRandomOnStart;
+    protected ?bool $peerPortRandomOnStart = null;
 
-    /**
-     * @var string
-     */
-    protected $encryption;
+    protected ?string $encryption = null;
 
-    /**
-     * @var bool
-     */
-    protected $blocklistEnabled;
+    protected ?bool $blocklistEnabled = null;
 
-    /**
-     * @var int
-     */
-    protected $blocklistSize;
+    protected ?int $blocklistSize = null;
 
-    /**
-     * @var string
-     */
-    protected $blocklistUrl;
+    protected ?string $blocklistUrl = null;
 
-    public function setAltSpeedDown(int $speed)
+    public function setAltSpeedDown(int $speed): void
     {
         $this->altSpeedDown = $speed;
     }
@@ -186,7 +84,7 @@ class Session extends AbstractModel
         return $this->altSpeedDown;
     }
 
-    public function setAltSpeedEnabled(bool $enabled)
+    public function setAltSpeedEnabled(bool $enabled): void
     {
         $this->altSpeedEnabled = $enabled;
     }
@@ -196,7 +94,7 @@ class Session extends AbstractModel
         return $this->altSpeedEnabled;
     }
 
-    public function setDownloadDir(string $downloadDir)
+    public function setDownloadDir(string $downloadDir): void
     {
         $this->downloadDir = $downloadDir;
     }
@@ -206,7 +104,7 @@ class Session extends AbstractModel
         return $this->downloadDir;
     }
 
-    public function setDownloadQueueEnabled(bool $enabled)
+    public function setDownloadQueueEnabled(bool $enabled): void
     {
         $this->downloadQueueEnabled = $enabled;
     }
@@ -216,7 +114,7 @@ class Session extends AbstractModel
         return $this->downloadQueueEnabled;
     }
 
-    public function setDownloadQueueSize(int $size)
+    public function setDownloadQueueSize(int $size): void
     {
         $this->downloadQueueSize = $size;
     }
@@ -226,7 +124,7 @@ class Session extends AbstractModel
         return $this->downloadQueueSize;
     }
 
-    public function setIncompleteDir(string $directory)
+    public function setIncompleteDir(string $directory): void
     {
         $this->incompleteDir = $directory;
     }
@@ -236,7 +134,7 @@ class Session extends AbstractModel
         return $this->incompleteDir;
     }
 
-    public function setIncompleteDirEnabled(bool $enabled)
+    public function setIncompleteDirEnabled(bool $enabled): void
     {
         $this->incompleteDirEnabled = $enabled;
     }
@@ -246,7 +144,7 @@ class Session extends AbstractModel
         return $this->incompleteDirEnabled;
     }
 
-    public function setTorrentDoneScript(string $filename)
+    public function setTorrentDoneScript(string $filename): void
     {
         $this->torrentDoneScript = $filename;
     }
@@ -256,7 +154,7 @@ class Session extends AbstractModel
         return $this->torrentDoneScript;
     }
 
-    public function setTorrentDoneScriptEnabled(bool $enabled)
+    public function setTorrentDoneScriptEnabled(bool $enabled): void
     {
         $this->torrentDoneScriptEnabled = $enabled;
     }
@@ -266,7 +164,7 @@ class Session extends AbstractModel
         return $this->torrentDoneScriptEnabled;
     }
 
-    public function setSeedRatioLimit(float $limit)
+    public function setSeedRatioLimit(float $limit): void
     {
         $this->seedRatioLimit = $limit;
     }
@@ -276,7 +174,7 @@ class Session extends AbstractModel
         return $this->seedRatioLimit;
     }
 
-    public function setSeedRatioLimited(bool $limited)
+    public function setSeedRatioLimited(bool $limited): void
     {
         $this->seedRatioLimited = $limited;
     }
@@ -286,7 +184,7 @@ class Session extends AbstractModel
         return $this->seedRatioLimited;
     }
 
-    public function setSeedQueueSize(int $size)
+    public function setSeedQueueSize(int $size): void
     {
         $this->seedQueueSize = $size;
     }
@@ -296,7 +194,7 @@ class Session extends AbstractModel
         return $this->seedQueueSize;
     }
 
-    public function setSeedQueueEnabled(bool $enabled)
+    public function setSeedQueueEnabled(bool $enabled): void
     {
         $this->seedQueueEnabled = $enabled;
     }
@@ -306,7 +204,7 @@ class Session extends AbstractModel
         return $this->seedQueueEnabled;
     }
 
-    public function setDownloadSpeedLimit(int $limit)
+    public function setDownloadSpeedLimit(int $limit): void
     {
         $this->downloadSpeedLimit = $limit;
     }
@@ -316,7 +214,7 @@ class Session extends AbstractModel
         return $this->downloadSpeedLimit;
     }
 
-    public function setDownloadSpeedLimitEnabled(bool $enabled)
+    public function setDownloadSpeedLimitEnabled(bool $enabled): void
     {
         $this->downloadSpeedLimitEnabled = $enabled;
     }
@@ -326,7 +224,7 @@ class Session extends AbstractModel
         return $this->downloadSpeedLimitEnabled;
     }
 
-    public function setUploadSpeedLimit(int $limit)
+    public function setUploadSpeedLimit(int $limit): void
     {
         $this->uploadSpeedLimit = $limit;
     }
@@ -336,7 +234,7 @@ class Session extends AbstractModel
         return $this->uploadSpeedLimit;
     }
 
-    public function setUploadSpeedLimitEnabled(bool $enabled)
+    public function setUploadSpeedLimitEnabled(bool $enabled): void
     {
         $this->uploadSpeedLimitEnabled = $enabled;
     }
@@ -351,7 +249,7 @@ class Session extends AbstractModel
         return $this->sequentialDownload;
     }
 
-    public function setSequentialDownload(?bool $sequentialDownload)
+    public function setSequentialDownload(?bool $sequentialDownload): void
     {
         $this->sequentialDownload = $sequentialDownload;
     }
@@ -361,7 +259,7 @@ class Session extends AbstractModel
         return $this->defaultTrackers;
     }
 
-    public function setDefaultTrackers(?string $defaultTrackers)
+    public function setDefaultTrackers(?string $defaultTrackers): void
     {
         $this->defaultTrackers = $defaultTrackers;
     }
@@ -371,7 +269,7 @@ class Session extends AbstractModel
         return $this->version;
     }
 
-    public function setVersion(?string $version)
+    public function setVersion(?string $version): void
     {
         $this->version = $version;
     }
@@ -381,7 +279,7 @@ class Session extends AbstractModel
         return $this->rpcVersion;
     }
 
-    public function setRpcVersion(?int $rpcVersion)
+    public function setRpcVersion(?int $rpcVersion): void
     {
         $this->rpcVersion = $rpcVersion;
     }
@@ -391,7 +289,7 @@ class Session extends AbstractModel
         return $this->rpcVersionSemver;
     }
 
-    public function setRpcVersionSemver(?string $rpcVersionSemver)
+    public function setRpcVersionSemver(?string $rpcVersionSemver): void
     {
         $this->rpcVersionSemver = $rpcVersionSemver;
     }
@@ -401,7 +299,7 @@ class Session extends AbstractModel
         return $this->sessionId;
     }
 
-    public function setSessionId(?string $sessionId)
+    public function setSessionId(?string $sessionId): void
     {
         $this->sessionId = $sessionId;
     }
@@ -411,7 +309,7 @@ class Session extends AbstractModel
         return $this->dhtEnabled;
     }
 
-    public function setDhtEnabled(?bool $dhtEnabled)
+    public function setDhtEnabled(?bool $dhtEnabled): void
     {
         $this->dhtEnabled = $dhtEnabled;
     }
@@ -421,7 +319,7 @@ class Session extends AbstractModel
         return $this->pexEnabled;
     }
 
-    public function setPexEnabled(?bool $pexEnabled)
+    public function setPexEnabled(?bool $pexEnabled): void
     {
         $this->pexEnabled = $pexEnabled;
     }
@@ -431,7 +329,7 @@ class Session extends AbstractModel
         return $this->lpdEnabled;
     }
 
-    public function setLpdEnabled(?bool $lpdEnabled)
+    public function setLpdEnabled(?bool $lpdEnabled): void
     {
         $this->lpdEnabled = $lpdEnabled;
     }
@@ -441,7 +339,7 @@ class Session extends AbstractModel
         return $this->utpEnabled;
     }
 
-    public function setUtpEnabled(?bool $utpEnabled)
+    public function setUtpEnabled(?bool $utpEnabled): void
     {
         $this->utpEnabled = $utpEnabled;
     }
@@ -451,7 +349,7 @@ class Session extends AbstractModel
         return $this->portForwardingEnabled;
     }
 
-    public function setPortForwardingEnabled(?bool $portForwardingEnabled)
+    public function setPortForwardingEnabled(?bool $portForwardingEnabled): void
     {
         $this->portForwardingEnabled = $portForwardingEnabled;
     }
@@ -461,7 +359,7 @@ class Session extends AbstractModel
         return $this->peerPort;
     }
 
-    public function setPeerPort(?int $peerPort)
+    public function setPeerPort(?int $peerPort): void
     {
         $this->peerPort = $peerPort;
     }
@@ -471,7 +369,7 @@ class Session extends AbstractModel
         return $this->peerPortRandomOnStart;
     }
 
-    public function setPeerPortRandomOnStart(?bool $peerPortRandomOnStart)
+    public function setPeerPortRandomOnStart(?bool $peerPortRandomOnStart): void
     {
         $this->peerPortRandomOnStart = $peerPortRandomOnStart;
     }
@@ -481,7 +379,7 @@ class Session extends AbstractModel
         return $this->encryption;
     }
 
-    public function setEncryption(?string $encryption)
+    public function setEncryption(?string $encryption): void
     {
         $this->encryption = $encryption;
     }
@@ -491,7 +389,7 @@ class Session extends AbstractModel
         return $this->blocklistEnabled;
     }
 
-    public function setBlocklistEnabled(?bool $blocklistEnabled)
+    public function setBlocklistEnabled(?bool $blocklistEnabled): void
     {
         $this->blocklistEnabled = $blocklistEnabled;
     }
@@ -501,7 +399,7 @@ class Session extends AbstractModel
         return $this->blocklistSize;
     }
 
-    public function setBlocklistSize(?int $blocklistSize)
+    public function setBlocklistSize(?int $blocklistSize): void
     {
         $this->blocklistSize = $blocklistSize;
     }
@@ -511,7 +409,7 @@ class Session extends AbstractModel
         return $this->blocklistUrl;
     }
 
-    public function setBlocklistUrl(?string $blocklistUrl)
+    public function setBlocklistUrl(?string $blocklistUrl): void
     {
         $this->blocklistUrl = $blocklistUrl;
     }

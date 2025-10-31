@@ -4,77 +4,38 @@ namespace Transmission\Model;
 
 class FreeSpace extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private ?string $path = null;
 
-    /**
-     * @var int
-     */
-    private $size;
+    private ?int $size = null;
 
-    /**
-     * @var int
-     */
-    private $totalSize;
+    private ?int $totalSize = null;
 
-    /**
-     * Gets the value of path.
-     *
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }
 
-    /**
-     * Sets the value of path.
-     *
-     * @param string $path the path
-     */
-    public function setPath($path)
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
 
-    /**
-     * Gets the value of size.
-     *
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * Sets the value of size.
-     *
-     * @param int $size the size
-     */
-    public function setSize($size)
+    public function setSize(int $size): void
     {
         $this->size = $size;
     }
 
-    /**
-     * Gets the value of totalSize.
-     *
-     * @return int
-     */
-    public function getTotalSize()
+    public function getTotalSize(): ?int
     {
         return $this->totalSize;
     }
 
-    /**
-     * Sets the value of totalSize.
-     *
-     * @param int $totalSize the total size
-     */
-    public function setTotalSize($totalSize)
+    public function setTotalSize(int $totalSize): void
     {
         $this->totalSize = $totalSize;
     }

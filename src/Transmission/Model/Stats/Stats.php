@@ -6,127 +6,62 @@ use Transmission\Model\ModelInterface;
 
 class Stats implements ModelInterface
 {
-    /**
-     * @var int
-     */
-    protected $downloadedBytes;
+    protected ?int $downloadedBytes = null;
 
-    /**
-     * @var int
-     */
-    protected $filesAdded;
+    protected ?int $filesAdded = null;
 
-    /**
-     * @var int
-     */
-    protected $secondsActive;
+    protected ?int $secondsActive = null;
 
-    /**
-     * @var int
-     */
-    protected $sessionCount;
+    protected ?int $sessionCount = null;
 
-    /**
-     * @var int
-     */
-    protected $uploadedBytes;
+    protected ?int $uploadedBytes = null;
 
-    /**
-     * Gets the value of downloadedBytes.
-     *
-     * @return int
-     */
-    public function getDownloadedBytes()
+    public function getDownloadedBytes(): ?int
     {
         return $this->downloadedBytes;
     }
 
-    /**
-     * Sets the value of downloadedBytes.
-     *
-     * @param int $downloadedBytes the downloaded bytes
-     */
-    public function setDownloadedBytes($downloadedBytes)
+    public function setDownloadedBytes(int $downloadedBytes): void
     {
         $this->downloadedBytes = $downloadedBytes;
     }
 
-    /**
-     * Gets the value of filesAdded.
-     *
-     * @return int
-     */
-    public function getFilesAdded()
+    public function getFilesAdded(): ?int
     {
         return $this->filesAdded;
     }
 
-    /**
-     * Sets the value of filesAdded.
-     *
-     * @param int $filesAdded the files added
-     */
-    public function setFilesAdded($filesAdded)
+    public function setFilesAdded(int $filesAdded): void
     {
         $this->filesAdded = $filesAdded;
     }
 
-    /**
-     * Gets the value of secondsActive.
-     *
-     * @return int
-     */
-    public function getSecondsActive()
+    public function getSecondsActive(): ?int
     {
         return $this->secondsActive;
     }
 
-    /**
-     * Sets the value of secondsActive.
-     *
-     * @param int $secondsActive the seconds active
-     */
-    public function setSecondsActive($secondsActive)
+    public function setSecondsActive(int $secondsActive): void
     {
         $this->secondsActive = $secondsActive;
     }
 
-    /**
-     * Gets the value of sessionCount.
-     *
-     * @return int
-     */
-    public function getSessionCount()
+    public function getSessionCount(): ?int
     {
         return $this->sessionCount;
     }
 
-    /**
-     * Sets the value of sessionCount.
-     *
-     * @param int $sessionCount the session count
-     */
-    public function setSessionCount($sessionCount)
+    public function setSessionCount(int $sessionCount): void
     {
         $this->sessionCount = $sessionCount;
     }
 
-    /**
-     * Gets the value of uploadedBytes.
-     *
-     * @return int
-     */
-    public function getUploadedBytes()
+    public function getUploadedBytes(): ?int
     {
         return $this->uploadedBytes;
     }
 
-    /**
-     * Sets the value of uploadedBytes.
-     *
-     * @param int $uploadedBytes the uploaded bytes
-     */
-    public function setUploadedBytes($uploadedBytes)
+    public function setUploadedBytes(int $uploadedBytes): void
     {
         $this->uploadedBytes = $uploadedBytes;
     }

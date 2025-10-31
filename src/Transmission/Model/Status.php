@@ -4,96 +4,54 @@ namespace Transmission\Model;
 
 class Status extends AbstractModel
 {
-    /**
-     * @var int
-     */
-    public const STATUS_STOPPED = 0;
+    public const int STATUS_STOPPED = 0;
 
-    /**
-     * @var int
-     */
-    public const STATUS_CHECK_WAIT = 1;
+    public const int STATUS_CHECK_WAIT = 1;
 
-    /**
-     * @var int
-     */
-    public const STATUS_CHECK = 2;
+    public const int STATUS_CHECK = 2;
 
-    /**
-     * @var int
-     */
-    public const STATUS_DOWNLOAD_WAIT = 3;
+    public const int STATUS_DOWNLOAD_WAIT = 3;
 
-    /**
-     * @var int
-     */
-    public const STATUS_DOWNLOAD = 4;
+    public const int STATUS_DOWNLOAD = 4;
 
-    /**
-     * @var int
-     */
-    public const STATUS_SEED_WAIT = 5;
+    public const int STATUS_SEED_WAIT = 5;
 
-    /**
-     * @var int
-     */
-    public const STATUS_SEED = 6;
+    public const int STATUS_SEED = 6;
 
-    /**
-     * @var int
-     */
-    protected $status;
+    protected int $status;
 
-    /**
-     * @param int|Status $status
-     */
-    public function __construct($status)
+    public function __construct(int|Status $status)
     {
         if ($status instanceof self) {
             $this->status = $status->getValue();
         } else {
-            $this->status = (int) $status;
+            $this->status = $status;
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getValue()
+    public function getValue(): int
     {
         return $this->status;
     }
 
-    /**
-     * @return bool
-     */
-    public function isStopped()
+    public function isStopped(): bool
     {
         return self::STATUS_STOPPED == $this->status;
     }
 
-    /**
-     * @return bool
-     */
-    public function isChecking()
+    public function isChecking(): bool
     {
         return self::STATUS_CHECK      == $this->status
             || self::STATUS_CHECK_WAIT == $this->status;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDownloading()
+    public function isDownloading(): bool
     {
         return self::STATUS_DOWNLOAD      == $this->status
             || self::STATUS_DOWNLOAD_WAIT == $this->status;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSeeding()
+    public function isSeeding(): bool
     {
         return self::STATUS_SEED      == $this->status
             || self::STATUS_SEED_WAIT == $this->status;

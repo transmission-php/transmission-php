@@ -4,107 +4,62 @@ namespace Transmission\Model;
 
 class TrackerStats extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    protected $host;
+    protected ?string $host = null;
 
-    /**
-     * @var int
-     */
-    protected $leecherCount;
+    protected ?int $leecherCount = null;
 
-    /**
-     * @var int
-     */
-    protected $seederCount;
+    protected ?int $seederCount = null;
 
-    /**
-     * @var string
-     */
-    protected $lastAnnounceResult;
+    protected ?string $lastAnnounceResult = null;
 
-    /**
-     * @var string
-     */
-    protected $lastScrapeResult;
+    protected ?string $lastScrapeResult = null;
 
-    /**
-     * @param string $host
-     */
-    public function setHost($host)
+    public function setHost(string $host): void
     {
-        $this->host = (string) $host;
+        $this->host = $host;
     }
 
-    /**
-     * @return string
-     */
-    public function getHost()
+    public function getHost(): ?string
     {
         return $this->host;
     }
 
-    /**
-     * @param string $lastAnnounceResult
-     */
-    public function setLastAnnounceResult($lastAnnounceResult)
+    public function setLastAnnounceResult(string $lastAnnounceResult): void
     {
-        $this->lastAnnounceResult = (string) $lastAnnounceResult;
+        $this->lastAnnounceResult = $lastAnnounceResult;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastAnnounceResult()
+    public function getLastAnnounceResult(): ?string
     {
         return $this->lastAnnounceResult;
     }
 
-    /**
-     * @param string $lastScrapeResult
-     */
-    public function setLastScrapeResult($lastScrapeResult)
+    public function setLastScrapeResult(string $lastScrapeResult): void
     {
-        $this->lastScrapeResult = (string) $lastScrapeResult;
+        $this->lastScrapeResult = $lastScrapeResult;
     }
 
-    /**
-     * @return string
-     */
-    public function getLastScrapeResult()
+    public function getLastScrapeResult(): ?string
     {
         return $this->lastScrapeResult;
     }
 
-    /**
-     * @param int $seederCount
-     */
-    public function setSeederCount($seederCount)
+    public function setSeederCount(int $seederCount): void
     {
-        $this->seederCount = (int) $seederCount;
+        $this->seederCount = $seederCount;
     }
 
-    /**
-     * @return int
-     */
-    public function getSeederCount()
+    public function getSeederCount(): ?int
     {
         return $this->seederCount;
     }
 
-    /**
-     * @param int $leecherCount
-     */
-    public function setLeecherCount($leecherCount)
+    public function setLeecherCount(int $leecherCount): void
     {
-        $this->leecherCount = (int) $leecherCount;
+        $this->leecherCount = $leecherCount;
     }
 
-    /**
-     * @return int
-     */
-    public function getLeecherCount()
+    public function getLeecherCount(): ?int
     {
         return $this->leecherCount;
     }

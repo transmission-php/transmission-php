@@ -4,317 +4,182 @@ namespace Transmission\Model;
 
 class Peer extends AbstractModel
 {
-    /**
-     * @var string
-     */
-    protected $address;
+    protected ?string $address = null;
 
-    /**
-     * @var int
-     */
-    protected $port;
+    protected ?int $port = null;
 
-    /**
-     * @var string
-     */
-    protected $clientName;
+    protected ?string $clientName = null;
 
-    /**
-     * @var bool
-     */
-    protected $clientChoked;
+    protected ?bool $clientChoked = null;
 
-    /**
-     * @var bool
-     */
-    protected $clientInterested;
+    protected ?bool $clientInterested = null;
 
-    /**
-     * @var bool
-     */
-    protected $downloading;
+    protected ?bool $downloading = null;
 
-    /**
-     * @var bool
-     */
-    protected $encrypted;
+    protected ?bool $encrypted = null;
 
-    /**
-     * @var bool
-     */
-    protected $incoming;
+    protected ?bool $incoming = null;
 
-    /**
-     * @var bool
-     */
-    protected $uploading;
+    protected ?bool $uploading = null;
 
-    /**
-     * @var bool
-     */
-    protected $utp;
+    protected ?bool $utp = null;
 
-    /**
-     * @var bool
-     */
-    protected $peerChoked;
+    protected ?bool $peerChoked = null;
 
-    /**
-     * @var bool
-     */
-    protected $peerInterested;
+    protected ?bool $peerInterested = null;
 
-    /**
-     * @var float
-     */
-    protected $progress;
+    protected ?float $progress = null;
 
-    /**
-     * @var int
-     */
-    protected $uploadRate;
+    protected ?int $uploadRate = null;
 
-    /**
-     * @var int
-     */
-    protected $downloadRate;
+    protected ?int $downloadRate = null;
 
-    /**
-     * @param string $address
-     */
-    public function setAddress($address)
+    public function setAddress(string $address): void
     {
-        $this->address = (string) $address;
+        $this->address = $address;
     }
 
-    /**
-     * @return string
-     */
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    /**
-     * @param int $port
-     */
-    public function setPort($port)
+    public function setPort(int $port): void
     {
-        $this->port = (int) $port;
+        $this->port = $port;
     }
 
-    /**
-     * @return int
-     */
-    public function getPort()
+    public function getPort(): ?int
     {
         return $this->port;
     }
 
-    /**
-     * @param string $clientName
-     */
-    public function setClientName($clientName)
+    public function setClientName(string $clientName): void
     {
-        $this->clientName = (string) $clientName;
+        $this->clientName = $clientName;
     }
 
-    /**
-     * @return string
-     */
-    public function getClientName()
+    public function getClientName(): ?string
     {
         return $this->clientName;
     }
 
-    /**
-     * @param bool $choked
-     */
-    public function setClientChoked($choked)
+    public function setClientChoked(bool $choked): void
     {
-        $this->clientChoked = (bool) $choked;
+        $this->clientChoked = $choked;
     }
 
-    /**
-     * @return bool
-     */
-    public function isClientChoked()
+    public function isClientChoked(): ?bool
     {
         return $this->clientChoked;
     }
 
-    /**
-     * @param bool $interested
-     */
-    public function setClientInterested($interested)
+    public function setClientInterested(bool $interested): void
     {
-        $this->clientInterested = (bool) $interested;
+        $this->clientInterested = $interested;
     }
 
-    /**
-     * @return bool
-     */
-    public function isClientInterested()
+    public function isClientInterested(): bool
     {
         return $this->clientInterested;
     }
 
-    /**
-     * @param bool $downloading
-     */
-    public function setDownloading($downloading)
+    public function setDownloading(bool $downloading): void
     {
-        $this->downloading = (bool) $downloading;
+        $this->downloading = $downloading;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDownloading()
+    public function isDownloading(): bool
     {
         return $this->downloading;
     }
 
-    /**
-     * @param bool $encrypted
-     */
-    public function setEncrypted($encrypted)
+    public function setEncrypted(bool $encrypted): void
     {
-        $this->encrypted = (bool) $encrypted;
+        $this->encrypted = $encrypted;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEncrypted()
+    public function isEncrypted(): bool
     {
         return $this->encrypted;
     }
 
-    /**
-     * @param bool $incoming
-     */
-    public function setIncoming($incoming)
+    public function setIncoming(bool $incoming): void
     {
-        $this->incoming = (bool) $incoming;
+        $this->incoming = $incoming;
     }
 
-    /**
-     * @return bool
-     */
-    public function isIncoming()
+    public function isIncoming(): bool
     {
         return $this->incoming;
     }
 
-    /**
-     * @param bool $uploading
-     */
-    public function setUploading($uploading)
+    public function setUploading(bool $uploading): void
     {
-        $this->uploading = (bool) $uploading;
+        $this->uploading = $uploading;
     }
 
-    /**
-     * @return bool
-     */
-    public function isUploading()
+    public function isUploading(): bool
     {
         return $this->uploading;
     }
 
-    /**
-     * @param bool $utp
-     */
-    public function setUtp($utp)
+    public function setUtp(bool $utp): void
     {
-        $this->utp = (bool) $utp;
+        $this->utp = $utp;
     }
 
-    /**
-     * @return bool
-     */
-    public function isUtp()
+    public function isUtp(): bool
     {
         return $this->utp;
     }
 
-    /**
-     * @param bool $choked
-     */
-    public function setPeerChoked($choked)
+    public function setPeerChoked(bool $choked): void
     {
-        $this->peerChoked = (bool) $choked;
+        $this->peerChoked = $choked;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPeerChoked()
+    public function isPeerChoked(): bool
     {
         return $this->peerChoked;
     }
 
-    /**
-     * @param bool $interested
-     */
-    public function setPeerInterested($interested)
+    public function setPeerInterested(bool $interested): void
     {
-        $this->peerInterested = (bool) $interested;
+        $this->peerInterested = $interested;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPeerInterested()
+    public function isPeerInterested(): bool
     {
         return $this->peerInterested;
     }
 
-    /**
-     * @param float $progress
-     */
-    public function setProgress($progress)
+    public function setProgress(float $progress): void
     {
-        $this->progress = (float) $progress;
+        $this->progress = $progress;
     }
 
-    /**
-     * @return float
-     */
-    public function getProgress()
+    public function getProgress(): float
     {
         return $this->progress;
     }
 
-    /**
-     * @param int $rate
-     */
-    public function setUploadRate($rate)
+    public function setUploadRate(int $rate): void
     {
-        $this->uploadRate = (int) $rate;
+        $this->uploadRate = $rate;
     }
 
-    /**
-     * @return int
-     */
-    public function getUploadRate()
+    public function getUploadRate(): int
     {
         return $this->uploadRate;
     }
 
-    /**
-     * @param int $rate
-     */
-    public function setDownloadRate($rate)
+    public function setDownloadRate(int $rate): void
     {
         $this->downloadRate = (int) $rate;
     }
 
-    /**
-     * @return int
-     */
-    public function getDownloadRate()
+    public function getDownloadRate(): int
     {
         return $this->downloadRate;
     }
