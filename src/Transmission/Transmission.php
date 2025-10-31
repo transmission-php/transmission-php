@@ -18,6 +18,16 @@ class Transmission
 
     protected PropertyMapper $mapper;
 
+    /**
+     * @template T of \Transmission\Model\ModelInterface
+     * @param T $model
+     * @return T
+     */
+    protected function mapModel(\Transmission\Model\ModelInterface $model, \stdClass $data): \Transmission\Model\ModelInterface
+    {
+        return $this->getMapper()->map($model, $data);
+    }
+
     public function __construct(?string $host = null, ?int $port = null, ?string $path = null)
     {
         $this->setClient(new Client($host, $port, $path));
@@ -39,8 +49,8 @@ class Transmission
             ['fields' => array_keys(Torrent::getMapping())]
         );
 
-        $torrents = array_map(function ($data) use ($mapper, $client) {
-            return $mapper->map(
+        $torrents = array_map(function ($data) use ($client) {
+            return $this->mapModel(
                 new Torrent($client),
                 $data
             );
@@ -65,8 +75,8 @@ class Transmission
 
         $torrent = array_reduce(
             $this->getValidator()->validate('torrent-get', $response),
-            function ($torrent, $data) use ($mapper, $client) {
-                return $torrent ? $torrent : $mapper->map(new Torrent($client), $data);
+            function ($torrent, $data) use ($client) {
+                return $torrent ? $torrent : $this->mapModel(new Torrent($client), $data);
             }
         );
 
@@ -84,7 +94,7 @@ class Transmission
     {
         $response = $this->getClient()->call('session-get', []);
 
-        return $this->getMapper()->map(
+        return $this->mapModel(
             new Session($this->getClient()),
             $this->getValidator()->validate('session-get', $response)
         );
@@ -94,7 +104,7 @@ class Transmission
     {
         $response = $this->getClient()->call('session-stats', []);
 
-        return $this->getMapper()->map(
+        return $this->mapModel(
             new SessionStats(),
             $this->getValidator()->validate('session-stats', $response)
         );
@@ -113,7 +123,7 @@ class Transmission
             ['path' => $path]
         );
 
-        return $this->getMapper()->map(
+        return $this->mapModel(
             new FreeSpace(),
             $this->getValidator()->validate('free-space', $response)
         );
@@ -135,7 +145,7 @@ class Transmission
             $parameters
         );
 
-        return $this->getMapper()->map(
+        return $this->mapModel(
             new Torrent($this->getClient()),
             $this->getValidator()->validate('torrent-add', $response)
         );
@@ -330,7 +340,7 @@ class Transmission
             $parameters
         );
 
-        return $this->getMapper()->map(
+        return $this->mapModel(
             new Torrent($this->getClient()),
             $this->getValidator()->validate('torrent-add', $response)
         );

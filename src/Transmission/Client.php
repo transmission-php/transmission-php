@@ -96,7 +96,7 @@ class Client
             if (409 === $statusCode) {
                 $headers         = $response->getHeaders(false);
                 $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
-                if ($sessionIdHeader && count($sessionIdHeader) > 0) {
+                if ($sessionIdHeader) {
                     $this->token = $sessionIdHeader[0];
 
                     return $this->call($method, $arguments);
@@ -115,7 +115,7 @@ class Client
             if (409 === $statusCode) {
                 $headers         = $e->getResponse()->getHeaders(false);
                 $sessionIdHeader = $headers['x-transmission-session-id'] ?? null;
-                if ($sessionIdHeader && count($sessionIdHeader) > 0) {
+                if ($sessionIdHeader) {
                     $this->token = $sessionIdHeader[0];
 
                     return $this->call($method, $arguments);
