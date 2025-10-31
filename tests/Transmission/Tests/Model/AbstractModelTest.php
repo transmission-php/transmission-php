@@ -2,13 +2,20 @@
 
 namespace Transmission\Tests\Model;
 
+use Transmission\Model\AbstractModel;
+
+class TestConcreteModel extends AbstractModel
+{
+    // Concrete class for testing AbstractModel
+}
+
 class AbstractModelTest extends \PHPUnit\Framework\TestCase
 {
     protected $model;
 
     public function setUp(): void
     {
-        $this->model = $this->getMockForAbstractClass('Transmission\Model\AbstractModel');
+        $this->model = new TestConcreteModel();
     }
 
     public function testShouldImplementModelInterface()

@@ -10,20 +10,17 @@ use Transmission\Util\ResponseValidator;
  */
 abstract class AbstractModel implements ModelInterface
 {
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected ?Client $client;
 
     /**
      * Constructor.
      */
-    public function __construct(Client $client = null)
+    public function __construct(?Client $client = null)
     {
         $this->client = $client;
     }
 
-    public function setClient(Client $client)
+    public function setClient(Client $client): void
     {
         $this->client = $client;
     }

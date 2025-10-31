@@ -10,11 +10,16 @@ use Transmission\Model\ModelInterface;
  */
 class PropertyMapper
 {
+    /**
+     * @template T of ModelInterface
+     * @param T $model
+     * @return T
+     */
     public static function map(ModelInterface $model, \stdClass $dto): ModelInterface
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        $mapping  = array_filter($model->getMapping(), function ($value) {
+        $mapping = array_filter($model->getMapping(), function ($value) {
             return !is_null($value);
         });
 

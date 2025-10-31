@@ -9,6 +9,8 @@ use Transmission\Transmission;
 class TransmissionTest extends \PHPUnit\Framework\TestCase
 {
     protected $transmission;
+    protected $mockSession;
+    protected $mockClient;
 
     public function setUp(): void
     {
@@ -29,7 +31,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
-            ->will($this->returnCallback(function ($method, $arguments) {
+            ->willReturnCallback(function ($method, $arguments) {
                 return (object) [
                     'result'    => 'success',
                     'arguments' => (object) [
@@ -40,7 +42,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
 
@@ -51,12 +53,12 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetTorrentById()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEquals(1, $arguments['ids'][0]);
 
                 return (object) [
@@ -67,7 +69,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
 
@@ -81,14 +83,14 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-get')
-            ->will($this->returnCallback(function ($method, $arguments) {
+            ->willReturnCallback(function ($method, $arguments) {
                 return (object) [
                     'result'    => 'success',
                     'arguments' => (object) [
                         'torrents' => [],
                     ],
                 ];
-            }));
+            });
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Torrent with ID 1 not found');
@@ -99,12 +101,12 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAddTorrentByFilename()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('filename', $arguments);
 
                 return (object) [
@@ -113,7 +115,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
                         'torrent-added' => (object) [true],
                     ],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
 
@@ -123,12 +125,12 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldAddTorrentByMetainfo()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('metainfo', $arguments);
 
                 return (object) [
@@ -137,7 +139,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
                         'torrent-added' => (object) [true],
                     ],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
 
@@ -147,12 +149,12 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldHandleDuplicateTorrent()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-add')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('metainfo', $arguments);
 
                 return (object) [
@@ -161,7 +163,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
                         'torrent-duplicate' => (object) [true],
                     ],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
 
@@ -171,19 +173,19 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetSession()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('session-get')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEmpty($arguments);
 
                 return (object) [
                     'result'    => 'success',
                     'arguments' => (object) [true],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
         $session = $this->transmission->getSession();
@@ -193,19 +195,19 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldGetSessionStats()
     {
-        $that   = $this;
+        $that = $this;
 
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('session-stats')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertEmpty($arguments);
 
                 return (object) [
                     'result'    => 'success',
                     'arguments' => (object) [true],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
         $stats = $this->transmission->getSessionStats();
@@ -220,14 +222,14 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('free-space')
-            ->will($this->returnCallback(function ($method, $arguments) use ($that) {
+            ->willReturnCallback(function ($method, $arguments) use ($that) {
                 $that->assertArrayHasKey('path', $arguments);
 
                 return (object) [
                     'result'    => 'success',
                     'arguments' => (object) [true],
                 ];
-            }));
+            });
 
         $this->transmission->setClient($this->mockClient);
         $freeSpace = $this->transmission->getFreeSpace('/');
@@ -239,11 +241,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-start', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -258,11 +260,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-start-now', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -277,11 +279,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-stop', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -296,11 +298,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-verify', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -315,11 +317,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-reannounce', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -334,11 +336,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-remove', ['ids' => [1]])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -353,11 +355,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-remove', ['ids' => [1], 'delete-local-data' => true])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
@@ -372,9 +374,9 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('', [])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return new \stdClass();
-            }));
+            });
 
         $transmission = new Transmission();
         $transmission->setClient($this->mockClient);
@@ -387,9 +389,9 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('', [])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 throw new ClientException('connection error', 0);
-            }));
+            });
 
         $this->expectException(ClientException::class);
         $this->expectExceptionMessage('connection error');
@@ -413,7 +415,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
         $this->mockClient->expects($this->once())
             ->method('getHost')
-            ->will($this->returnValue('example.org'));
+            ->willReturn('example.org');
 
         $this->mockClient->expects($this->once())
             ->method('setPort')
@@ -421,7 +423,7 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
 
         $this->mockClient->expects($this->once())
             ->method('getPort')
-            ->will($this->returnValue(80));
+            ->willReturn(80);
 
         $this->transmission->setClient($this->mockClient);
         $this->transmission->setHost('example.org');
@@ -438,11 +440,11 @@ class TransmissionTest extends \PHPUnit\Framework\TestCase
         $this->mockClient->expects($this->once())
             ->method('call')
             ->with('torrent-set-location', ['ids' => [1], 'location' => $location, 'move' => false])
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return (object) [
                     'result' => 'success',
                 ];
-            }));
+            });
 
         $torrent = new Torrent();
         $torrent->setId(1);
